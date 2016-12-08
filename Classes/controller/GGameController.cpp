@@ -262,7 +262,7 @@ void GGameController::eatBlock(const char *data)
             int bulletId = obj->getInt("bulletId");
             if(bulletId > 1)
             {
-                sp->changeSkillBullet(bulletId);
+//                sp->changeSkillBullet(bulletId);
             }
         }
         else if(type == 2)
@@ -355,7 +355,7 @@ void GGameController::attack(const char *data)
             }
             else
             {
-                sp->attack(bullet);
+//                sp->attack(bullet);
             }
         }
         
@@ -410,7 +410,7 @@ void GGameController::bulletCollision(const char *data)
         {
             float downSpeed = bullet->bullet->downSpeed;
             float buffTime = bullet->bullet->buffTime;
-            target->speedDown(downSpeed, buffTime);
+//            target->speedDown(downSpeed, buffTime);
         }
         int currHp = obj->getInt("currHp");
         bool die = obj->getBool("die");
@@ -423,8 +423,8 @@ void GGameController::bulletCollision(const char *data)
         }
         if(bullet)
         {
-            if(bulletType == 1 || bulletType == 2 || bulletType == 3 || bulletType == 5)
-                target->hurt(bullet->dir, 0);
+//            if(bulletType == 1 || bulletType == 2 || bulletType == 3 || bulletType == 5)
+//                target->hurt(bullet->dir, 0);
         }
         if(die)
         {
@@ -755,10 +755,10 @@ void GGameController::deleteBlock(int _id)
         if(block->block->_id == _id)
         {
             blocks.erase(blocks.begin()+i);
-            if(block->block->bulletType > 1 || block->block->type == 2)
-            {
-                scene->miniMap->remove(_id);
-            }
+//            if(block->block->bulletType > 1 || block->block->type == 2)
+//            {
+//                scene->miniMap->remove(_id);
+//            }
             break;
         }
     }
@@ -788,7 +788,7 @@ void GGameController::deleteBubble(std::string &uid)
         }
     }
     
-    scene->miniMap->remove(uid);
+//    scene->miniMap->remove(uid);
 }
 
 void GGameController::deleteRobot(std::string &uid)
@@ -809,5 +809,5 @@ void GGameController::deleteRobot(std::string &uid)
             break;
         }
     }
-    scene->miniMap->remove(uid);
+//    scene->miniMap->remove(uid);
 }

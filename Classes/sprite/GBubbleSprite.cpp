@@ -33,7 +33,6 @@ USING_NS_CC;
 GBubbleSprite::~GBubbleSprite()
 {
     this->bubble->release();
-    this->bullet->release();
 }
 
 GBubbleSprite* GBubbleSprite::create(GBubble* bubble)
@@ -53,11 +52,6 @@ bool GBubbleSprite::init(GBubble *bubble)
 //    bubble->currSp = 1.0f;
     bubble->retain();
     this->bubble = bubble;
-    
-    GBullet* bulletData = GCache::getInstance()->getBullet(GCache::getInstance()->getBulletId());
-    this->bullet = GBullet::create(bulletData);
-    this->bullet->retain();
-    this->skillBullet = nullptr;
     
     modeLayer = Layer::create();
     modeLayer->setTag(GCommon::NO_COLL);
@@ -96,65 +90,12 @@ bool GBubbleSprite::init(GBubble *bubble)
     hpBar->setPercent(100);
     hpBg2->addChild(hpBar);
     
-    //技能icon
-    skillIcon = Sprite::create("ui-anniu-zidan1.png");
-    skillIcon->setPosition(Vec2(-10, hpBg->getContentSize().height/2));
-    skillIcon->setTag(GCommon::NO_COLL);
-    skillIcon->setScale(0.2f);
-    hpBg->addChild(skillIcon);
     
-    //子弹
-    auto bulletBg = Sprite::create("hp_bg2.png");
-    bulletBg->setPosition(Vec2(0, -this->getContentSize().height/2 - 25));
-    bulletBg->setTag(GCommon::NO_COLL);
-    this->addChild(bulletBg,2);
-    
-    auto bulletBg2 = Sprite::create("hp_bg.png");
-    //    bulletBg2->setAnchorPoint(Vec2(0,0));
-    bulletBg2->setPosition(Vec2(hpBg->getContentSize().width/2, hpBg->getContentSize().height/2));
-    bulletBg2->setTag(GCommon::NO_COLL);
-    bulletBg->addChild(bulletBg2);
-    
-    bulletBar = LoadingBar::create("bullet.png");
-    bulletBar->setTag(GCommon::NO_COLL);
-    bulletBar->setAnchorPoint(Vec2(0,0));
-    bulletBar->setPosition(Vec2(0, 0));
-    bulletBar->setDirection(LoadingBar::Direction::LEFT);
-    bulletBar->setPercent(100);
-    bulletBg2->addChild(bulletBar);
-//
-//    //经验
-//    auto expBg = Sprite::create("hp_bg.png");
-//    expBg->setPosition(Vec2(0, this->getContentSize().height/2 + 20));
-//    expBg->setTag(GCommon::NO_COLL);
-//    this->addChild(expBg,2);
-//    
-//    expBar = LoadingBar::create("hp.png");
-//    expBar->setTag(GCommon::NO_COLL);
-//    expBar->setAnchorPoint(Vec2(0,0));
-//    expBar->setPosition(Vec2(0, 0));
-//    expBar->setDirection(LoadingBar::Direction::LEFT);
-//    expBar->setPercent(100);
-//    expBg->addChild(expBar);
-
-    
-    currBulletNum = bullet->num;
-    isSkill = false;
-    isSkill_4 = false;
-    skill_4_rotateSpeed = bubble->rotateSpeed;
-    isHurt = false;
     isSpeedDown = false;
-    downSpeed = 1;
     isSpeedUp = false;
     dirPower = 1;
-    isSkill_Coll = false;
-    skillCollTime = 0;
-//    isPlaySpeedUp = false;
-    target = nullptr;
-//    isStopMove = true;
     updateHpBar();
     updateExp();
-    updateBulletBar();
     
     this->runAction(Sequence::create(DelayTime::create(1),
                                      CallFunc::create(CC_CALLBACK_0(GBubbleSprite::initData, this)), NULL));
@@ -179,14 +120,8 @@ void GBubbleSprite::createShapeMode()
 //    moveParticle->setPositionType(cocos2d::ParticleSystem::PositionType::GROUPED);
     modeLayer->addChild(moveParticle);
     upSpeedParticle = ParticleSystemQuad::create("qianshuitingqipao2.plist");
-//    upSpeedParticle->setPositionType(cocos2d::ParticleSystem::PositionType::GROUPED);
     modeLayer->addChild(upSpeedParticle);
     upSpeedParticle->stopSystem();
-    
-//    fuzhu = Sprite::create("fuzhu1.png");
-//    fuzhu->setAnchorPoint(Vec2(0.5,0.3));
-//    modeLayer->addChild(fuzhu);
-//    fuzhu->setVisible(isSelf);
     
     char c[7];
     sprintf(c, "%d",bubble->level+1);
@@ -211,44 +146,6 @@ void GBubbleSprite::createShapeMode()
 
     this->setContentSize(modeLayer->getContentSize());
     
-//    fuzhu->setPosition(0, modeLayer->getContentSize().height);
-
-    
-    float r = MAX(this->getContentSize().width/2,this->getContentSize().height/2);
-    
-//    auto body = PhysicsBody::createCircle(r*1.1f);
-//    body->setDynamic(false);
-//    body->setName("body");
-////    body->setPositionOffset(Vec2(-r,-r));
-//    body->setCategoryBitmask(GCommon::PLANE_1);
-//    body->setContactTestBitmask(GCommon::PLANE_2);
-//    body->setCollisionBitmask(GCommon::PLANE_3);
-//    skeleton->addComponent(body);
-
-    
-    this->removeComponent("body");
-    auto body = PhysicsBody::createCircle(r*1.5f,PhysicsMaterial(1,0,1));
-    body->setDynamic(true);
-    body->setName("body");
-    body->setRotationEnable(false);
-    body->setPositionOffset(Vec2(-r,-r));
-    body->setCategoryBitmask(GCommon::PLANE_CIRLE_1);
-    body->setContactTestBitmask(GCommon::PLANE_CIRLE_2);
-    body->setCollisionBitmask(GCommon::PLANE_CIRLE_3);
-    this->addComponent(body);
-
-}
-
-void GBubbleSprite::addBody()
-{
-    
-}
-
-void GBubbleSprite::removeBody()
-{
-    modeLayer->getChildByTag(1)->removeComponent("body");
-    modeLayer->removeChildByTag(1);
-    this->removeComponent("body");
 }
 
 void GBubbleSprite::changeState(GBubble::State state)
@@ -273,19 +170,12 @@ void GBubbleSprite::move(Vec2 &dir,float power,bool speedUp)
     currDir = dir;
     dirPower = power;
     
-    if(target)
-    {
-        if(isSpeedUp)
-            this->speedUp();
-        else
-            move2();
-        return;
-    }
+    if(isSpeedUp)
+        this->speedUp();
+    else
+        move2();
     
     skeleton->stopActionByTag(ACTION_ROTATE);
-//    this->stopActionByTag(ACTION_MOVE);
-//    PhysicsBody* body = (PhysicsBody*)this->getComponent("body");
-//    body->setVelocity(currDir*0);
 
 
     float angle = -180 / M_PI * dir.getAngle() + 90;
@@ -303,8 +193,6 @@ void GBubbleSprite::move(Vec2 &dir,float power,bool speedUp)
         this->stopActionByTag(ACTION_MOVE);
     
     float time = dis / bubble->rotateSpeed;
-    if(isSkill_4)
-        time = dis / skill_4_rotateSpeed;
     
     Action *actionRo = nullptr;
     if(isSpeedUp)
@@ -321,18 +209,11 @@ void GBubbleSprite::move(Vec2 &dir,float power,bool speedUp)
     }
     actionRo->setTag(ACTION_ROTATE);
     skeleton->runAction(actionRo);
-
-//    bubble->lastDirX = 0;
-//    bubble->lastDirY = 0;
-//    bubble->rotateTime = time;
 }
 
 void GBubbleSprite::move2()
 {
-    if(isSkill_4)
-        return;
     this->stopActionByTag(ACTION_MOVE);
-//    this->stopActionByTag(ACTION_STOPMOVE);
     
     float angle = -180 / M_PI * currDir.getAngle() + 90;
     angle = angle < 0 ? (360 + angle) : angle;
@@ -381,100 +262,14 @@ void GBubbleSprite::move2()
     float moveTime = moveDis/bubble->speed;
     if(dirPower <= bubble->limiRradius)
         moveTime = moveDis / bubble->limitSpeed;
-    if(isSpeedDown)
-    {
-        moveTime = moveDis/(bubble->speed * downSpeed);
-        if(dirPower <= bubble->limiRradius)
-            moveTime = moveDis / (bubble->limitSpeed * downSpeed);
-    }
-//    bubble->currSp -= 0.1f;
-//    if(bubble->currSp < 0)
-//        bubble->currSp = 0;
-    
-//    Action *action = Speed::create(MoveTo::create(moveTime, v),bubble->currSp);
     
     Action* action = MoveTo::create(moveTime, v);
     action->setTag(ACTION_MOVE);
     this->runAction(action);
     
-    if(lastSpeedUp)
-    {
-        lastSpeedUp = false;
-        skeleton->setAnimation(0, "move", true);
-    }
-    
     
     this->stopActionByTag(ACTION_REDHP);
     
-//    if (bubble->currSp != 0) {
-//        Action* action2 = Sequence::create(DelayTime::create(0.2f),
-//                                           CallFunc::create(CC_CALLBACK_0(GBubbleSprite::move2, this)),NULL);
-//        action2->setTag(ACTION_STOPMOVE);
-//        this->runAction(action2);
-//    }
-    
-//    Vec2 speed = currDir * bubble->speed;
-//    if(dirPower <= bubble->limiRradius)
-//        speed = currDir * bubble->limitSpeed;
-//    if(isSpeedDown)
-//    {
-//        speed = currDir * (bubble->speed * downSpeed);
-//        if(dirPower <= bubble->limiRradius)
-//            speed = currDir * (bubble->limitSpeed * downSpeed);
-//    }
-//    PhysicsBody* body = (PhysicsBody*)this->getComponent("body");
-//    body->setVelocity(speed);
-    
-//    bubble->lastDirX = bubble->dirX;
-//    bubble->lastDirY = bubble->dirY;
-    
-}
-
-void GBubbleSprite::aim(GBubbleSprite* target)
-{
-    this->target = target;
-    if(target == nullptr || isSpeedUp || bubble->state == GBubble::State::SPEEDUP)
-        return;
-    
-    Action * ac = skeleton->getActionByTag(ACTION_AIM);
-    if(ac && !ac->isDone())
-        return;
-    
-    skeleton->stopActionByTag(ACTION_ROTATE);
-    
-    Vec2 dir = (target->getUpdatePosition()-this->getUpdatePosition()).getNormalized();
- 
-    float angle = -180 / M_PI * dir.getAngle() + 90;
-    angle = angle < 0 ? (360 + angle) : angle;
-    angle = angle > 180 ? angle-360 : angle;
-    
-    float currAngle = skeleton->getRotation();
-    
-    float d1 = angle < 0 ? (360 + angle) : angle;
-    float d2 = currAngle < 0 ? (360 + currAngle) : currAngle;
-    float dis = fabs(d1-d2);
-    dis = MIN(dis, 360 - MAX(d1,d2) + MIN(d1, d2));
-    
-    float time = dis / bubble->rotateSpeed;
-    if(isSkill_4)
-        time = dis / skill_4_rotateSpeed;
-    
-    Action *actionRo = RotateTo::create(time, angle);
-    actionRo->setTag(ACTION_AIM);
-    skeleton->runAction(actionRo);
-    
-    auto seq = Sequence::create(DelayTime::create(time + 0.2f),
-                                CallFunc::create(CC_CALLBACK_0(GBubbleSprite::aimEnd, this)), NULL);
-    seq->setTag(ACTION_ROTATE);
-    skeleton->runAction(seq);
-}
-
-void GBubbleSprite::aimEnd()
-{
-    float angle = -180 / M_PI * currDir.getAngle() + 90;
-    angle = angle < 0 ? (360 + angle) : angle;
-    angle = angle > 180 ? angle-360 : angle;
-    skeleton->setRotation(angle);
 }
 
 Vec2 GBubbleSprite::getMoveVec(Vec2 &v)
@@ -519,62 +314,9 @@ void GBubbleSprite::stopMove(bool speedUp)
     changeState(GBubble::State::IDLE);
     this->stopActionByTag(ACTION_MOVE);
     this->stopActionByTag(ACTION_SPEEDUP);
-//    this->stopActionByTag(ACTION_STOPMOVE);
     skeleton->stopActionByTag(ACTION_ROTATE);
     
-    lastSpeedUp = false;
-    if(speedUp)
-    {
-        skeleton->setAnimation(0, "move", true);
-    }
     this->stopActionByTag(ACTION_REDHP);
-//    if(bubble->currSp < 1)
-//    {
-//        Action *action = EaseSineOut::create(MoveBy::create(1.f, currDir*200));
-//        action->setTag(ACTION_MOVE);
-//        this->runAction(action);
-//    }
-    
-//    PhysicsBody* body = (PhysicsBody*)this->getComponent("body");
-//    body->setVelocity(Vec2::ZERO);
-//    isStopMove = true;
-//    bubble->currSp = 1;
-}
-
-void GBubbleSprite::hurt(Vec2 dir,float damageCD)
-{
-    if(damageCD > 0)
-    {
-        isHurt = true;
-        Action *action = Sequence::create(DelayTime::create(damageCD),
-                                          CallFunc::create(CC_CALLBACK_0(GBubbleSprite::hurtEnd, this)),
-                                          NULL);
-        this->runAction(action);
-    }
-    
-    
-    //受击
-//    auto particle = ParticleSystemQuad::create("zidan-lianfa1Blizi.plist");
-//    particle->setTag(GCommon::NO_COLL);
-//    particle->setScale(1.0f);
-//    particle->setPosition(this->getPosition());
-//    this->getParent()->addChild(particle);
-//    
-//    auto seq = Sequence::create(DelayTime::create(0.5f),
-//                           RemoveSelf::create(),
-//                           nullptr);
-//    particle->runAction(seq);
-    
-    if(dir != Vec2::ZERO)
-    {
-        auto ac = EaseSineOut::create(MoveBy::create(0.25f, dir*40));
-        this->runAction(ac);
-    }
-}
-
-void GBubbleSprite::hurtEnd()
-{
-    isHurt = false;
 }
 
 void GBubbleSprite::updateExp()
@@ -597,9 +339,6 @@ void GBubbleSprite::updateExp()
         createShapeMode();
         
         this->setScale(bubble->grow);
-        PhysicsBody* body = (PhysicsBody*)this->getComponent("body");
-        float r = MAX(this->getContentSize().width/2,this->getContentSize().height/2);
-        body->setPositionOffset(Vec2(-r,-r)*bubble->grow);
         
         auto particle = ParticleSystemQuad::create("shengji.plist");
 //        particle->setPosition(sp->getContentSize().width/2,sp->getContentSize().height/2);
@@ -623,8 +362,6 @@ Vec2 GBubbleSprite::getCurrDir()
 void GBubbleSprite::speedUp()
 {
     if(this->bubble->state == GBubble::State::DIE)
-        return;
-    if(isSkill_4)
         return;
     isSpeedUp = true;
     
@@ -695,8 +432,6 @@ void GBubbleSprite::speedUp()
     Vector<FiniteTimeAction*> vecs;
     moveDis = this->getPosition().getDistance(v);
     float moveTime = moveDis / bubble->sSpeed;
-    if(isSpeedDown)
-        moveTime = moveDis/(bubble->sSpeed * downSpeed);
     //FiniteTimeAction *a = EaseExponentialOut::create(MoveTo::create(moveTime, v));
     FiniteTimeAction *a = MoveTo::create(moveTime, v);
     
@@ -712,22 +447,11 @@ void GBubbleSprite::speedUp()
     a->setTag(ACTION_MOVE);
     this->runAction(a);
     
-    if(!lastSpeedUp)
-    {
-        lastSpeedUp = true;
-        skeleton->setAnimation(0, "shadow", false);//speedup
-    }
 
     upSpeedParticle->resetSystem();
     upSpeedParticle->setRotation(skeleton->getRotation());
 
     
-//    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
-//    GGameScene* game = dynamic_cast<GGameScene*>(sc);
-//    if (game && isSelf)
-//    {
-//        game->updateSpeedCd(bubble->sDistance/bubble->sSpeed, 0);
-//    }
     this->stopActionByTag(ACTION_RECHP);
     if(isSelfBubble)
     reduceHp();
@@ -745,16 +469,6 @@ void GBubbleSprite::speedUpEnd()
     
     changeState(GBubble::State::IDLE);
     
-    
-    skeleton->setAnimation(0, "move", true);
-    
-//    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
-//    GGameScene* game = dynamic_cast<GGameScene*>(sc);
-//    if (game && isSelf)
-//    {
-//        game->updateSpeedCd(bubble->sCD+0.1f, 100);
-//    }
-    
     upSpeedParticle->stopSystem();
     
     this->stopActionByTag(ACTION_REDHP);
@@ -766,189 +480,6 @@ void GBubbleSprite::speedUpEnd()
 void GBubbleSprite::speedUpCDEnd()
 {
     isSpeedUp = false;
-}
-
-void GBubbleSprite::speedDown(float downSpeed,float time)
-{
-    if(this->bubble->state == GBubble::State::DIE)
-        return;
-    this->stopActionByTag(ACTION_MOVE);
-    this->stopActionByTag(ACTION_SPEEDUP);
-    this->stopActionByTag(ACTION_SPEEDDOWN);
-    
-    isSpeedDown = true;
-    this->downSpeed = downSpeed;
-    
-    Action * stop = Sequence::create(
-                                     DelayTime::create(time),
-                                     CallFunc::create(CC_CALLBACK_0(GBubbleSprite::speedDownEnd, this)),
-                                     nullptr);
-    this->runAction(stop);
-    if(bubble->state == GBubble::State::MOVE)
-        move(currDir,dirPower,isSpeedUp);
-}
-
-void GBubbleSprite::speedDownEnd()
-{
-    isSpeedDown = false;
-}
-
-void GBubbleSprite::startAttack()
-{
-    if(this->bubble->state == GBubble::State::DIE)
-        return;
-    if(isSkill || isSkill_4 || isSkill_Coll)
-        return;
-    float cd = bullet->CD+0.1f;
-    if(skillBullet)
-    {
-        isSkill = true;
-        cd = skillBullet->CD+0.05f;
-        if(skillBullet->type == 4)
-        {
-            isSkill_4 = true;
-            skill_4_rotateSpeed = skillBullet->rotateSpeed;
-            this->stopActionByTag(ACTION_MOVE);
-            this->stopActionByTag(ACTION_SPEEDUP);
-            cd+=100;
-        }
-        
-        if(skillBullet->type == 4 || skillBullet->type == 6 || skillBullet->type == 7)
-        {
-            isSkill_Coll = true;
-            skillCollTime = skillBullet->bulletTime;
-        }
-//        playSkillAnimate();
-    }
-    this->schedule(SEL_SCHEDULE(&GBubbleSprite::updateAttack),cd);
-    updateAttack(0);
-}
-
-void GBubbleSprite::stopAttack()
-{
-    if(!isSkill)
-    this->unschedule(SEL_SCHEDULE(&GBubbleSprite::updateAttack));
-}
-
-void GBubbleSprite::updateAttack(float dt)
-{
-    if(bubble->state != GBubble::State::DIE)
-    {
-        if(isSkill)
-        {
-            Vec2 dir = getCurrDir();
-            skillBullet->dirX = dir.x;
-            skillBullet->dirY = dir.y;
-            GModeGame::attack(bubble,skillBullet);
-        }
-        else
-        {
-            if(currBulletNum > 0)
-            {
-                Vec2 dir = getCurrDir();
-                bullet->dirX = dir.x;
-                bullet->dirY = dir.y;
-                GModeGame::attack(bubble,bullet);
-            }
-        }
-        
-    }
-    
-}
-
-void GBubbleSprite::attack(GBulletSprite* bullet)
-{
-    if(this->bubble->state == GBubble::State::DIE)
-        return;
-    skeleton->setAnimation(0, "attack2", false);
-    
-    Node* bulletLayer = this->getParent()->getParent()->getChildByName("bulletLayer");
-    if(bullet->bullet->type == 4)
-    {
-        bulletLayer = this->getParent();
-    }
-    bulletLayer->addChild(bullet,2);
-    Vec2 v = getBulletPosition(bullet->bullet->type);
-    bullet->setPosition(v);
-    if(bullet->bullet->_id == 1 || bullet->bullet->type == 2 || bullet->bullet->type == 3 || bullet->bullet->type == 7)
-        bullet->setUpdateRotation(this->getUpdateRotation());
-    bullet->run();
-
-    if(isSkill)
-    {
-        skillBullet->continueNum--;
-        if(skillBullet->continueNum <= 0)
-        {
-            GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
-            GGameScene* game = dynamic_cast<GGameScene*>(sc);
-            if (game && isSelf)
-            {
-                game->updateBulletSkill(1);
-            }
-            updateSkillIcon(1);
-//            stopSkillAnimate();
-            isSkill = false;
-            stopAttack();
-            skillBullet->release();
-            skillBullet = nullptr;
-        }
-    }
-    else
-    {
-        currBulletNum--;
-        
-        this->stopActionByTag(ACTION_FILLBULLET);
-        this->stopActionByTag(ACTION_LOADBULLET);
-        if(currBulletNum <= 0)
-        {
-            auto seq = Sequence::create(DelayTime::create(this->bullet->fillBullet),
-                                        CallFunc::create(CC_CALLBACK_0(GBubbleSprite::fillBullet, this)), NULL);
-            seq->setTag(ACTION_FILLBULLET);
-            this->runAction(seq);
-        }
-        else if(currBulletNum < this->bullet->num)
-        {
-            auto seq = Sequence::create(DelayTime::create(this->bullet->loadBullet),
-                                        CallFunc::create(CC_CALLBACK_0(GBubbleSprite::loadBullet, this)), NULL);
-            seq->setTag(ACTION_LOADBULLET);
-            this->runAction(seq);
-        }
-    }
-    auto seq = Sequence::create(DelayTime::create(0.15f),
-                                CallFunc::create(CC_CALLBACK_0(GBubbleSprite::attackEnd, this)), NULL);
-    this->runAction(seq);
-    
-    updateBulletBar();
-    GTools::playSound(SOUND_SHOOT);
-}
-
-void GBubbleSprite::attackEnd()
-{
-    skeleton->setAnimation(0, "move", true);
-}
-
-void GBubbleSprite::playSkillAnimate()
-{
-    stopSkillAnimate();
-    if(skillBullet->_id == 2)
-    {
-        auto sp = Sprite::create();
-        sp->setName("skillAnimate");
-        sp->setTag(GCommon::NO_COLL);
-        sp->setAnchorPoint(Vec2(0.5,0));
-        sp->setPosition(0,modeLayer->getContentSize().height/2-5);
-        skeleton->addChild(sp);
-        
-        sp->runAction(RepeatForever::create(GTools::createAnimate("bullet002_fire", 6, 0.08f)));
-    }
-}
-
-void GBubbleSprite::stopSkillAnimate()
-{
-    if(skillBullet->_id == 2)
-    {
-        skeleton->removeChildByName("skillAnimate");
-    }
 }
 
 void GBubbleSprite::die()
@@ -1002,70 +533,6 @@ void GBubbleSprite::dieEnd()
     GTools::playSound(SOUND_DIE);
 }
 
-void GBubbleSprite::changeSkillBullet(int bulletId)
-{
-    if(skillBullet)
-    {
-        isSkill = false;
-        stopAttack();
-        skillBullet->release();
-        skillBullet = nullptr;
-    }
-    GBullet* bulletData = GCache::getInstance()->getBullet(bulletId);
-    if(bulletData)
-    {
-        this->skillBullet = GBullet::create(bulletData);
-        this->skillBullet->retain();
-        this->skillNum = this->skillBullet->continueNum;
-        stopAttack();
-        if(isSelf)
-        {
-            GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
-            GGameScene* game = dynamic_cast<GGameScene*>(sc);
-            if (game)
-            {
-                game->updateBulletSkill(bulletId);
-            }
-        }
-        updateSkillIcon(bulletId);
-    }
-}
-
-float GBubbleSprite::getBulletRange()
-{
-    if(skillBullet)
-        return skillBullet->range;
-    return bullet->range;
-}
-
-void GBubbleSprite::updateSkillIcon(int bulletId)
-{
-    char c[7];
-    sprintf(c, "%d",bulletId);
-    std::string path = "ui-anniu-zidan";
-    path = path + c + std::string(".png");
-    skillIcon->initWithFile(path);
-}
-
-void GBubbleSprite::fillBullet()
-{
-    currBulletNum = bullet->num;
-    updateBulletBar();
-}
-
-void GBubbleSprite::loadBullet()
-{
-    currBulletNum++;
-    updateBulletBar();
-    if(currBulletNum < this->bullet->num)
-    {
-        auto seq = Sequence::create(DelayTime::create(this->bullet->loadBullet),
-                                    CallFunc::create(CC_CALLBACK_0(GBubbleSprite::loadBullet, this)), NULL);
-        seq->setTag(ACTION_LOADBULLET);
-        this->runAction(seq);
-    }
-}
-
 void GBubbleSprite::updateHpBar()
 {
     float per = 0;
@@ -1082,78 +549,6 @@ void GBubbleSprite::updateHpBar()
     hpBar->setPercent(per);
 }
 
-void GBubbleSprite::updateBulletBar()
-{
-    float per = 0;
-    if(currBulletNum > 0)
-    {
-        float num = currBulletNum;
-        per = num / bullet->num * 100;
-    }
-    bulletBar->setPercent(per);
-    
-    if(isSkill_Coll)
-    {
-        GGameScene* game = getSelfGame();
-        if (game)
-        {
-            game->updateAttackCd(skillCollTime, 0);
-            auto * stop = Sequence::create(DelayTime::create(skillCollTime),
-                                             CallFunc::create(CC_CALLBACK_0(GBubbleSprite::updateSkillBulletBarEnd, this)),
-                                             nullptr);
-            this->runAction(stop);
-        }
-        return;
-    }
-    if(isSkill)
-    {
-        if(skillBullet->continueNum <= 0)
-        {
-            GGameScene* game = getSelfGame();
-            if (game)
-            {
-                game->updateAttackCd(0.1f, per);
-            }
-        }
-        else
-        {
-            GGameScene* game = getSelfGame();
-            if (game)
-            {
-                float per = (float)skillBullet->continueNum / (float)this->skillNum * 100;
-                game->updateAttackCd(0.1f, per);
-            }
-        }
-    }
-    else
-    {
-        if(currBulletNum <= 0)
-        {
-            GGameScene* game = getSelfGame();
-            if (game)
-            {
-                game->updateAttackCd(0, 0);
-                game->updateAttackCd(this->bullet->fillBullet, 100);
-            }
-        }
-        else
-        {
-            GGameScene* game = getSelfGame();
-            if (game)
-            {
-                game->updateAttackCd(0, per);
-                float per = (float)(currBulletNum+1) / (float)this->bullet->num * 100;
-                game->updateAttackCd(this->bullet->loadBullet, per);
-            }
-        }
-    }
-}
-
-void GBubbleSprite::updateSkillBulletBarEnd()
-{
-    isSkill_Coll = false;
-    updateBulletBar();
-}
 
 GGameScene* GBubbleSprite::getSelfGame()
 {
@@ -1170,10 +565,6 @@ void GBubbleSprite::updatePosAndRotate()
     bubble->y = getUpdatePosition().y;
     bubble->rotate = getUpdateRotation();
     
-//    moveParticle->setRotation(bubble->rotate);
-//    upSpeedParticle->setRotation(bubble->rotate);
-    
-//    fuzhu->setRotation(bubble->rotate);
 }
 
 void GBubbleSprite::updateRotation(float rotate)
@@ -1231,67 +622,6 @@ void GBubbleSprite::updatePos(float x,float y,float rotate,int state)
 {
     Vec2 p(x,y);
     this->setPosition(p);
-    
-//    struct timeval tv;
-//    gettimeofday(&tv, NULL);
-//    long time_sec = ((long long)tv.tv_sec) * 1000+ tv.tv_usec / 1000;
-//   
-////    log("%d %d %d",(int)(time_sec-lt),(int)x,(int)y);
-//    int t = (int)(time_sec-lt) - 50;
-//    lt = time_sec;
-    
-    
-//    if(state == 1)
-//    {
-//        Vec2 p(x,y);
-//        this->setPosition(p);
-//    }
-//    else if(state == 2)
-//    {
-//        Vec2 p(x,y);
-//        float dis = this->getPosition().getDistance(p);
-//        if(dis >= 3)
-//        {
-//            auto ac = MoveTo::create(dis/(bubble->speed*1.3f), p);
-//            ac->setTag(ACTION_MOVE);
-//            this->runAction(ac);
-//        }
-//        //如果点和上次一样则预测一个
-////        else
-////        {
-////            currDir = (p - this->getPosition()).getNormalized();
-////            Vec2 pos = this->getPosition() + currDir * bubble->speed * 0.05f;
-////            float dis = this->getPosition().getDistance(pos);
-////            auto ac = MoveTo::create(dis/bubble->speed, pos);
-////            ac->setTag(ACTION_MOVE);
-////            this->runAction(ac);
-////            
-////            log("w pos");
-////        }
-//    }
-//    else if(state == 3)
-//    {
-//        this->stopActionByTag(ACTION_MOVE);
-//        if(!isPlaySpeedUp)
-//        {
-//            isPlaySpeedUp = true;
-//            skeleton->setAnimation(0, "speedup", false);
-//        }
-//        
-//        Vec2 p(x,y);
-//        float dis = this->getPosition().getDistance(p);
-//        if(dis >= 3)
-//        {
-//            auto ac = MoveTo::create(dis/(bubble->sSpeed), p);
-//            ac->setTag(ACTION_MOVE);
-//            this->runAction(ac);
-//        }
-//    }
-//    
-//    skeleton->stopActionByTag(ACTION_ROTATE);
-//    auto ro = RotateTo::create(0.04f, rotate);
-//    ro->setTag(ACTION_ROTATE);
-//    skeleton->runAction(ro);
 }
 
 float GBubbleSprite::getCollAndBlock()

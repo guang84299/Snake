@@ -839,7 +839,7 @@ void GBulletSprite::die()
     {
         if(bubble_4)
         {
-            bubble_4->isSkill_4 = false;
+//            bubble_4->isSkill_4 = false;
         }
         
         this->unschedule(SEL_SCHEDULE(&GBulletSprite::updateBullet_4));
@@ -1006,7 +1006,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
     }
     else if(bullet->type == 4)
     {
-        if(!target->isHurt)
+//        if(!target->isHurt)
         {
             Node* bulletLayer = this->getParent()->getParent()->getChildByName("bulletLayer");
             for (int i=0; i<collSp.size(); i++) {
@@ -1017,7 +1017,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
                 float dis2 = target->getContentSize().width/2 + _body->getContentSize().width/3;
                 if(dis < dis2)
                 {
-                    target->hurt(Vec2::ZERO,bullet->damageCD);
+//                    target->hurt(Vec2::ZERO,bullet->damageCD);
                     GModeGame::bulletCollision(bullet, target->bubble);
                     break;
                 }
@@ -1031,20 +1031,20 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
     }
     else if(bullet->type == 6)
     {
-        if(!target->isHurt)
+//        if(!target->isHurt)
         {
             float dis = target->getUpdatePosition().getDistance(this->getPosition());
             float dis2 = target->getContentSize().width/2 + _body->getContentSize().width/2*_body->getScale();
             if(dis < dis2)
             {
-                target->hurt(Vec2::ZERO,bullet->damageCD);
+//                target->hurt(Vec2::ZERO,bullet->damageCD);
                 GModeGame::bulletCollision(bullet, target->bubble);
             }
         }
     }
     else if(bullet->type == 7)
     {
-        if(!target->isHurt)
+//        if(!target->isHurt)
         {
             float dis = target->getUpdatePosition().getDistance(this->getPosition());
             float dis2 = target->getContentSize().width/2 + bullet->range;
@@ -1087,7 +1087,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
                 di2 = MIN(di2, 360 - MAX(d1,d3) + MIN(d1, d3));
                 if(di1 <= bullet->targetRange && di2 <= bullet->targetRange)
                 {
-                    target->hurt(Vec2::ZERO,bullet->damageCD);
+//                    target->hurt(Vec2::ZERO,bullet->damageCD);
                     GModeGame::bulletCollision(bullet, target->bubble);
                 }
             }

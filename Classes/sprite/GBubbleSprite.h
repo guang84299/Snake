@@ -37,28 +37,15 @@ public:
     
     void move(cocos2d::Vec2 &dir,float power,bool speedUp);
     void move2();
-    void aim(GBubbleSprite* target);
-    void aimEnd();
     void stopMove(bool speedUp);
-    void hurt(cocos2d::Vec2 dir,float damageCD);
-    void hurtEnd();
     void updateExp();
     void speedUp();
     void speedUpEnd();
     void speedUpCDEnd();
-    void speedDown(float downSpeed,float time);
-    void speedDownEnd();
-    void startAttack();
-    void stopAttack();
-    void updateAttack(float dt);
-    void attack(GBulletSprite* bullet);
-    void attackEnd();
-    void playSkillAnimate();
-    void stopSkillAnimate();
+   
     void die();
     void dieEnd();
-    void changeSkillBullet(int bulletId);
-    float getBulletRange();
+    
     void updatePosAndRotate();
     void updateRotation(float rotate);
     float getUpdateRotation();
@@ -68,15 +55,8 @@ public:
     cocos2d::Vec2 getCurrDir();
     
     bool isCollWall();
-    void removeBody();
-    void addBody();
     void changeState(GBubble::State state);
-    void loadBullet();
-    void fillBullet();
-    void updateBulletBar();
-    void updateSkillBulletBarEnd();
     void updateHpBar();
-    void updateSkillIcon(int bulletId);
     GGameScene* getSelfGame();
     
     void updatePos(float x,float y,float rotate,int state);
@@ -91,38 +71,18 @@ private:
     cocos2d::Label* _name;
     LoadingBar* hpBar;
     cocos2d::Sprite* hpBg;
-    cocos2d::Sprite* skillIcon;
-    LoadingBar* bulletBar;
-    LoadingBar* expBar;
     SkeletonAnimation * skeleton;
     cocos2d::Sprite* tou;
-//    cocos2d::Sprite* fuzhu;
     cocos2d::ParticleSystemQuad* moveParticle;
     cocos2d::ParticleSystemQuad* upSpeedParticle;
     bool isSelf;
     bool isSelfBubble;
-    int currBulletNum;
-    int skillNum;
     cocos2d::Vec2 currDir;
     float dirPower;
-    bool isSkill;
     bool isSpeedDown;
-    float downSpeed;
-    bool lastSpeedUp;//上次是否是加速
-//    bool isPlaySpeedUp;
-    GBubbleSprite* target;
 public:
     GBubble* bubble;
-    GBullet* bullet;
-    GBullet* skillBullet;
-    bool isSkill_4;
-    float skill_4_rotateSpeed;
-    bool isHurt;
     bool isSpeedUp;
-    
-    bool isSkill_Coll;
-    float skillCollTime;
-//    long lt;
     
 };
 
