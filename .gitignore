@@ -1,0 +1,11 @@
+/bin
+/cocos2d
+/proj.android/bin
+/proj.android/gen
+/proj.android/obj
+/proj.android-studio
+/proj.linux
+/proj.tizen
+/proj.win8.1-universal
+/proj.win10
+!/proj.android-studio

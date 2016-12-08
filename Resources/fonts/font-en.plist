@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>login ip1</key>
+	<string>http://104.238.126.116:8080/SnakeServer/user_login</string>
+	<key>login ip</key>
+	<string>http://192.168.0.106:8080/SnakeServer/user_login</string>
+	<key>ranking</key>
+	<string>RANKING</string>
+	<key>rank_name</key>
+	<string>Name</string>
+	<key>rank_kill</key>
+	<string>Kill</string>
+	<key>rank_die</key>
+	<string>Die</string>
+	<key>rank_reward</key>
+	<string>Reward</string>
+	<key>recConn</key>
+	<string>Reconnet...</string>
+	<key>visitor</key>
+	<string>Guest</string>
+	<key>share describe</key>
+	<string>Share to facebook, get crystal for skin. Only one chance every day.</string>
+	<key>info_prompt</key>
+	<string>Use facebook login, then you can change name and get 20 crystal.</string>
+	<key>server rank</key>
+	<string>Top</string>
+	<key>update fail</key>
+	<string>Edit failed</string>
+	<key>update success</key>
+	<string>Edit success</string>
+	<key>crystal not enough</key>
+	<string>Not enough crystal</string>
+	<key>buy success</key>
+	<string>Buy success</string>
+	<key>buy fail</key>
+	<string>Buy failed</string>
+	<key>share success</key>
+	<string>Share Successful</string>
+	<key>share fail</key>
+	<string>Share Failed</string>
+	<key>share cancel</key>
+	<string>Share Cancel</string>
+	<key>share award</key>
+	<string>Received Rewards</string>
+	<key>share repeat</key>
+	<string>Receive again tomorrow.</string>
+</dict>
+</plist>

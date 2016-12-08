@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="130" height="90" tilewidth="70" tileheight="70" nextobjectid="24">
+ <tileset firstgid="1" name="dige" tilewidth="70" tileheight="70" tilecount="140" columns="14">
+  <image source="dige.png" width="1024" height="721"/>
+ </tileset>
+ <layer name="hai" width="130" height="90">
+  <data encoding="base64" compression="zlib">
+   eJzt27lO3GAARtE/mfQE+kCok9AD6Vne/4HiK1EgxIzs8TTjnCN9BWIWlivL2OJ2jHFrZmZmZma2YA+2yS3t4Me0x2nPe7Z72/uP9z1233N3H15n98nn5z7/0I553qHHL/melvwM1u7Q+/2d9nvB7/99B9fTvky7tLPe12m/xroO7gbn7mas6+DP0MEWrO3A8WAbHA+IDogOiA6IDogOSB38HDr43+mArO3AdaRt0AHRAXF+QBwPiOMB0QHRAXF+QBwPiA6IDoj7zkQHRAfE/y8QHRAdEB0Q15WJDogOiOvKRAdEB8T5AXE8IDog7jcSHRAdEB0Q9xuJDojrSEQHRAfE+QHRAdEBcX5AdEDcdyY6IO4zEccDogOiA6IDogPiOhLxdyPRAXG/keiA6IDogOiA6IDogOiAnKKDi2nf7Kz3fazr4GXa/cxdzdySx859vY9fw2cfH/uap/ieT/Hec3+O+57/Oo7r4Mk2uaUdmJmZmZmZ/QPeyuTb
+  </data>
+ </layer>
+ <layer name="dige" width="130" height="90">
+  <data encoding="base64" compression="zlib">
+   eJzt1MEJADEMA8F8Lg3k+q81KUIgDCMw04DZtczMzMzMzMzMzDL73m2ONbXz7udYU2v/M/WAekA9oB5QD6gH1APqAfWAekA9oB5QD6gH1APqAfWAfVNr/zP1gHpAPaAeUA+oB9QD6gH1gHpAPaAeUA+oB9QD6gH1gH1Ta/8z9YB6QD2gHlAPqAfUA+oB9YB6QD2gHlAPqAfUA+oB9YB9U2v/M/WAekA9oB5QD6gH1APqAfWAekA9oB5QD6gH1APO74GZmZmZmZmZmdkFHz2J0A==
+  </data>
+ </layer>
+ <layer name="cao" width="130" height="90">
+  <data encoding="base64" compression="zlib">
+   eJzt3G2OgzAMRVF2xAq6Ava/n4ofqAgVCMROnuN7pKqj+YT4xQlM1WkCAAAAAAAAAMDfkuRvwt9n9yiRMQdPx6g1i+NSPTcPn4sHYIEsQdEy+a/h9FJ9vfdxqvmYjX6P6hw4HtNy+LhFf4CefzUnC7aueotKr6DefamsG+SgntVeooWzzHnlgHzFkq1etXufN31coe/fyZaD1dU5X9VMZS33cjUukda+Uj2zrzLvuCYEyjFfAPSivP+kL54bcf98xjIHmcZtNPQDeNqvhSVZU147UWa0nkImn7u7Bq95/a9XPaizndL6I6bSHn/2fVnrP9q1Uk0OFDLQ6hh6n6e30fZ8ihTmyx1yMJYo9YxynFExvj+MRQy19xharbWZXq/gef3j8bufZOCYGY/8ZMmJJ+953ap3qPWN0e5tPFVSi+xjpC7CNTbaKM3Ckx5sla358Ay7sY04/5X2AaAeIANqIvZ1/GzzqWbPkzEDGc/5TsYxyXjOo2hxbzm7CGPK++eihNr/BhQxd4AcmOtYWe+Z1jV2nnzW2v39DtX/8/Q+rre1tO4H237LKwuIg/f0BjSczcPt8+wLbTCOY6nZV5EFLTX1uPvZ49c/u2dyAGBEre979L6W7H2fB3aWP48exxAV+xo7dzmg7wBQQe/vr+eaQP3birxPfIvXd2qjJu0x5gAAAAAAAAAARV/Bajb+
+  </data>
+ </layer>
+ <layer name="zhangai" width="130" height="90">
+  <data encoding="base64" compression="zlib">
+   eJzt3E0KwjAQBtBcUj2A2r0/vb8JtVCCFlyN7bwHH3RZmCRGOkwpAAAAAAAAAAAA8cboF9ip4R3yGFZCHs8uw+I5u0z74dMaYJJpP/TnAdN+ONQca07B70Kctg7ONZeaa4m/M/k/FKOdi7eae82jOC8BAAAAAADWZOq54Dvf04A98vtGM/daWg+47wBbE90DS6xl/d1n8lrWXj90bmoPAAAAALAdZgTSmBFIo/4A8Dv36NzMXY81lv+Yn9rPW9ZDmdNc++WcaXPY8+rnTJNTP2caAAAAAAAAAAAAYGteEmgxOw==
+  </data>
+ </layer>
+ <layer name="yun" width="130" height="90">
+  <data encoding="base64" compression="zlib">
+   eJzt3LluwzAMgOFsabun7d5j7vUwad//QSoOQgQhPuTIoij+H6CpKGRQoinbRA4HaHoJ4zWMtzDela9lFMcw7sK4D+NB+VrW+gzjK4zvMH4U5o8x2/I/vcb5FMZjGE9hPCtfi7a1axVjVrKuvcf51nts7/u8xNq1ijErWdfea9mt99je93mJtWsVY1ayrtq1bEqtPO59n5fI12opRvm6Wrw31srjXvd5DaUxsnhvHCmP97IUozz/LcZ05DyuZSlGef4T07FN1X2L+Y/tpuo++e8LeQ9B3gMAgBbO2hcwqPOB2HpzvjIAXJAXALgH4BrtsxP7Ut+H9gU4kH6Dhh9570H6DRp+5L0H6Tdo+JH3HqTfoOHHXC+7xT511JHWCYt96qgjrRP0q/mV1gn61QAAAPpEzwUAYFTUN0ScdwAAFmn3wELXtbVnLwAAAADz6FuGoG8Zgr5l32ItoG/ZN2oBBLUAglrgk/bzIb8V2AeeDyF4PoTg+RAAbOEc7Vu+/uyFtnrOv56vDQDQ1t6/Mx3fL6NPv2H8NZgnvl+Gb/H9MnyL75cB+KHdb4A+0G8AQb8BxJp+A2oHBLUDgtoBQa8aRsa5Z7vWsdtzPs49F6Vxbh27Peezdu7RzIl8vtax23M+a+cezZzI52sduxrzjXIO0MyJufmsxHeUc4Dm/WtuvpJ9oLlnrJ0DUlNxaxnP48LfS/JMMyetnQNSU3FrGc/Twt9L8sxyTmqailvLeMpc/5s3Qus=
+  </data>
+ </layer>
+ <objectgroup name="sprite">
+  <object id="1" name="pos" x="630" y="5670" width="10" height="10">
+   <properties>
+    <property name="h" value="72"/>
+    <property name="w" value="112"/>
+   </properties>
+  </object>
+  <object id="14" name="coll" x="1048.5" y="1239.5">
+   <polygon points="0,0 71,0.5 71,93 -0.5,92.5"/>
+  </object>
+  <object id="15" name="coll" x="6716" y="1308">
+   <polygon points="0,0 345,3 346,-73 492,-71 499,167 360,168 360,236 290,236 290,307 -2,307"/>
+  </object>
+  <object id="16" name="coll" x="6858" y="2567">
+   <polygon points="0,0 145,1 144,166 -2,166"/>
+  </object>
+  <object id="17" name="coll" x="6998" y="4529">
+   <polygon points="0,0 135,1 136,-74 286,-74 286,0 356,2 355,69 496,73 496,238 427,237 427,380 134,379 135,234 -2,234"/>
+  </object>
+  <object id="18" name="coll" x="4618" y="4602">
+   <polygon points="0,0 146,1 145,92 -2,91"/>
+  </object>
+  <object id="19" name="coll" x="1956" y="4113">
+   <polygon points="0,0 289,2 288,163 144,163 147,231 -1,229"/>
+  </object>
+  <object id="20" name="coll" x="4198" y="3200">
+   <polygon points="0,0 138,1 139,-72 356,-71 356,-3 427,-1 426,167 217,166 217,237 68,236 68,163 -4,163"/>
+  </object>
+  <object id="21" name="coll" x="4968" y="1661.5">
+   <polygon points="0,0 75.5,0.5 75,93 0,92"/>
+  </object>
+  <object id="22" name="coll" x="2444" y="1589.33">
+   <polygon points="0,0 138.667,1.33333 140,-140 290.667,-137.333 292,66.6667 500,72 500,238.667 -1.33333,241.333"/>
+  </object>
+  <object id="23" name="coll" x="1327" y="2851">
+   <polygon points="0,0 76.5,1 76.5,71 217.5,72.5 217,232 68,231 69,161.5 -1.5,161.5"/>
+  </object>
+ </objectgroup>
+</map>
