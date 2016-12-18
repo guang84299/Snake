@@ -15,6 +15,7 @@ namespace gprotocol {
     static const std::string MODE_USER_LOGIN = "GModeUser_login";
     static const std::string MODE_USER_HERTBEAT = "GModeUser_heartBeat";
     static const std::string MODE_USER_ENTERROOM = "GModeUser_enterRoom";
+    static const std::string MODE_USER_ADDBLOCK = "GModeUser_addBlock";
     static const std::string MODE_USER_RECCONN = "GModeUser_recConn";
     static const std::string MODE_USER_UPDATENAME = "GModeUser_updateName";
     static const std::string MODE_USER_UPDATHEAD = "GModeUser_updateHead";
@@ -27,6 +28,7 @@ namespace gprotocol {
     static const std::string MODE_USER_LOGIN_RESULT = "GModeUser_loginResult";
     static const std::string MODE_USER_HERTBEAT_RESULT = "GModeUser_heartBeatResult";
     static const std::string MODE_USER_ENTERROOM_RESULT = "GModeUser_enterRoomResult";
+    static const std::string MODE_USER_ADDBLOCK_RESULT = "GModeUser_addBlockResult";
     static const std::string MODE_USER_RECCONN_RESULT = "GModeUser_recConnResult";
     static const std::string MODE_USER_UPDATENAME_RESULT = "GModeUser_updateNameResult";
     static const std::string MODE_USER_UPDATHEAD_RESULT = "GModeUser_updateHeadResult";

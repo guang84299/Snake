@@ -14,6 +14,7 @@
 #include "ui/CocosGUI.h"
 #include "model/GBubble.h"
 #include "GBulletSprite.h"
+#include "sprite/GBodySprite.h"
 
 #include <spine/spine-cocos2dx.h>
 #include "spine/spine.h"
@@ -22,6 +23,19 @@ using namespace spine;
 using namespace cocos2d::ui;
 
 class GGameScene;
+
+class GPath2
+{
+public:
+    GPath2(cocos2d::Vec2 p,float angle,float time){
+        this->p = p;
+        this->angle = angle;
+        this->time = time;
+    }
+    cocos2d::Vec2 p;
+    float angle;
+    float time;
+};
 
 class GBubbleSprite : public cocos2d::Sprite
 {
@@ -34,17 +48,27 @@ public:
     void createShapeMode();
     
     void initData();
+    void initBody();
+    
+    void update(float dt);
+    void updateBody(cocos2d::Action* ac);
     
     void move(cocos2d::Vec2 &dir,float power,bool speedUp);
     void move2();
     void stopMove(bool speedUp);
-    void updateExp();
+    void updateExp(bool up,bool move);
     void speedUp();
     void speedUpEnd();
     void speedUpCDEnd();
    
     void die();
     void dieEnd();
+    
+    void addBody();
+    void removeBody();
+    void removeAllBody();
+    
+    void playRelive();
     
     void updatePosAndRotate();
     void updateRotation(float rotate);
@@ -53,14 +77,18 @@ public:
     float getCollAndBlock();
     cocos2d::Vec2 getBulletPosition(int type);//得到子弹的发射点坐标
     cocos2d::Vec2 getCurrDir();
+    cocos2d::Vec2 getBodyDir(cocos2d::Sprite* body);
+    cocos2d::Sprite* getBody();
     
     bool isCollWall();
+    bool isRotate();
     void changeState(GBubble::State state);
-    void updateHpBar();
     GGameScene* getSelfGame();
     
-    void updatePos(float x,float y,float rotate,int state);
-    
+    void updatePos(float x,float y,float rotate,float time,bool up);
+    void move3();
+    void coll();
+    void collEnd();
     void recoverHp();
     void recoverHpEnd();
     void reduceHp();
@@ -69,21 +97,24 @@ private:
     cocos2d::Vec2 getMoveVec(cocos2d::Vec2 &v);
     cocos2d::Layer* modeLayer;
     cocos2d::Label* _name;
-    LoadingBar* hpBar;
-    cocos2d::Sprite* hpBg;
-    SkeletonAnimation * skeleton;
+    cocos2d::Sprite* body;
     cocos2d::Sprite* tou;
-    cocos2d::ParticleSystemQuad* moveParticle;
-    cocos2d::ParticleSystemQuad* upSpeedParticle;
     bool isSelf;
     bool isSelfBubble;
-    cocos2d::Vec2 currDir;
     float dirPower;
     bool isSpeedDown;
 public:
     GBubble* bubble;
     bool isSpeedUp;
-    
+    bool isDelay;
+    bool isColl;
+    std::vector<GBodySprite*> bodys;
+    std::vector<GPath> points;
+    std::vector<GPath2> vecs;
+    int body_z;
+    float sSpeed;
+    cocos2d::Vec2 currDir;
+    cocos2d::Vec2 lastDir;
 };
 
 

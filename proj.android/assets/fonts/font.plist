@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>login ip1</key>
+	<string>http://104.238.126.116:8080/SnakeServer/user_login</string>
+	<key>login ip</key>
+	<string>http://192.168.0.101:8080/SnakeServer/user_login</string>
+	<key>len</key>
+	<string>我的长度 </string>
+	<key>mi</key>
+	<string> 米</string>
+	<key>ranking</key>
+	<string>排名</string>
+	<key>rank_name</key>
+	<string>玩家</string>
+	<key>rank_kill</key>
+	<string>长度</string>
+	<key>rank_die</key>
+	<string>死亡</string>
+	<key>rank_reward</key>
+	<string>奖励</string>
+	<key>recConn</key>
+	<string>断线重连中...</string>
+	<key>visitor</key>
+	<string>游客</string>
+	<key>share describe</key>
+	<string>成功分享游戏到FACEBOOK,获取水晶换皮肤。每天只有一次机会哦！</string>
+	<key>info_prompt</key>
+	<string>使用QQ或微信登录后，可以修改名字，还能获赠20水晶。</string>
+	<key>server rank</key>
+	<string>前</string>
+	<key>update fail</key>
+	<string>修改失败！</string>
+	<key>update success</key>
+	<string>修改成功！</string>
+	<key>crystal not enough</key>
+	<string>水晶不足！</string>
+	<key>buy success</key>
+	<string>购买成功！</string>
+	<key>buy fail</key>
+	<string>购买失败！</string>
+	<key>share success</key>
+	<string>分享成功！</string>
+	<key>share fail</key>
+	<string>分享失败！</string>
+	<key>share cancel</key>
+	<string>分享取消！</string>
+	<key>share award</key>
+	<string> 奖励水晶 </string>
+	<key>share repeat</key>
+	<string>明天再来领取哦！</string>
+	<key>wall</key>
+	<string>墙壁</string>
+</dict>
+</plist>

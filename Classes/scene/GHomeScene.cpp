@@ -102,13 +102,13 @@ void GHomeScene::initUI()
     
     char c[7];
     sprintf(c, "%d",GCache::getInstance()->getUser()->skinId);
+
+    std::string skinId = c;
+    std::string path = "juese";
+    std::string path1 = path + skinId + std::string("-1.png");
     
-    std::string json = "skeleton";
-    json = json + c + std::string("_1.json");
-    std::string atlas = "skeleton";
-    atlas = atlas + c + std::string("_1.atlas");
-    head = SkeletonAnimation::createWithFile(json, atlas);
-    head->setAnchorPoint(Vec2(0, 0));
+    head = Sprite::create(path1);
+//    head->setAnchorPoint(Vec2(0, 0));
     head->setPosition(head_bg->getPosition());
     head->setScale(1);
     name_bg->addChild(head);
@@ -171,24 +171,24 @@ void GHomeScene::initUI()
     btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
     bg->addChild(btn);
     //规则
-    btn = Button::create("jm-souyeanniu2-1.png","jm-souyeanniu2-2.png");
-    btn->setName("rule");
-    btn->setAnchorPoint(Vec2(1,1));
-    btn->setPosition(btnVec + Vec2(0,-170));
-    btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
-    bg->addChild(btn);
+//    btn = Button::create("jm-souyeanniu2-1.png","jm-souyeanniu2-2.png");
+//    btn->setName("rule");
+//    btn->setAnchorPoint(Vec2(1,1));
+//    btn->setPosition(btnVec + Vec2(0,-170));
+//    btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
+//    bg->addChild(btn);
     //设置
     btn = Button::create("jm-souyeanniu3-1.png","jm-souyeanniu3-2.png");
     btn->setName("setting");
     btn->setAnchorPoint(Vec2(1,1));
-    btn->setPosition(btnVec + Vec2(0,-170*2));
+    btn->setPosition(btnVec + Vec2(0,-170*1));
     btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
     bg->addChild(btn);
     //皮肤
     btn = Button::create("jm-souyeanniu4-1.png","jm-souyeanniu4-2.png");
     btn->setName("skin");
     btn->setAnchorPoint(Vec2(1,1));
-    btn->setPosition(Vec2(btnVec.x,s.height*0.2f));
+    btn->setPosition(Vec2(btnVec.x+5,s.height*0.24f));
     btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
     bg->addChild(btn);
 }
@@ -221,15 +221,15 @@ void GHomeScene::updateUI()
     
     sprintf(c, "%d",GCache::getInstance()->getUser()->skinId);
     
-    std::string json = "skeleton";
-    json = json + c + std::string("_1.json");
-    std::string atlas = "skeleton";
-    atlas = atlas + c + std::string("_1.atlas");
+    std::string skinId = c;
+    std::string path = "juese";
+    std::string path1 = path + skinId + std::string("-1.png");
+    
     Node* name_bg = head->getParent();
     Vec2 p = head->getPosition();
     head->removeFromParent();
-    head = SkeletonAnimation::createWithFile(json, atlas);
-    head->setAnchorPoint(Vec2(0, 0));
+    head = Sprite::create(path1);
+//    head->setAnchorPoint(Vec2(0, 0));
     head->setPosition(p);
     head->setScale(1);
     name_bg->addChild(head);

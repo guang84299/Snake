@@ -26,7 +26,6 @@ GCache* GCache::getInstance()
 void GCache::init()
 {
     lang = Application::getInstance()->getCurrentLanguageCode();
-    lang = "en";
 }
 
 std::string GCache::getLang()
@@ -196,6 +195,11 @@ void GCache::setShareAward(int shareAward)
 int GCache::getShareAward()
 {
     return this->shareAward;
+}
+
+int GCache::getMapPlitNum()
+{
+    return 200;
 }
 
 void GCache::destory()

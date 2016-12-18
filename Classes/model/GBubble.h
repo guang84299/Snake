@@ -34,32 +34,20 @@ public:
     
     State state;
     float speed;
-    float accelerated;//移动加速度
     float sSpeed;//冲刺速度
-    float sAccelerated;//冲刺加速度
-    float sCD;//冲刺CD时间
-    int sDistance;//冲刺距离
-    float limitSpeed;//限制移动速度
-    float limiRradius;//半径限制
     float rotateSpeed;//旋转速度
-    float expendHP;//生命消耗速度
-    
     float x;
     float y;
     float rotate;
+    float angle;//将要旋转的方向
     float dirX;//方向
     float dirY;
     
-    float initHp;
-    int HP;
-    int currHp;
     int level;
     int exp;
     float grow;
     int kill;
     int die;
-    int recoverHP;//恢复血量
-    float recoverCD;//回复CD
     int reduceHP;//消耗血量
     float reduceCD;//消耗CD
     

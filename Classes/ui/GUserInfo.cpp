@@ -14,10 +14,6 @@
 #include "protocol_model/GModeGame.h"
 #include "protocol_model/GModeUser.h"
 
-#include <spine/spine-cocos2dx.h>
-#include "spine/spine.h"
-using namespace spine;
-
 USING_NS_CC;
 
 bool GUserInfo::init()
@@ -74,12 +70,12 @@ void GUserInfo::initUI()
     char c[7];
     sprintf(c, "%d",GCache::getInstance()->getUser()->skinId);
     
-    std::string json = "skeleton";
-    json = json + c + std::string("_1.json");
-    std::string atlas = "skeleton";
-    atlas = atlas + c + std::string("_1.atlas");
-    auto skeleton = SkeletonAnimation::createWithFile(json, atlas);
-    skeleton->setAnchorPoint(Vec2(0, 0));
+    std::string skinId = c;
+    std::string path = "juese";
+    std::string path1 = path + skinId + std::string("-1.png");
+    
+    auto skeleton = Sprite::create(path1);
+//    skeleton->setAnchorPoint(Vec2(0, 0));
     skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.65f);
     skeleton->setScale(1);
     nameBg->addChild(skeleton);
@@ -183,12 +179,12 @@ void GUserInfo::initLoginUI()
     char c[7];
     sprintf(c, "%d",GCache::getInstance()->getUser()->skinId);
     
-    std::string json = "skeleton";
-    json = json + c + std::string("_1.json");
-    std::string atlas = "skeleton";
-    atlas = atlas + c + std::string("_1.atlas");
-    auto skeleton = SkeletonAnimation::createWithFile(json, atlas);
-    skeleton->setAnchorPoint(Vec2(0, 0));
+    std::string skinId = c;
+    std::string path = "juese";
+    std::string path1 = path + skinId + std::string("-1.png");
+    
+    auto skeleton = Sprite::create(path1);
+//    skeleton->setAnchorPoint(Vec2(0, 0));
     skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.65f);
     skeleton->setScale(1);
     nameBg->addChild(skeleton);
@@ -422,12 +418,12 @@ void GUserInfoUpdate::initUI()
     char c[7];
     sprintf(c, "%d",GCache::getInstance()->getUser()->skinId);
     
-    std::string json = "skeleton";
-    json = json + c + std::string("_1.json");
-    std::string atlas = "skeleton";
-    atlas = atlas + c + std::string("_1.atlas");
-    auto skeleton = SkeletonAnimation::createWithFile(json, atlas);
-    skeleton->setAnchorPoint(Vec2(0, 0));
+    std::string skinId = c;
+    std::string path = "juese";
+    std::string path1 = path + skinId + std::string("-1.png");
+    
+    auto skeleton = Sprite::create(path1);
+//    skeleton->setAnchorPoint(Vec2(0, 0));
     skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.5f);
     skeleton->setScale(1.4f);
     nameBg->addChild(skeleton);

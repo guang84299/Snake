@@ -55,8 +55,11 @@ public:
     GBubble* getSelfBubble();
     bool isSelfBullet(GBullet* bullet);
     bool isSelfBubble(GBubble* bubble);
+    bool isContain(GBubbleSprite* bubble,GBubbleSprite* target);
 public:
-    void deleteBlock(int _id);
+    void addBlock(GBlockSprite* block);
+    
+    void deleteBlock(int _id,float x,float y);
     void deleteBullet(int tid);
     void deleteBubble(std::string &uid);
     void deleteRobot(std::string &uid);
@@ -64,12 +67,14 @@ public:
     GBubbleSprite* findByUid(std::string &uid);
     GBubbleSprite* findRobotByUid(std::string &uid);
     GBulletSprite* findBullet(int tid);
-    GBlockSprite* findBlock(int _id);
+    GBlockSprite* findBlock(int _id,float x,float y);
 public:
     GGameScene * scene;
     GBubbleSprite* bubble;
     std::vector<GBubbleSprite* > bubbles;
-    std::vector<GBlockSprite* > blocks;
+    
+    std::vector<std::vector<GBlockSprite* >> blocks;
+
     std::vector<GCloundSprite* > clounds;
     std::vector<GBulletSprite* > bullets;
     std::vector<GBubbleSprite* > robots;

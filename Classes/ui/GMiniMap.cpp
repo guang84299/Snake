@@ -144,45 +144,45 @@ void GMiniMap::initDta()
 //        bg->addChild(sp);
 //    }
     //特殊子弹
-    for(int i=0;i<GGameController::getInstance()->blocks.size();i++)
-    {
-        GBlock* block = GGameController::getInstance()->blocks.at(i)->block;
-        if(block->bulletType > 1)
-        {
-            int _id = block->_id;
-            auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::BULLET, _id);
-            Vec2 v(block->x,block->y);
-            sp->setPosition(toVec(v));
-            bg->addChild(sp);
-            bulletSp.push_back(sp);
-        }
-    }
+//    for(int i=0;i<GGameController::getInstance()->blocks.size();i++)
+//    {
+//        GBlock* block = GGameController::getInstance()->blocks.at(i)->block;
+//        if(block->bulletType > 1)
+//        {
+//            int _id = block->_id;
+//            auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::BULLET, _id);
+//            Vec2 v(block->x,block->y);
+//            sp->setPosition(toVec(v));
+//            bg->addChild(sp);
+//            bulletSp.push_back(sp);
+//        }
+//    }
     //障碍
-    TMXTiledMap* tmxMap = (TMXTiledMap*)this->getParent()->getParent()->getChildByName("map");
-    auto lay = tmxMap->getLayer("zhangai");
-    Size mapSize = tmxMap->getMapSize();
-    Size tileSize = tmxMap->getTileSize();
-    
-    TMXObjectGroup * spriteGroup = tmxMap->getObjectGroup("sprite");
-    auto posObj = spriteGroup->getObject("pos") ;
-    float posX = posObj.at("x").asFloat();
-    float posY = posObj.at("y").asFloat();
-    for(int i=0;i<mapSize.width;i++)
-    {
-        for(int j=0;j<mapSize.height;j++)
-        {
-            Sprite* sp = lay->getTileAt(Vec2(i,j));
-            if(sp)
-            {
-                int x = sp->getPositionX() - posX + tileSize.width/2;
-                int y = sp->getPositionY() - posY + tileSize.height/2;
-                auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::OBSTACLE, "clound");
-                Vec2 v(x,y);
-                sp->setPosition(toVec(v));
-                bg->addChild(sp);
-            }
-        }
-    }
+//    TMXTiledMap* tmxMap = (TMXTiledMap*)this->getParent()->getParent()->getChildByName("map");
+//    auto lay = tmxMap->getLayer("zhangai");
+//    Size mapSize = tmxMap->getMapSize();
+//    Size tileSize = tmxMap->getTileSize();
+//    
+//    TMXObjectGroup * spriteGroup = tmxMap->getObjectGroup("sprite");
+//    auto posObj = spriteGroup->getObject("pos") ;
+//    float posX = posObj.at("x").asFloat();
+//    float posY = posObj.at("y").asFloat();
+//    for(int i=0;i<mapSize.width;i++)
+//    {
+//        for(int j=0;j<mapSize.height;j++)
+//        {
+//            Sprite* sp = lay->getTileAt(Vec2(i,j));
+//            if(sp)
+//            {
+//                int x = sp->getPositionX() - posX + tileSize.width/2;
+//                int y = sp->getPositionY() - posY + tileSize.height/2;
+//                auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::OBSTACLE, "clound");
+//                Vec2 v(x,y);
+//                sp->setPosition(toVec(v));
+//                bg->addChild(sp);
+//            }
+//        }
+//    }
 
 }
 
@@ -197,15 +197,15 @@ void GMiniMap::add(GBubbleSprite* bubble)
 }
 void GMiniMap::add(GBlockSprite* block)
 {
-    if(block->block->bulletType > 1 || block->block->type == 2)
-    {
-        int _id = block->block->_id;
-        auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::BULLET, _id);
-        Vec2 v(block->block->x,block->block->y);
-        sp->setPosition(toVec(v));
-        bg->addChild(sp);
-        bulletSp.push_back(sp);
-    }
+//    if(block->block->bulletType > 1 || block->block->type == 2)
+//    {
+//        int _id = block->block->_id;
+//        auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::BULLET, _id);
+//        Vec2 v(block->block->x,block->block->y);
+//        sp->setPosition(toVec(v));
+//        bg->addChild(sp);
+//        bulletSp.push_back(sp);
+//    }
 }
 
 void GMiniMap::update(float dt)

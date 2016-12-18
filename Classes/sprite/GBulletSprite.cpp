@@ -1001,7 +1001,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
         if(dis < dis2)
         {
             bullet->state = GBullet::State::DIE;
-            GModeGame::bulletCollision(bullet, target->bubble);
+            GModeGame::bulletCollision(nullptr, target->bubble);
         }
     }
     else if(bullet->type == 4)
@@ -1018,7 +1018,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
                 if(dis < dis2)
                 {
 //                    target->hurt(Vec2::ZERO,bullet->damageCD);
-                    GModeGame::bulletCollision(bullet, target->bubble);
+                    GModeGame::bulletCollision(nullptr, target->bubble);
                     break;
                 }
             }
@@ -1038,7 +1038,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
             if(dis < dis2)
             {
 //                target->hurt(Vec2::ZERO,bullet->damageCD);
-                GModeGame::bulletCollision(bullet, target->bubble);
+                GModeGame::bulletCollision(nullptr, target->bubble);
             }
         }
     }
@@ -1088,7 +1088,7 @@ void GBulletSprite::judgeColl(GBubbleSprite* target)
                 if(di1 <= bullet->targetRange && di2 <= bullet->targetRange)
                 {
 //                    target->hurt(Vec2::ZERO,bullet->damageCD);
-                    GModeGame::bulletCollision(bullet, target->bubble);
+                    GModeGame::bulletCollision(nullptr, target->bubble);
                 }
             }
         }

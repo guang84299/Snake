@@ -27,8 +27,8 @@ public:
     State state;
     int _id;
     int type;//0:普通水滴  1：特殊子弹 2：血袋
-    int bulletType;
-    int bulletId;
+    int blockType;
+    int exp;
     float x;
     float y;
 };

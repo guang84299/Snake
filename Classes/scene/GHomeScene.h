@@ -14,9 +14,6 @@
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
 
-#include <spine/spine-cocos2dx.h>
-#include "spine/spine.h"
-using namespace spine;
 using namespace cocos2d::ui;
 
 class GNumber;
@@ -37,8 +34,7 @@ public:
     void updateUI();
 private:
     Text* name;
-//    cocos2d::Sprite * head;
-    SkeletonAnimation* head;
+    cocos2d::Sprite * head;
     GNumber* n_kill;
 };
 

@@ -18,7 +18,7 @@
 #include "ui/GGameOver.h"
 #include "tools/GTools.h"
 
-#define UPDATE_DT 5
+#define UPDATE_DT 0.1
 
 USING_NS_CC;
 
@@ -65,26 +65,21 @@ bool GGameScene::init()
                                    GCache::getInstance()->getRoomHeight()));
     gameLayer->setPosition(GCache::getInstance()->getMapPosX(),
                            GCache::getInstance()->getMapPosY());
-    tmxMap->addChild(gameLayer,2);
+    tmxMap->addChild(gameLayer,8);
     
+ 
     
-//    cloundLayer = Layer::create();
-//    gameLayer->addChild(cloundLayer,0);
+    blockLayer1 = SpriteBatchNode::create("wujian-A1.png");
+    gameLayer->addChild(blockLayer1);
     
+    blockLayer2 = SpriteBatchNode::create("wujian-A2.png");
+    gameLayer->addChild(blockLayer2);
     
-    hideLayer = Layer::create();
-    hideLayer->setTag(GCommon::NO_COLL);
-    hideLayer->setName("hideLayer");
-    gameLayer->addChild(hideLayer);
+    blockLayer3 = SpriteBatchNode::create("wujian-A3.png");
+    gameLayer->addChild(blockLayer3);
     
-    blockLayer = Layer::create();
-    blockLayer->setTag(GCommon::NO_COLL);
-    gameLayer->addChild(blockLayer);
-    
-    bulletLayer = Layer::create();
-    bulletLayer->setName("bulletLayer");
-    bulletLayer->setTag(GCommon::NO_COLL);
-    gameLayer->addChild(bulletLayer);
+    blockLayer4 = SpriteBatchNode::create("wujian-A4.png");
+    gameLayer->addChild(blockLayer4);
     
     bubbleLayer = Layer::create();
     bubbleLayer->setName("bubbleLayer");
@@ -94,7 +89,7 @@ bool GGameScene::init()
     
     initUI();
     resetInit();
-    
+
     GTools::playMusic(MUSIC_FIGHT);
     return true;
 }
@@ -121,21 +116,29 @@ void GGameScene::initUI()
     _countDown->setPosition(154,timeBg->getContentSize().height/2-2);
     timeBg->addChild(_countDown);
     
-    Button* btn = Button::create("ui-anniu1-1.png","ui-anniu1-1.png");
+    myExp = RichText::create();
+    myExp->setAnchorPoint(Vec2(0.5,1));
+    myExp->setPosition(Vec2(s.width/2,s.height-70));
+    uiLayer->addChild(myExp);
+    myExp->pushBackElement(RichElementText::create(0,Color3B::WHITE,255,_T("len"),"",24));
+    myExp->pushBackElement(RichElementText::create(1,Color3B(245,230,126),255,"0","",24));
+    myExp->pushBackElement(RichElementText::create(2,Color3B::WHITE,255,_T("mi"),"",24));
+    
+    Button* btn = Button::create("ui-anniu1.png","ui-anniu2.png");
     btn->setName("speed");
     btn->setAnchorPoint(Vec2(0.5,0));
     btn->setPosition(Vec2(s.width - btn->getContentSize().width/2 - 20,20));
     btn->addTouchEventListener(CC_CALLBACK_2(GGameScene::touchEvent, this));
     uiLayer->addChild(btn);
-    auto speed = Sprite::create("ui-anniu-jiasu1.png");
-    speed->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
-    btn->addChild(speed);
-    
-    speedCd = ProgressTimer::create(Sprite::create("ui-anniu1-2.png"));
-    speedCd->setType( ProgressTimer::Type::RADIAL );
-    speedCd->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
-    speedCd->setPercentage(100);
-    btn->addChild(speedCd);
+//    auto speed = Sprite::create("ui-anniu-jiasu1.png");
+//    speed->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+//    btn->addChild(speed);
+//    
+//    speedCd = ProgressTimer::create(Sprite::create("ui-anniu1-2.png"));
+//    speedCd->setType( ProgressTimer::Type::RADIAL );
+//    speedCd->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+//    speedCd->setPercentage(100);
+//    btn->addChild(speedCd);
     
 //    btn = Button::create("ui-anniu1-1.png","ui-anniu1-1.png");
 //    btn->setName("attack");
@@ -159,8 +162,8 @@ void GGameScene::initUI()
     rankView = GRankView::create();
     uiLayer->addChild(rankView);
     
-//    miniMap = GMiniMap::create();
-//    uiLayer->addChild(miniMap);
+    miniMap = GMiniMap::create();
+    uiLayer->addChild(miniMap);
 }
 
 void GGameScene::updateBulletSkill(int bulletId)
@@ -182,26 +185,57 @@ void GGameScene::updateSpeedCd(float time,float pro)
     speedCd->runAction(ProgressTo::create(time, pro));
 }
 
-void GGameScene::updateAttackCd(float time,float pro)
-{
-    attackCd->stopAllActions();
-    if(time == 0)
-        attackCd->setPercentage(pro);
-    else
-        attackCd->runAction(ProgressTo::create(time, pro));
-}
-
 void GGameScene::resetInit()
 {
-//    cloundLayer->removeAllChildren();
-    hideLayer->removeAllChildren();
-    blockLayer->removeAllChildren();
-    bulletLayer->removeAllChildren();
+    blockLayer1->removeAllChildren();
+    blockLayer2->removeAllChildren();
+    blockLayer3->removeAllChildren();
+    blockLayer4->removeAllChildren();
     bubbleLayer->removeAllChildren();
     
     initSprite();
     
-//    miniMap->initDta();
+    miniMap->initDta();
+}
+
+void GGameScene::resetInitBlock()
+{
+    blockLayer1->removeAllChildren();
+    blockLayer2->removeAllChildren();
+    blockLayer3->removeAllChildren();
+    blockLayer4->removeAllChildren();
+    
+    //水滴
+    for(int i=0;i<GGameController::getInstance()->blocks.size();i++)
+    {
+        for(int j=0;j<GGameController::getInstance()->blocks[i].size();j++)
+        {
+            GBlockSprite* block = GGameController::getInstance()->blocks[i].at(j);
+            block->setPosition(block->block->x,block->block->y);
+            if(block->block->blockType == 1)
+            {
+                block->init(blockLayer1->getTexture());
+                blockLayer1->addChild(block);
+            }
+            else if(block->block->blockType == 2)
+            {
+                block->init(blockLayer2->getTexture());
+                blockLayer2->addChild(block);
+            }
+            else if(block->block->blockType == 3)
+            {
+                block->init(blockLayer3->getTexture());
+                blockLayer3->addChild(block);
+            }
+            else if(block->block->blockType == 4)
+            {
+                block->init(blockLayer4->getTexture());
+                blockLayer4->addChild(block);
+            }
+            
+            block->release();
+        }
+    }
     
     GModeGame::startGame();
     startHeartBeat();
@@ -210,6 +244,7 @@ void GGameScene::resetInit()
     robotDt = 1000;
     robotNum = 0;
     robotCollDt = 0;
+    crystalsDt = 0;
 }
 
 void GGameScene::initSprite()
@@ -222,71 +257,74 @@ void GGameScene::initSprite()
 //        clound->setPosition(clound->clound->x,clound->clound->y);
 //        cloundLayer->addChild(clound);
 //    }
-    //水滴
-    for(int i=0;i<GGameController::getInstance()->blocks.size();i++)
-    {
-        GBlockSprite* block = GGameController::getInstance()->blocks.at(i);
-        block->release();
-        block->setPosition(block->block->x,block->block->y);
-        blockLayer->addChild(block);
-    }
     //机器人
     for(int i=0;i<GGameController::getInstance()->robots.size();i++)
     {
         GBubbleSprite* robot = GGameController::getInstance()->robots.at(i);
-        robot->release();
         robot->setPosition(robot->bubble->x,robot->bubble->y);
-        bubbleLayer->addChild(robot);
+        bubbleLayer->addChild(robot,9999999);
+        robot->initBody();
+        robot->release();
     }
     //泡泡
     for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
     {
         GBubbleSprite* bubble = GGameController::getInstance()->bubbles.at(i);
-        bubble->release();
         bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
-        bubbleLayer->addChild(bubble);
+        bubbleLayer->addChild(bubble,9999999);
+        bubble->initBody();
+        bubble->release();
     }
     //自己泡泡
-    GGameController::getInstance()->bubble->release();
     bubble = GGameController::getInstance()->bubble;
     bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
-    bubbleLayer->addChild(bubble);
+    bubbleLayer->addChild(bubble,9999999);
+    bubble->initBody();
+    GGameController::getInstance()->bubble->release();
     
-    rollBg();
+    rollBg(0);
 }
 
 void GGameScene::start()
 {
     _start = true;
-    this->schedule(SEL_SCHEDULE(&GGameScene::update));
+    this->schedule(SEL_SCHEDULE(&GGameScene::update),1/60.f);
     
     GTools::playSound(SOUND_START);
     
     Vec2 dir(bubble->bubble->dirX,bubble->bubble->dirY);
     bubble->changeState(GBubble::State::MOVE);
     GModeGame::move(dir,1,bubble->bubble);
+    bubble->playRelive();
 }
 
 void GGameScene::update(float dt)
 {
     //滚动背景
-    rollBg();
+//    mapRollDt += dt;
+//    if(mapRollDt > 0.5f)
+//    {
+//        rollBg(mapRollDt);
+//        mapRollDt = 0;
+//    }
     
+    updateCollBubble(dt);
     updateCollBubbleAndBlock(dt);
     updateRobot(dt);
     updateAllPos(dt);
     
-//    miniMap->update(dt);
+    miniMap->update(dt);
     
-    
+    rollBg(dt);
 }
 
-void GGameScene::rollBg()
+void GGameScene::rollBg(float dt)
 {
     Size s = Director::getInstance()->getWinSize();
+    
     float x = bubble->getPositionX() + gameLayer->getPositionX();
     float y = bubble->getPositionY() + gameLayer->getPositionY();
-    
+//    tmxMap->runAction(MoveTo::create(dt, Vec2(-x+s.width/2, -y+s.height/2)));
 //    tmxMap->setPosition(-x+s.width/2, -y+s.height/2);
     
     this->getDefaultCamera()->setPosition(x, y);
@@ -313,6 +351,11 @@ void GGameScene::cameraResetClose()
     tmxMap->setPosition(0,0);
     this->getDefaultCamera()->setPosition(x, y);
     uiLayer->setPosition(x-s.width/2, y-s.height/2);
+}
+
+bool GGameScene::isStart()
+{
+    return this->_start;
 }
 
 void GGameScene::updateRank(GJsonArray* arr)
@@ -347,7 +390,9 @@ void GGameScene::joinRoom(GBubbleSprite* bubble)
 {
     bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
 //    plane->updateRotation(plane->plane->rotate);
-    bubbleLayer->addChild(bubble);
+    bubbleLayer->addChild(bubble,9999999);
+    bubble->initBody();
+    bubble->playRelive();
     
     if(bubble->bubble->state == GBubble::State::MOVE)
     {
@@ -359,15 +404,11 @@ void GGameScene::joinRoom(GBubbleSprite* bubble)
         Vec2 dir(bubble->bubble->dirX,bubble->bubble->dirY);
         bubble->move(dir,1,true);
     }
-//    miniMap->add(bubble);
+    miniMap->add(bubble);
 }
 
 void GGameScene::leaveRoom()
 {
-    for (Sprite* sp : colls) {
-        sp->release();
-    }
-    colls.clear();
     GGameController::getInstance()->init(nullptr);
     end();
     GUserController::getInstance()->enterHomeScene();
@@ -375,10 +416,31 @@ void GGameScene::leaveRoom()
 
 void GGameScene::addBlock(GBlockSprite* block,int x,int y)
 {
+    if(block->block->blockType == 1)
+    {
+        block->init(blockLayer1->getTexture());
+        blockLayer1->addChild(block);
+    }
+    else if(block->block->blockType == 2)
+    {
+        block->init(blockLayer2->getTexture());
+        blockLayer2->addChild(block);
+    }
+    else if(block->block->blockType == 3)
+    {
+        block->init(blockLayer3->getTexture());
+        blockLayer3->addChild(block);
+    }
+    else if(block->block->blockType == 4)
+    {
+        block->init(blockLayer4->getTexture());
+        blockLayer4->addChild(block);
+    }
+
     if(x != 0)
     {
         block->setPosition(x, y);
-        blockLayer->addChild(block);
+//        blockLayer->addChild(block);
         
         block->runAction(JumpTo::create(1, Vec2(block->block->x,block->block->y),
                                         random(30, 100), random(1, 2)));
@@ -393,7 +455,7 @@ void GGameScene::addBlock(GBlockSprite* block,int x,int y)
     else
     {
         block->setPosition(block->block->x, block->block->y);
-        blockLayer->addChild(block);
+//        blockLayer->addChild(block);
         
 //        miniMap->add(block);
     }
@@ -490,6 +552,7 @@ void GGameScene::rockHandler(cocos2d::Vec2 &dir,float power,const char *data)
             else
                 bubble->changeState(GBubble::State::MOVE);
             GModeGame::move(dir,power,bubble->bubble);
+            bubble->move(dir, 1,speedUpBtn);
         }
 //        else if(data == std::string("rotate"))
 //        {
@@ -510,7 +573,15 @@ void GGameScene::updateCountDown(int time)
     {
         roomTime = time/1000;
         _countDown->setNum(roomTime);
+        
     }
+}
+void GGameScene::updateExp()
+{
+    char c[7];
+    sprintf(c, "%d",bubble->bubble->exp);
+    myExp->removeElement(1);
+    myExp->insertElement(RichElementText::create(1, Color3B(245,230,126), 255, c, "", 24),1);
 }
 
 void GGameScene::openRelived(GJsonObject* obj)
@@ -545,7 +616,13 @@ void GGameScene::reloved()
     GGameController::getInstance()->bubble->release();
     bubble = GGameController::getInstance()->bubble;
     bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
-    bubbleLayer->addChild(bubble);
+    bubbleLayer->addChild(bubble,9999999);
+    bubble->initBody();
+    bubble->playRelive();
+    Vec2 dir(bubble->bubble->dirX,bubble->bubble->dirY);
+    bubble->changeState(GBubble::State::MOVE);
+    GModeGame::move(dir,1,bubble->bubble);
+    
     
     GTools::playSound(SOUND_START);
 }
@@ -565,53 +642,206 @@ void GGameScene::openGameOver(GJsonObject* obj)
     }
 }
 
-void GGameScene::updateCollBubbleAndBlock(float dt)
+void GGameScene::updateCollBubble(float dt)
 {
-    //自己
-    if(bubble->bubble->state == GBubble::State::MOVE || bubble->bubble->state == GBubble::State::SPEEDUP)
+    if(bubble->bubble->state != GBubble::State::DIE && !bubble->isColl)
     {
-        for(int j=0;j<GGameController::getInstance()->blocks.size();j++)
+        //和其他人
+        for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
         {
-            GBlockSprite* sp = GGameController::getInstance()->blocks.at(j);
-            if(sp->block->state != GBlock::State::DIE)
+            GBubbleSprite* sp = GGameController::getInstance()->bubbles.at(i);
+            if(sp->bubble->state != GBubble::State::DIE && !sp->isColl && GGameController::getInstance()->isContain(bubble, sp))
             {
-                float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
-                if(dis < bubble->getCollAndBlock())
+                for(int j=0;j<sp->bodys.size();j++)
                 {
-                    sp->block->state = GBlock::State::DIE;
-                    GModeGame::eatBlock(sp->block,bubble->bubble);
-                    break;
+                    GBodySprite* body = sp->bodys.at(j);
+                    float dis = bubble->getUpdatePosition().getDistance(body->getPosition());
+                    if(dis < bubble->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                    {
+//                        bubble->changeState(GBubble::State::DIE);
+                        bubble->coll();
+                        GModeGame::bulletCollision(sp->bubble, bubble->bubble);
+                        break;
+                    }
                 }
             }
+            if(bubble->bubble->state == GBubble::State::DIE || bubble->isColl)
+                break;
+        }
+        //和机器人
+        for(int i=0;i<GGameController::getInstance()->robots.size();i++)
+        {
+            GBubbleSprite* sp = GGameController::getInstance()->robots.at(i);
+            if(sp->bubble->state != GBubble::State::DIE && !sp->isColl && GGameController::getInstance()->isContain(bubble, sp))
+            {
+                for(int j=0;j<sp->bodys.size();j++)
+                {
+                    GBodySprite* body = sp->bodys.at(j);
+                    float dis = bubble->getUpdatePosition().getDistance(body->getPosition());
+                    if(dis < bubble->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                    {
+//                        bubble->changeState(GBubble::State::DIE);
+                        bubble->coll();
+                        GModeGame::bulletCollision(sp->bubble,bubble->bubble);
+                        break;
+                    }
+                }
+            }
+            if(bubble->bubble->state == GBubble::State::DIE || bubble->isColl)
+                break;
+        }
+        //和边界
+        if(bubble->isCollWall())
+        {
+            bubble->changeState(GBubble::State::DIE);
+            GModeGame::bulletCollision(nullptr, bubble->bubble);
         }
     }
-
-    //机器人
+    
+    //自己的机器人
     if(bubble->bubble->robotUid.size() > 0)
     {
         for(int i=0;i<bubble->bubble->robotUid.size();i++)
         {
             std::string uid = bubble->bubble->robotUid.at(i);
-            GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
-            if(bubble && (bubble->bubble->state == GBubble::State::MOVE || bubble->bubble->state == GBubble::State::SPEEDUP))
+            GBubbleSprite * sp = GGameController::getInstance()->findRobotByUid(uid);
+            if(sp && sp->bubble->state != GBubble::State::DIE && !sp->isColl)
             {
-                for(int j=0;j<GGameController::getInstance()->blocks.size();j++)
+                //和自己
+                if(bubble->bubble->state != GBubble::State::DIE && !bubble->isColl && GGameController::getInstance()->isContain(sp, this->bubble))
                 {
-                    GBlockSprite* sp = GGameController::getInstance()->blocks.at(j);
-                    if(sp->block->state != GBlock::State::DIE)
+                    for(int j=0;j<bubble->bodys.size();j++)
                     {
-                        float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
-                        if(dis < bubble->getCollAndBlock())
+                        GBodySprite* body = bubble->bodys.at(j);
+                        float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                        if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
                         {
-                            sp->block->state = GBlock::State::DIE;
-                            GModeGame::eatBlock(sp->block,bubble->bubble);
+//                            sp->changeState(GBubble::State::DIE);
+                            sp->coll();
+                            GModeGame::bulletCollision(bubble->bubble,sp->bubble);
                             break;
                         }
                     }
                 }
-            }
+               
+                //和其他人
+                for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
+                {
+                    GBubbleSprite* sp2 = GGameController::getInstance()->bubbles.at(i);
+                    if(sp2->bubble->state != GBubble::State::DIE && !sp2->isColl && GGameController::getInstance()->isContain(sp, sp2))
+                    {
+                        for(int j=0;j<sp2->bodys.size();j++)
+                        {
+                            GBodySprite* body = sp2->bodys.at(j);
+                            float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                            {
+//                                sp->changeState(GBubble::State::DIE);
+                                sp->coll();
+                                GModeGame::bulletCollision(sp2->bubble, sp->bubble);
+                                break;
+                            }
+                        }
+                    }
+                    if(sp->bubble->state == GBubble::State::DIE || sp->isColl)
+                        break;
+                }
+                //和机器人
+                for(int i=0;i<GGameController::getInstance()->robots.size();i++)
+                {
+                    GBubbleSprite* sp2 = GGameController::getInstance()->robots.at(i);
+                    if(sp2->bubble->state != GBubble::State::DIE && sp != sp2 && !sp2->isColl &&GGameController::getInstance()->isContain(sp, sp2))
+                    {
+                        for(int j=0;j<sp2->bodys.size();j++)
+                        {
+                            GBodySprite* body = sp2->bodys.at(j);
+                            float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                            {
+//                                sp->changeState(GBubble::State::DIE);
+                                sp->coll();
+                                GModeGame::bulletCollision(sp2->bubble, sp->bubble);
+                                break;
+                            }
+                        }
+                    }
+                    if(sp->bubble->state == GBubble::State::DIE || sp->isColl)
+                        break;
+                }
 
+            }
         }
+    }
+}
+
+void GGameScene::updateCollBubbleAndBlock(float dt)
+{
+    crystalsDt += dt;
+    if(crystalsDt > 1/40.f)
+    {
+        crystalsDt = 0;
+        
+        float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
+        int pnum = GCache::getMapPlitNum();
+        int row = bubble->getPositionX()/w;
+        
+        //自己
+        if(bubble->bubble->state != GBubble::State::DIE)
+        {
+            for(int i=row-1;i<row+1;i++)
+            {
+                if(i > 0)
+                {
+                    for(int j=0;j<GGameController::getInstance()->blocks[i].size();j++)
+                    {
+                        GBlockSprite* sp = GGameController::getInstance()->blocks[i].at(j);
+                        if(sp->block->state != GBlock::State::DIE)
+                        {
+                            float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
+                            if(dis < bubble->getCollAndBlock())
+                            {
+                                sp->block->state = GBlock::State::DIE;
+                                GModeGame::eatBlock(sp->block,bubble->bubble);
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        //机器人
+        if(bubble->bubble->robotUid.size() > 0)
+        {
+            for(int i=0;i<bubble->bubble->robotUid.size();i++)
+            {
+                std::string uid = bubble->bubble->robotUid.at(i);
+                GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
+                if(bubble && bubble->bubble->state != GBubble::State::DIE)
+                {
+                    int row = bubble->getPositionX()/w;
+                    if(row < 0 || row >= pnum)
+                        return;
+                    
+                    for(int j=0;j<GGameController::getInstance()->blocks[row].size();j++)
+                    {
+                        GBlockSprite* sp = GGameController::getInstance()->blocks[row].at(j);
+                        if(sp->block->state != GBlock::State::DIE)
+                        {
+                            float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
+                            if(dis < bubble->getCollAndBlock())
+                            {
+                                sp->block->state = GBlock::State::DIE;
+                                GModeGame::eatBlock(sp->block,bubble->bubble);
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+
     }
 }
 
@@ -622,6 +852,7 @@ void GGameScene::updateRobot(float dt)
     {
         robotDt+=dt;
         robotCollDt+=dt;
+        robotAvoidDt+=dt;
         if(robotDt > 0.5f)
         {
             robotDt = 0;
@@ -651,13 +882,21 @@ void GGameScene::updateRobot(float dt)
             {
                 std::string uid = bubble->bubble->robotUid.at(i);
                 GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
-                if(bubble && bubble->bubble->state != GBubble::State::DIE && bubble->isCollWall())
+                if(bubble && bubble->bubble->state != GBubble::State::DIE)
                 {
-//                    bubble->stopAttack();
+                    if(bubble->isCollWall())
                     updateRobotState(bubble);
                 }
             }
         }
+        
+        if(robotAvoidDt > 0.5)
+        {
+            robotAvoidDt = 0;
+            
+            updateRobotAvoid();
+        }
+
     }
 }
 
@@ -665,14 +904,19 @@ void GGameScene::updateRobotState(GBubbleSprite * bubble)
 {
     int state = random(0, 10);
     //吃水滴
-    if(state < 8)
+    if(state < 12)
     {
         //根据水滴找到方向
         int size = (int)GGameController::getInstance()->blocks.size() - 1;
         if(size <= 0)
             return;
         int r = random(0, size);
-        GBlockSprite* block = GGameController::getInstance()->blocks.at(r);
+        int size2 = (int)GGameController::getInstance()->blocks[r].size() - 1;
+        if(size2 <= 0)
+            return;
+        int r2 = random(0, size2);
+
+        GBlockSprite* block = GGameController::getInstance()->blocks[r].at(r2);
         Vec2 dir = (block->getPosition() - bubble->getPosition()).getNormalized();
         
         bubble->bubble->dirX = dir.x;
@@ -680,80 +924,91 @@ void GGameScene::updateRobotState(GBubbleSprite * bubble)
         bubble->changeState(GBubble::State::MOVE);
         GModeGame::move(dir,1,bubble->bubble);
     }
-    //攻击
-    else
-    {
-        //找到最近的泡泡
-        GBubbleSprite* target = nullptr;
-        for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
-        {
-            GBubbleSprite* sp = GGameController::getInstance()->bubbles.at(i);
-            if(sp->bubble->state != GBubble::State::DIE)
-            {
-                if(target)
-                {
-                    float dis = bubble->getUpdatePosition().getDistance(sp->getUpdatePosition());
-                    float dis2 = bubble->getUpdatePosition().getDistance(target->getUpdatePosition());
-                    if(dis < dis2)
-                    {
-                        target = sp;
-                    }
-                }
-                else
-                {
-                    target = sp;
-                }
-            }
-        }
-        
-        for(int i=0;i<GGameController::getInstance()->robots.size();i++)
-        {
-            GBubbleSprite* sp = GGameController::getInstance()->robots.at(i);
-            if(bubble != sp && sp->bubble->state != GBubble::State::DIE)
-            {
-                if(target)
-                {
-                    float dis = bubble->getUpdatePosition().getDistance(sp->getUpdatePosition());
-                    float dis2 = bubble->getUpdatePosition().getDistance(target->getUpdatePosition());
-                    if(dis < dis2)
-                    {
-                        target = sp;
-                    }
-                }
-                else
-                {
-                    target = sp;
-                }
-            }
-        }
-        
-        if(target)
-        {
-            float dis = bubble->getUpdatePosition().getDistance(this->bubble->getUpdatePosition());
-            float dis2 = bubble->getUpdatePosition().getDistance(target->getUpdatePosition());
-            if(dis < dis2 && this->bubble->bubble->state != GBubble::State::DIE)
-            {
-                target = this->bubble;
-            }
-        }
-        else
-        {
-            if(this->bubble->bubble->state != GBubble::State::DIE)
-            target = this->bubble;
-        }
-        
-        if(target)
-        {
-            Vec2 dir = (target->getPosition() - bubble->getPosition()).getNormalized();
-            
-            bubble->bubble->dirX = dir.x;
-            bubble->bubble->dirY = dir.y;
-            bubble->changeState(GBubble::State::MOVE);
-            GModeGame::move(dir,1,bubble->bubble);
+}
 
-//            bubble->startAttack();
+void GGameScene::updateRobotAvoid()
+{
+    //躲避
+    //自己的机器人
+    if(bubble->bubble->robotUid.size() > 0)
+    {
+        for(int i=0;i<bubble->bubble->robotUid.size();i++)
+        {
+            std::string uid = bubble->bubble->robotUid.at(i);
+            GBubbleSprite * sp = GGameController::getInstance()->findRobotByUid(uid);
+            if(sp && sp->bubble->state != GBubble::State::DIE)
+            {
+                //和自己
+                for(int j=0;j<bubble->bodys.size();j++)
+                {
+                    GBodySprite* body = bubble->bodys.at(j);
+                    float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                    if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale() * 5)
+                    {
+                        Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
+                        
+                        bubble->bubble->dirX = dir.x;
+                        bubble->bubble->dirY = dir.y;
+                        bubble->changeState(GBubble::State::MOVE);
+                        GModeGame::move(dir,1,sp->bubble);
+                        break;
+                    }
+                }
+                //和其他人
+                for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
+                {
+                    GBubbleSprite* sp2 = GGameController::getInstance()->bubbles.at(i);
+                    if(sp2->bubble->state != GBubble::State::DIE)
+                    {
+                        for(int j=0;j<sp2->bodys.size();j++)
+                        {
+                            GBodySprite* body = sp2->bodys.at(j);
+                            float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale() * 5)
+                            {
+                                Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
+                                
+                                bubble->bubble->dirX = dir.x;
+                                bubble->bubble->dirY = dir.y;
+                                bubble->changeState(GBubble::State::MOVE);
+                                GModeGame::move(dir,1,sp->bubble);
+                                break;
+                            }
+                        }
+                    }
+                    if(sp->bubble->state == GBubble::State::DIE)
+                        break;
+                }
+                //和机器人
+                for(int i=0;i<GGameController::getInstance()->robots.size();i++)
+                {
+                    GBubbleSprite* sp2 = GGameController::getInstance()->robots.at(i);
+                    if(sp2->bubble->state != GBubble::State::DIE && sp != sp2)
+                    {
+                        for(int j=0;j<sp2->bodys.size();j++)
+                        {
+                            GBodySprite* body = sp2->bodys.at(j);
+                            float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale() * 5)
+                            {
+                                Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
+                                
+                                bubble->bubble->dirX = dir.x;
+                                bubble->bubble->dirY = dir.y;
+                                bubble->changeState(GBubble::State::MOVE);
+                                GModeGame::move(dir,1,sp->bubble);
+                                break;
+                            }
+                        }
+                    }
+                    if(sp->bubble->state == GBubble::State::DIE)
+                        break;
+                }
+                
+            }
         }
     }
+
 }
 
 void GGameScene::updateAllPos(float dt)
@@ -765,6 +1020,7 @@ void GGameScene::updateAllPos(float dt)
         GBubbleSprite * bubble = GGameController::getInstance()->bubbles.at(i);
         if(bubble->bubble->state != GBubble::State::DIE)
         {
+            bubble->update(dt);
             bubble->updatePosAndRotate();
             bubble->bubble->resetPosDt += dt;
         }
@@ -774,28 +1030,30 @@ void GGameScene::updateAllPos(float dt)
         GBubbleSprite * bubble = GGameController::getInstance()->robots.at(i);
         if(bubble->bubble->state != GBubble::State::DIE)
         {
+            bubble->update(dt);
             bubble->updatePosAndRotate();
             bubble->bubble->resetPosDt += dt;
         }
     }
+    bubble->update(dt);
     bubble->updatePosAndRotate();
     bubble->bubble->resetPosDt += dt;
     
-    if(updatePosDt > UPDATE_DT + 0.5f)
-    {
-        updatePosDt = 0;
-        
-        GModeGame::updatePos(bubble->bubble);
-        
-        for(int j=0;j<GGameController::getInstance()->robots.size();j++)
-        {
-            GBubbleSprite * bubble = GGameController::getInstance()->robots.at(j);
-            if(GGameController::getInstance()->isSelfBubble(bubble->bubble))
-            {
-                GModeGame::updatePos(bubble->bubble);
-            }
-        }
-    }
+//    if(updatePosDt > UPDATE_DT)
+//    {
+//        updatePosDt = 0;
+//        
+//        GModeGame::updatePos(bubble->bubble);
+//        
+//        for(int j=0;j<GGameController::getInstance()->robots.size();j++)
+//        {
+//            GBubbleSprite * bubble = GGameController::getInstance()->robots.at(j);
+//            if(GGameController::getInstance()->isSelfBubble(bubble->bubble))
+//            {
+//                GModeGame::updatePos(bubble->bubble);
+//            }
+//        }
+//    }
 }
 
 

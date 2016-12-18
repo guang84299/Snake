@@ -63,6 +63,8 @@ public:
     void setShareAward(int shareAward);
     int getShareAward();
     
+    static int getMapPlitNum();
+    
     std::string getFont(const std::string &key);
     void destory();
     

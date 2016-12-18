@@ -77,7 +77,7 @@ void GRankView::updateItem(int index,GJsonObject* obj)
     
 //    int rank = obj->getInt("rank");
     std::string name = obj->getString("name");
-    int exp = obj->getInt("kill");
+    int exp = obj->getInt("exp");
     char c[7];
 //    sprintf(c, "%d",rank);
     

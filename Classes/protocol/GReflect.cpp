@@ -48,6 +48,7 @@ void GReflect::registerAll()
     registerMethod("GModeUser_loginResult",&GModeUser::loginResult);
     registerMethod("GModeUser_heartBeatResult",&GModeUser::heartBeatResult);
     registerMethod("GModeUser_enterRoomResult",&GModeUser::enterRoomResult);
+    registerMethod("GModeUser_addBlockResult",&GModeUser::addBlockResult);
     registerMethod("GModeUser_recConnResult",&GModeUser::recConnResult);
     registerMethod("GModeUser_updateNameResult",&GModeUser::updateNameResult);
     registerMethod("GModeUser_updateHeadResult",&GModeUser::updateHeadResult);

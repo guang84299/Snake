@@ -14,10 +14,6 @@
 #include "protocol_model/GModeGame.h"
 #include "protocol_model/GModeUser.h"
 
-#include <spine/spine-cocos2dx.h>
-#include "spine/spine.h"
-using namespace spine;
-
 USING_NS_CC;
 
 bool GSkin::init()
@@ -41,7 +37,7 @@ void GSkin::initUI()
     _data = GJsonArray::create(GCache::getInstance()->getSkins().c_str());
     _data->retain();
     
-    auto skin_bg = Sprite::create("jm-diban2.png");
+    auto skin_bg = Sprite::create("jm-diban1.png");
     skin_bg->setPosition(s.width/2, s.height*0.5f);
     bg->addChild(skin_bg);
     
@@ -68,7 +64,7 @@ void GSkin::initUI()
     
     auto setBg = Scale9Sprite::create("jm-tiao1.png");
     setBg->setContentSize(Size(630,40));
-    setBg->setPosition(Vec2(s.width/2,s.height*0.78f));
+    setBg->setPosition(Vec2(s.width/2,s.height*0.8f));
     skin_bg->addChild(setBg);
     
     auto crystalBg = Scale9Sprite::create("jm-tiao6.png");
@@ -114,8 +110,8 @@ void GSkin::initUI()
     
     _listView = ListView::create();
     _listView->setDirection(ui::ScrollView::Direction::HORIZONTAL);
-    _listView->setContentSize(Size(630, 260));
-    _listView->setPosition(Vec2(33,33));
+    _listView->setContentSize(Size(630, 500));
+    _listView->setPosition(Vec2(33,63));
     skin_bg->addChild(_listView);
     
     for(int i=0;i<_data->size();i++)
@@ -156,36 +152,61 @@ Layout* GSkin::createItem(int index)
         }
     }
     
-    float w = _listView->getContentSize().width/3;
+    float w = _listView->getContentSize().width/4;
     float h = _listView->getContentSize().height;
     Layout* item = Layout::create();
     //    item->setTouchEnabled(true);
     item->setContentSize(Size(w,h));
     item->setPosition(Vec2(0,0));
     
-    auto bg = Scale9Sprite::create("jm-tiao4.png");
-    bg->setContentSize(Size(170,170));
+    auto bg = Scale9Sprite::create("jm-tiao7.png");
+    bg->setContentSize(Size(150,245));
     bg->setAnchorPoint(Vec2(0.5,0));
     bg->setPosition(Vec2(w/2,80));
     item->addChild(bg);
     
     char c[7];
     sprintf(c, "%d",id);
-    std::string name = "jm-pifu3-";//obj->getString("name");
-    name = name + c + ".png";
-    auto t_name = Sprite::create(name);
-    t_name->setAnchorPoint(Vec2(0.5,1));
-    t_name->setPosition(Vec2(bg->getContentSize().width/2,bg->getContentSize().height+4));
-    bg->addChild(t_name);
+//    std::string name = "jm-pifu3-";//obj->getString("name");
+//    name = name + c + ".png";
+//    auto t_name = Sprite::create(name);
+//    t_name->setAnchorPoint(Vec2(0.5,1));
+//    t_name->setPosition(Vec2(bg->getContentSize().width/2,bg->getContentSize().height+4));
+//    bg->addChild(t_name);
 
-    std::string json = "skeleton";
-    json = json + c + std::string("_1.json");
-    std::string atlas = "skeleton";
-    atlas = atlas + c + std::string("_1.atlas");
-    auto skeleton = SkeletonAnimation::createWithFile(json, atlas);
-    skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height/2-20);
-    skeleton->setScale(1.4);
-    bg->addChild(skeleton);
+    std::string skinId = c;
+    std::string path = "juese";
+    std::string path1 = path + skinId + std::string("-1.png");
+    std::string path2 = path + skinId + std::string("-2.png");
+    std::string path3 = path + skinId + std::string("-3.png");
+    std::string path4 = path + skinId + std::string("-4.png");
+    std::string path5 = path + skinId + std::string("-5.png");
+    
+    auto skeleton = Sprite::create(path1);
+    skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f);
+    skeleton->setScale(1);
+    bg->addChild(skeleton,5);
+    
+    skeleton = Sprite::create(path4);
+    skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30);
+    skeleton->setScale(1);
+    bg->addChild(skeleton,4);
+    
+    skeleton = Sprite::create(path4);
+    skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30*2);
+    skeleton->setScale(1);
+    bg->addChild(skeleton,3);
+    
+    skeleton = Sprite::create(path4);
+    skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30*3);
+    skeleton->setScale(1);
+    bg->addChild(skeleton,2);
+    
+    skeleton = Sprite::create(path5);
+    skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30*4);
+    skeleton->setScale(1);
+    bg->addChild(skeleton,1);
+    
     
     auto sel = Sprite::create("jm-xuanzhong2.png");
     sel->setAnchorPoint(Vec2(1,0));

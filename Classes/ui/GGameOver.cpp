@@ -148,7 +148,7 @@ void GGameOver::updateItem(int index,GJsonObject* obj)
     
     int rank = obj->getInt("rank");
     std::string name = obj->getString("name");
-    int kill = obj->getInt("kill");
+    int kill = obj->getInt("exp");
     int die = obj->getInt("die");
     int rewardNum = obj->getInt("rewardNum");
     char c[7];
@@ -251,6 +251,7 @@ Layout* GGameOver::createHead()
     t_die->setAnchorPoint(Vec2(0.5,0.5));
     t_die->setPosition(Vec2(w*0.73f, h/2));
     txt_bg->addChild(t_die);
+    t_die->setVisible(false);
     
     Text* t_reward = Text::create(_T("rank_reward"), "", 20);
     t_reward->setColor(Color3B(164,89,6));
@@ -295,7 +296,7 @@ Layout* GGameOver::createItem()
     item->addChild(t_name);
     
     Text* t_kill = Text::create("23", "", 24);
-    t_kill->setColor(Color3B(109,244,78));
+    t_kill->setColor(Color3B::WHITE);
     t_kill->setName("kill");
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
     t_kill->setPosition(Vec2(w*0.6f, h/2));
@@ -311,6 +312,7 @@ Layout* GGameOver::createItem()
     t_die->enableOutline(Color4B::BLACK,1);
     t_die->enableGlow(Color4B::BLACK);
     item->addChild(t_die);
+    t_die->setVisible(false);
 
     auto sp = Sprite::create("jm-zuanshi1.png");
     sp->setAnchorPoint(Vec2(1,0.5));
@@ -357,7 +359,7 @@ Layout* GGameOver::createEnd()
     item->addChild(t_name);
     
     Text* t_kill = Text::create("23", "", 24);
-    t_kill->setColor(Color3B(109,244,78));
+    t_kill->setColor(Color3B::WHITE);
     t_kill->setName("kill");
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
     t_kill->setPosition(Vec2(w*0.6f, h/2));
@@ -373,6 +375,7 @@ Layout* GGameOver::createEnd()
     t_die->enableOutline(Color4B::BLACK,1);
     t_die->enableGlow(Color4B::BLACK);
     item->addChild(t_die);
+    t_die->setVisible(false);
     
     auto sp = Sprite::create("jm-zuanshi1.png");
     sp->setAnchorPoint(Vec2(1,0.5));
@@ -442,17 +445,17 @@ void GGameOver::openShare()
     setBg->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.77f));
     gameover_bg->addChild(setBg);
     
-    auto shareBg = Sprite::create("jm-fengxiang1.png");
-    shareBg->setAnchorPoint(Vec2(0.5,0));
-    shareBg->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.14f));
+    auto shareBg = Sprite::create("ui-wenzhi3.png");
+    shareBg->setAnchorPoint(Vec2(1,0.5));
+    shareBg->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.6f));
     gameover_bg->addChild(shareBg);
     
     GNumber* t_kill = GNumber::create(this->kill);
     t_kill->setColor(Color3B::GREEN);
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
     t_kill->setScale(2);
-    t_kill->setPosition(Vec2(shareBg->getContentSize().width/2,shareBg->getContentSize().height*0.35f));
-    shareBg->addChild(t_kill);
+    t_kill->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.35f));
+    gameover_bg->addChild(t_kill);
 }
 
 void GGameOver::screenShotCallback(const std::string& file)

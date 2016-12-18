@@ -134,6 +134,8 @@
 		624CC2871DF95AB500F691DB /* GSkin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC26A1DF95A9800F691DB /* GSkin.cpp */; };
 		624CC2881DF95AB800F691DB /* GTouchLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC26C1DF95A9800F691DB /* GTouchLayer.cpp */; };
 		624CC2891DF95ABC00F691DB /* GUserInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC26E1DF95A9800F691DB /* GUserInfo.cpp */; };
+		624CC2921DFA513200F691DB /* GBodySprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC2901DFA513200F691DB /* GBodySprite.cpp */; };
+		624CC2931DFA513200F691DB /* GBodySprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC2901DFA513200F691DB /* GBodySprite.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -313,6 +315,8 @@
 		624CC26D1DF95A9800F691DB /* GTouchLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTouchLayer.h; path = ui/GTouchLayer.h; sourceTree = "<group>"; };
 		624CC26E1DF95A9800F691DB /* GUserInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GUserInfo.cpp; path = ui/GUserInfo.cpp; sourceTree = "<group>"; };
 		624CC26F1DF95A9800F691DB /* GUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GUserInfo.h; path = ui/GUserInfo.h; sourceTree = "<group>"; };
+		624CC2901DFA513200F691DB /* GBodySprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GBodySprite.cpp; path = sprite/GBodySprite.cpp; sourceTree = "<group>"; };
+		624CC2911DFA513200F691DB /* GBodySprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GBodySprite.h; path = sprite/GBodySprite.h; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -633,6 +637,8 @@
 				624CC2411DF95A5D00F691DB /* GBulletSprite.h */,
 				624CC2421DF95A5D00F691DB /* GCloundSprite.cpp */,
 				624CC2431DF95A5D00F691DB /* GCloundSprite.h */,
+				624CC2901DFA513200F691DB /* GBodySprite.cpp */,
+				624CC2911DFA513200F691DB /* GBodySprite.h */,
 			);
 			name = sprite;
 			sourceTree = "<group>";
@@ -861,6 +867,7 @@
 				624CC1EF1DF959A600F691DB /* GJson.cpp in Sources */,
 				624CC27B1DF95A9800F691DB /* GTouchLayer.cpp in Sources */,
 				624CC2331DF95A3900F691DB /* GGameScene.cpp in Sources */,
+				624CC2921DFA513200F691DB /* GBodySprite.cpp in Sources */,
 				624CC21C1DF95A0200F691DB /* GReflect.cpp in Sources */,
 				624CC2441DF95A5D00F691DB /* GBlockSprite.cpp in Sources */,
 				624CC2791DF95A9800F691DB /* GShare.cpp in Sources */,
@@ -891,6 +898,7 @@
 				624CC2831DF95AAA00F691DB /* GRule.cpp in Sources */,
 				624CC1E71DF9598E00F691DB /* GGameController.cpp in Sources */,
 				624CC1F01DF959A800F691DB /* GCache.cpp in Sources */,
+				624CC2931DFA513200F691DB /* GBodySprite.cpp in Sources */,
 				624CC2491DF95A6100F691DB /* GBubbleSprite.cpp in Sources */,
 				624CC2871DF95AB500F691DB /* GSkin.cpp in Sources */,
 				624CC2201DF95A0C00F691DB /* GReflect.cpp in Sources */,

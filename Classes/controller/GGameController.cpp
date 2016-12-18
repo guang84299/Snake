@@ -23,6 +23,7 @@ GGameController* GGameController::getInstance()
     if(_instance == nullptr)
     {
         _instance = new GGameController();
+        _instance->scene = nullptr;
         _instance->retain();
     }
     return _instance;
@@ -174,9 +175,8 @@ void GGameController::stopMove(const char *data)
         {
 //            bubble->setPosition(x, y);
 //            bubble->updateRotation(rotate);
-            bubble->bubble->currHp = hp;
+//            bubble->bubble->currHp = hp;
             bubble->changeState(GBubble::State::IDLE);
-            bubble->updateHpBar();
             bubble->speedUpEnd();
         }
     }
@@ -206,7 +206,7 @@ void GGameController::addBlock(const char *data)
         GBlock* cry = GBlock::create(val);
         
         GBlockSprite* sp = GBlockSprite::create(cry);
-        this->blocks.push_back(sp);
+        addBlock(sp);
         scene->addBlock(sp,x,y);
     }
 }
@@ -218,6 +218,8 @@ void GGameController::eatBlock(const char *data)
     int type = obj->getInt("type");
     bool robot = obj->getBool("robot");
     std::string uid = obj->getString("uid");
+    float x = obj->getDouble("x");
+    float y = obj->getDouble("y");
     GBubbleSprite* sp = nullptr;
     bool isSelf = false;
     if(robot)
@@ -237,7 +239,7 @@ void GGameController::eatBlock(const char *data)
     }
     
 
-    GBlockSprite* ps = findBlock(_id);
+    GBlockSprite* ps = findBlock(_id,x,y);
     if(ps)
     {
         ps->die(sp);
@@ -251,10 +253,11 @@ void GGameController::eatBlock(const char *data)
             float grow = obj->getDouble("grow");
             if(sp)
             {
+                bool up = sp->bubble->level != level;
                 sp->bubble->level = level;
                 sp->bubble->exp = exp;
                 sp->bubble->grow = grow;
-                sp->updateExp();
+                sp->updateExp(up,false);
             }
         }
         else if(type == 1)
@@ -267,9 +270,8 @@ void GGameController::eatBlock(const char *data)
         }
         else if(type == 2)
         {
-            int currHp = obj->getInt("currHp");
-            sp->bubble->currHp = currHp;
-            sp->updateHpBar();
+//            int currHp = obj->getInt("currHp");
+//            sp->bubble->currHp = currHp;
             if(isSelf)
             GTools::playSound(SOUND_GETHP);
         }
@@ -368,23 +370,6 @@ void GGameController::bulletCollision(const char *data)
 //    std::string uid = obj->getString("uid");
     std::string targetUid = obj->getString("target");
     bool target_robot = obj->getBool("target_robot");
-    int tid = obj->getInt("tid");
-    int bulletType = 1;
-    //找到tid子弹
-    GBulletSprite* bullet = findBullet(tid);
-    bool selfBullet = false;
-    if(bullet)
-    {
-        selfBullet = isSelfBullet(bullet->bullet);
-        bulletType = bullet->bullet->type;
-        if(bulletType == 1 || bulletType == 2 || bulletType == 3 || bulletType == 5)
-            bullet->die();
-    }
-    
-    if(targetUid == std::string("0"))
-    {
-        return;
-    }
     
     GBubbleSprite* target = nullptr;
     bool isSelf = false;
@@ -406,44 +391,11 @@ void GGameController::bulletCollision(const char *data)
     
     if(target)
     {
-        if(bulletType == 6)
+        target->die();
+        if(isSelf)
         {
-            float downSpeed = bullet->bullet->downSpeed;
-            float buffTime = bullet->bullet->buffTime;
-//            target->speedDown(downSpeed, buffTime);
-        }
-        int currHp = obj->getInt("currHp");
-        bool die = obj->getBool("die");
-        
-        target->bubble->currHp = currHp;
-        target->updateHpBar();
-        if(isSelf || (target_robot && isSelfBubble(target->bubble)))
-        {
-            target->recoverHp();
-        }
-        if(bullet)
-        {
-//            if(bulletType == 1 || bulletType == 2 || bulletType == 3 || bulletType == 5)
-//                target->hurt(bullet->dir, 0);
-        }
-        if(die)
-        {
-            if(target->bubble->state != GBubble::State::DIE)
-            {
-                target->die();
-                if(isSelf)
-                {
-                    GJsonObject* dieData = obj->getObject("dieData");
-                    scene->openRelived(dieData);
-                }
-                else
-                {
-                    if(selfBullet)
-                    {
-                        GTools::playSound(SOUND_BUTTON);
-                    }
-                }
-            }
+            GJsonObject* dieData = obj->getObject("dieData");
+            scene->openRelived(dieData);
         }
     }
 }
@@ -491,7 +443,7 @@ void GGameController::speedUp(const char *data)
     float y = obj->getDouble("y");
     float rotate = obj->getDouble("rotate");
     std::string uid = obj->getString("uid");
-    int hp = obj->getInt("hp");
+//    int hp = obj->getInt("hp");
     GBubbleSprite* bubble = nullptr;
     if(uid == GCache::getInstance()->getUser()->uid)
     {
@@ -504,9 +456,9 @@ void GGameController::speedUp(const char *data)
     {
         bubble->setPosition(x, y);
         bubble->updateRotation(rotate);
-        bubble->bubble->currHp = hp;
+//        bubble->bubble->currHp = hp;
         bubble->changeState(GBubble::State::SPEEDUP);
-        bubble->updateHpBar();
+//        bubble->updateHpBar();
         bubble->speedUp();
     }
     
@@ -519,7 +471,7 @@ void GGameController::stopSpeedUp(const char *data)
     float y = obj->getDouble("y");
     float rotate = obj->getDouble("rotate");
     std::string uid = obj->getString("uid");
-    int hp = obj->getInt("hp");
+//    int hp = obj->getInt("hp");
     GBubbleSprite* bubble = nullptr;
     if(uid == GCache::getInstance()->getUser()->uid)
     {
@@ -534,9 +486,9 @@ void GGameController::stopSpeedUp(const char *data)
     {
         bubble->setPosition(x, y);
         bubble->updateRotation(rotate);
-        bubble->bubble->currHp = hp;
+//        bubble->bubble->currHp = hp;
         bubble->changeState(GBubble::State::IDLE);
-        bubble->updateHpBar();
+//        bubble->updateHpBar();
         bubble->speedUpEnd();
     }
 
@@ -560,8 +512,10 @@ void GGameController::addRobot(const char *data)
     GJsonObject* robot = obj->getObject("robot");
     GBubble *bubble = GBubble::create(robot);
     GBubbleSprite* bubblesp = GBubbleSprite::create(bubble);
+    bubblesp->retain();
     this->robots.push_back(bubblesp);
     scene->joinRoom(bubblesp);
+    bubblesp->release();
 }
 
 void GGameController::ranking(const char *data)
@@ -605,31 +559,57 @@ void GGameController::coll(const char *data)
 
 void GGameController::updatePos(const char *data)
 {
-    GJsonObject* obj = GJsonObject::create(data);
-    
-    float x = obj->getDouble("x");
-    float y = obj->getDouble("y");
-    float rotate = obj->getDouble("rotate");
-    int state = obj->getInt("state");
-    std::string uid = obj->getString("uid");
-    
-    if(uid != GCache::getInstance()->getUser()->uid)
+    GJsonArray* arr = GJsonArray::create(data);
+    for(int i=0;i<arr->size();i++)
     {
-        GBubbleSprite* target = findRobotByUid(uid);
-        if(!target)
+        GJsonObject* obj = arr->at(i);
+        
+        float x = obj->getDouble("x");
+        float y = obj->getDouble("y");
+//        float dirX = obj->getDouble("dirX");
+//        float dirY = obj->getDouble("dirY");
+        float rotate = obj->getDouble("rotate");
+//        int state = obj->getInt("state");
+        float time = obj->getDouble("time");
+        std::string uid = obj->getString("uid");
+        bool up = obj->getBool("up");
+        
+        GBubbleSprite* target = nullptr;
+        if(uid == GCache::getInstance()->getUser()->uid)
         {
-            target = findByUid(uid);
+            target = this->bubble;
         }
         else
         {
-            //是机器人的话，需要判断是否是自己的
-            if(isSelfBubble(target->bubble))
-                return;
+            target = findRobotByUid(uid);
+            if(!target)
+            {
+                target = findByUid(uid);
+            }
         }
         if(target)
         {
-            target->updatePos(x, y, rotate,  state);
+            target->updatePos(x, y, rotate,time,up);
         }
+//        if(uid != GCache::getInstance()->getUser()->uid)
+//        {
+//            GBubbleSprite* target = findRobotByUid(uid);
+//            if(!target)
+//            {
+//                target = findByUid(uid);
+//            }
+//            else
+//            {
+//                //是机器人的话，需要判断是否是自己的
+//                if(isSelfBubble(target->bubble))
+//                    return;
+//            }
+//            if(target)
+//            {
+//                if(target->bubble->resetPosDt>3 || !isContain(this->bubble, target))
+//                    target->updatePos(x, y, rotate,  2);
+//            }
+//        }
     }
 }
 
@@ -637,7 +617,6 @@ void GGameController::updateHp(const char *data)
 {
     GJsonObject* obj = GJsonObject::create(data);
     
-    int currHp = obj->getInt("currHp");
     std::string uid = obj->getString("uid");
     
     GBubbleSprite* target = nullptr;
@@ -656,8 +635,17 @@ void GGameController::updateHp(const char *data)
 
     if(target)
     {
-        target->bubble->currHp = currHp;
-        target->updateHpBar();
+        int level = obj->getInt("level");
+        int exp = obj->getInt("exp");
+        float grow = obj->getDouble("grow");
+        
+        bool up = target->bubble->level != level;
+        target->bubble->level = level;
+        target->bubble->exp = exp;
+        target->bubble->grow = grow;
+        target->updateExp(false,up);
+//        target->bubble->currHp = currHp;
+//        target->updateHpBar();
     }
 }
 
@@ -688,6 +676,62 @@ bool GGameController::isSelfBubble(GBubble* bubble)
         if(this->bubble->bubble->robotUid.at(i) == bubble->uid)
         {
             return true;
+        }
+    }
+    return false;
+}
+
+bool GGameController::isContain(GBubbleSprite* bubble,GBubbleSprite* target)
+{
+    Size s = Director::getInstance()->getWinSize();
+    float r = sqrtf(s.width*s.width + s.height*s.height)/3;
+    if(bubble != target)
+    {
+        int num = (int)target->bodys.size();
+        int i=0;
+        if(i<num)
+        {
+            float dis = target->bodys.at(i)->getPosition().getDistance(bubble->getPosition());
+            if(dis < r)
+            {
+                return true;
+            }
+        }
+        i = (int)(num*0.3f);
+        if(i<num)
+        {
+            float dis = target->bodys.at(i)->getPosition().getDistance(bubble->getPosition());
+            if(dis < r)
+            {
+                return true;
+            }
+        }
+        i = (int)(num*0.5f);
+        if(i<num)
+        {
+            float dis = target->bodys.at(i)->getPosition().getDistance(bubble->getPosition());
+            if(dis < r)
+            {
+                return true;
+            }
+        }
+        i = (int)(num*0.8f);
+        if(i<num)
+        {
+            float dis = target->bodys.at(i)->getPosition().getDistance(bubble->getPosition());
+            if(dis < r)
+            {
+                return true;
+            }
+        }
+        i = num-1;
+        if(i<num && i>=0)
+        {
+            float dis = target->bodys.at(i)->getPosition().getDistance(bubble->getPosition());
+            if(dis < r)
+            {
+                return true;
+            }
         }
     }
     return false;
@@ -736,10 +780,13 @@ GBulletSprite* GGameController::findBullet(int tid)
     return nullptr;
 }
 
-GBlockSprite* GGameController::findBlock(int _id)
+GBlockSprite* GGameController::findBlock(int _id,float x,float y)
 {
-    for (int i=0; i<blocks.size(); i++) {
-        GBlockSprite* block = blocks.at(i);
+    float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
+    int row = x/w;
+    
+    for (int i=0; i<blocks[row].size(); i++) {
+        GBlockSprite* block = blocks[row].at(i);
         if(block->block->_id == _id)
         {
             return block;
@@ -748,13 +795,25 @@ GBlockSprite* GGameController::findBlock(int _id)
     return nullptr;
 }
 
-void GGameController::deleteBlock(int _id)
+void GGameController::addBlock(GBlockSprite* block)
 {
-    for (int i=0; i<blocks.size(); i++) {
-        GBlockSprite* block = blocks.at(i);
+    float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
+    
+    int row = block->block->x/w;
+    
+    blocks.at(row).push_back(block);
+}
+
+void GGameController::deleteBlock(int _id,float x,float y)
+{
+    float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
+    int row = x/w;
+
+    for (int i=0; i<blocks[row].size(); i++) {
+        GBlockSprite* block = blocks[row].at(i);
         if(block->block->_id == _id)
         {
-            blocks.erase(blocks.begin()+i);
+            blocks[row].erase(blocks[row].begin()+i);
 //            if(block->block->bulletType > 1 || block->block->type == 2)
 //            {
 //                scene->miniMap->remove(_id);
@@ -788,7 +847,7 @@ void GGameController::deleteBubble(std::string &uid)
         }
     }
     
-//    scene->miniMap->remove(uid);
+    scene->miniMap->remove(uid);
 }
 
 void GGameController::deleteRobot(std::string &uid)
@@ -809,5 +868,5 @@ void GGameController::deleteRobot(std::string &uid)
             break;
         }
     }
-//    scene->miniMap->remove(uid);
+    scene->miniMap->remove(uid);
 }

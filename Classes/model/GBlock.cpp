@@ -21,8 +21,8 @@ GBlock* GBlock::create(GJsonObject* obj)
     
     block->_id = obj->getInt("id");
     block->type = obj->getInt("type");
-    block->bulletType = obj->getInt("bulletType");
-    block->bulletId = obj->getInt("bulletId");
+    block->blockType = obj->getInt("blockType");
+    block->exp = obj->getInt("exp");
     block->x = obj->getDouble("x");
     block->y = obj->getDouble("y");
     std::string state = obj->getString("state");

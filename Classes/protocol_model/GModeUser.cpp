@@ -122,6 +122,12 @@ void GModeUser::enterRoomResult(const char *data)
             GGameController::getInstance()->bubbles.clear();
             GGameController::getInstance()->bullets.clear();
             
+            for(int i=0;i<GCache::getMapPlitNum()+4;i++)
+            {
+                std::vector<GBlockSprite*> blocks1;
+                GGameController::getInstance()->blocks.push_back(blocks1);
+            }
+   
             int roomWidth = val->getInt("roomWidth");
             int roomHeight = val->getInt("roomHeight");
             int mapId = val->getInt("mapId");
@@ -133,13 +139,14 @@ void GModeUser::enterRoomResult(const char *data)
             GCache::getInstance()->setMapPosX(mapPosX);
             GCache::getInstance()->setMapPosY(mapPosY);
             
-            GJsonArray* blocks_data = val->getArray("blocks");
-            for(int i=0;i<blocks_data->size();i++)
-            {
-                GBlockSprite* sp = GBlockSprite::create(GBlock::create(blocks_data->at(i)));
-                sp->retain();
-                GGameController::getInstance()->blocks.push_back(sp);
-            }
+            //水晶需要分批加载
+//            GJsonArray* blocks_data = val->getArray("blocks");
+//            for(int i=0;i<blocks_data->size();i++)
+//            {
+//                GBlockSprite* sp = GBlockSprite::create(GBlock::create(blocks_data->at(i)));
+//                sp->retain();
+//                GGameController::getInstance()->blocks.push_back(sp);
+//            }
             
 //            GJsonArray* clounds_data = val->getArray("clounds");
 //            for(int i=0;i<clounds_data->size();i++)
@@ -169,14 +176,42 @@ void GModeUser::enterRoomResult(const char *data)
                     GGameController::getInstance()->bubble = sp;
                 }
             }
-            
             GUserController::getInstance()->enterGameScene();
+            GModeUser::addBlock();
         }        
-        log("user enterRoom");
+        log("addBlock");
     }
     else
     {
         log("user enterRoom error!");
+    }
+}
+
+void GModeUser::addBlock()
+{
+    GJsonObject* val = GJsonObject::create();
+    GJsonObject* val2 = GJsonObject::create();
+    val2->putObject("body", val);
+    GData* data = GData::create(gprotocol::MODE_USER_ADDBLOCK, val2);
+    GServer::getInstance()->send(data);
+}
+void GModeUser::addBlockResult(const char* data)
+{
+    GJsonObject* val = GJsonObject::create(data);
+    bool result = val->getBool("result");
+    GJsonArray* blocks_data = val->getArray("list");
+    
+    for(int i=0;i<blocks_data->size();i++)
+    {
+        GBlockSprite* sp = GBlockSprite::create(GBlock::create(blocks_data->at(i)));
+        sp->retain();
+        GGameController::getInstance()->addBlock(sp);
+    }
+    if(result)
+    {
+        log("user enterRoom");
+        if(GGameController::getInstance()->scene)
+            GGameController::getInstance()->scene->resetInitBlock();
     }
 }
 
@@ -193,7 +228,7 @@ void GModeUser::recConn(const char* type)
         val->putDouble("rotate", bubble->rotate);
         val->putDouble("dirX", bubble->dirX);
         val->putDouble("dirY", bubble->dirY);
-        val->putDouble("currHp", bubble->currHp);
+//        val->putDouble("currHp", bubble->currHp);
     }
     GJsonObject* val2 = GJsonObject::create();
     val2->putObject("body", val);
@@ -218,13 +253,19 @@ void GModeUser::recConnResult(const char *data)
             GGameController::getInstance()->bubbles.clear();
             GGameController::getInstance()->bullets.clear();
             
-            GJsonArray* blocks_data = val->getArray("blocks");
-            for(int i=0;i<blocks_data->size();i++)
+            for(int i=0;i<GCache::getMapPlitNum()+4;i++)
             {
-                GBlockSprite* sp = GBlockSprite::create(GBlock::create(blocks_data->at(i)));
-                sp->retain();
-                GGameController::getInstance()->blocks.push_back(sp);
+                std::vector<GBlockSprite*> blocks1;
+                GGameController::getInstance()->blocks.push_back(blocks1);
             }
+            
+//            GJsonArray* blocks_data = val->getArray("blocks");
+//            for(int i=0;i<blocks_data->size();i++)
+//            {
+//                GBlockSprite* sp = GBlockSprite::create(GBlock::create(blocks_data->at(i)));
+//                sp->retain();
+//                GGameController::getInstance()->blocks.push_back(sp);
+//            }
             
 //            GJsonArray* clounds_data = val->getArray("clounds");
 //            for(int i=0;i<clounds_data->size();i++)
@@ -254,7 +295,7 @@ void GModeUser::recConnResult(const char *data)
                     GGameController::getInstance()->bubble = sp;
                 }
             }
-            
+            GModeUser::addBlock();
             if(GGameController::getInstance()->scene)
                 GGameController::getInstance()->scene->resetInit();
         }

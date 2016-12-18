@@ -42,12 +42,17 @@ void GModeGame::move(cocos2d::Vec2 &dir,float power,GBubble* bubble)
     GJsonObject* val = GJsonObject::create();
     val->putString("uid", bubble->uid);
     val->putBool("robot", bubble->robot);
-    val->putDouble("dirX", dir.x);
-    val->putDouble("dirY", dir.y);
-    val->putDouble("power", power);
-    val->putDouble("x", bubble->x);
-    val->putDouble("y", bubble->y);
-    val->putDouble("rotate", bubble->rotate);
+//    val->putDouble("dirX", dir.x);
+//    val->putDouble("dirY", dir.y);
+//    val->putDouble("power", power);
+//    val->putDouble("x", bubble->x);
+//    val->putDouble("y", bubble->y);
+    
+    float angle = -180 / M_PI * dir.getAngle() + 90;
+    angle = angle < 0 ? (360 + angle) : angle;
+    
+    bubble->angle = angle;
+    val->putDouble("angle", bubble->angle);
     
     val->putBool("speedUp", (bubble->state == GBubble::State::SPEEDUP));
     
@@ -134,8 +139,11 @@ void GModeGame::eatBlock(GBlock* block,GBubble* bubble)
     GJsonObject* val = GJsonObject::create();
     val->putInt("id", block->_id);
     val->putInt("type", block->type);
+    val->putInt("exp", block->exp);
     val->putBool("robot", bubble->robot);
     val->putString("uid", bubble->uid);
+    val->putDouble("x", block->x);
+    val->putDouble("y", block->y);
     GJsonObject* val2 = GJsonObject::create();
     val2->putObject("body", val);
     GData* data = GData::create(gprotocol::MODE_GAME_EATBLOCK, val2);
@@ -182,24 +190,21 @@ void GModeGame::attackResult(const char *data)
     GGameController::getInstance()->attack(data);
 }
 
-void GModeGame::bulletCollision(GBullet *bullet,GBubble* target)
+void GModeGame::bulletCollision(GBubble* bubble,GBubble* target)
 {
     GJsonObject* val = GJsonObject::create();
-    val->putInt("id", bullet->_id);
-    val->putInt("damage", bullet->damage);
-    val->putInt("tid", bullet->tid);
-    val->putString("uid", bullet->uid);
-    
-    if(target)
+    if(bubble)
     {
-        val->putBool("target_robot", target->robot);
-        val->putString("target", target->uid);
+        val->putBool("bubble_robot", bubble->robot);
+        val->putString("bubble", bubble->uid);
     }
     else
     {
-        val->putBool("target_robot", false);
-        val->putString("target", "0");
+        val->putBool("bubble_robot", false);
+        val->putString("bubble", "0");
     }
+    val->putBool("target_robot", target->robot);
+    val->putString("target", target->uid);
 
     GJsonObject* val2 = GJsonObject::create();
     val2->putObject("body", val);
@@ -303,13 +308,14 @@ void GModeGame::relivedResult(const char* data)
         GGameController::getInstance()->relived(data);
 }
 
-void GModeGame::drop(GBubble* target)
+void GModeGame::drop(GBubble* target,GJsonArray* arr)
 {
     GJsonObject* val = GJsonObject::create();
     val->putBool("robot", target->robot);
     val->putString("target", target->uid);
     val->putDouble("x", target->x);
     val->putDouble("y", target->y);
+    val->putArray("pos", arr);
     
     GJsonObject* val2 = GJsonObject::create();
     val2->putObject("body", val);
@@ -360,8 +366,11 @@ void GModeGame::updatePos(GBubble* target)
         state = 4;
     val->putInt("state", state);
     
-    val->putDouble("x", target->x);
-    val->putDouble("y", target->y);
+//    val->putDouble("x", target->x);
+//    val->putDouble("y", target->y);
+    
+    val->putDouble("dirX", target->dirX);
+    val->putDouble("dirY", target->dirY);
     
     GJsonObject* val2 = GJsonObject::create();
     val2->putObject("body", val);
@@ -374,12 +383,14 @@ void GModeGame::updatePosResult(const char* data)
         GGameController::getInstance()->updatePos(data);
 }
 
-void GModeGame::updateHp(GBubble* target,int type)
+void GModeGame::updateHp(GBubble* target,int type,const cocos2d::Vec2 &dropPos)
 {
     GJsonObject* val = GJsonObject::create();
-    
+
     val->putString("uid", target->uid);
     val->putInt("type", type);
+    val->putInt("x", dropPos.x);
+    val->putInt("y", dropPos.y);
     
     GJsonObject* val2 = GJsonObject::create();
     val2->putObject("body", val);

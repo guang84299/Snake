@@ -32,5 +32,6 @@ void GUserController::enterHomeScene()
 
 void GUserController::enterGameScene()
 {
+//    auto t = TransitionFade::create(0.1f, GGameScene::createScene(), Color3B::BLACK);
     Director::getInstance()->replaceScene(GGameScene::createScene());
 }

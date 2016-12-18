@@ -21,6 +21,8 @@ public:
     static void heartBeatResult(const char* data);
     static void enterRoom();
     static void enterRoomResult(const char* data);
+    static void addBlock();
+    static void addBlockResult(const char* data);
     static void recConn(const char* type);
     static void recConnResult(const char* data);
     static void updateName(std::string name);

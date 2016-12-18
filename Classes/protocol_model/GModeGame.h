@@ -14,6 +14,7 @@
 class GBullet;
 class GBubble;
 class GBlock;
+class GJsonArray;
 
 class GModeGame : public cocos2d::Ref
 {
@@ -35,7 +36,7 @@ public:
     static void eatBlockResult(const char* data);
     static void attack(GBubble* bubble,GBullet* bullet);
     static void attackResult(const char* data);
-    static void bulletCollision(GBullet* bullet,GBubble* target);
+    static void bulletCollision(GBubble* bubble,GBubble* target);
     static void bulletCollisionResult(const char* data);
     static void bulletChangeTarget(GBullet* bullet,GBubble* target);
     static void bulletChangeTargetResult(const char* data);
@@ -48,13 +49,13 @@ public:
     static void rankingResult(const char* data);
     static void relived();
     static void relivedResult(const char* data);
-    static void drop(GBubble* target);
+    static void drop(GBubble* target,GJsonArray* arr);
     static void dropResult(const char* data);
     static void coll(GBubble* bubble,const cocos2d::Vec2 &collPos);
     static void collResult(const char* data);
     static void updatePos(GBubble* target);
     static void updatePosResult(const char* data);
-    static void updateHp(GBubble* target,int type);
+    static void updateHp(GBubble* target,int type,const cocos2d::Vec2 &dropPos);
     static void updateHpResult(const char* data);
 };
 

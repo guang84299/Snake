@@ -108,9 +108,9 @@ void GRockView::onTouchMoved(Touch* touch, Event  *event)
     {
         _dir = (_rock->getPosition()-p2).getNormalized();
         float apply = _rock->getPosition().getDistance(p2) / _r;
-        if(fabsf(_dir.getAngle(_lastDir)) >= 0.05f || fabsf(apply-_lastApply) > 0.1f)
+        if(fabsf(_dir.getAngle(_lastDir)) >= 0.1f || fabsf(apply-_lastApply) > 0.1f)
         {
-            _callback(_dir,apply,"move");
+            _callback(_dir,1,"move");
             _lastDir = _dir;
             _lastApply = apply;
         }
@@ -139,15 +139,15 @@ void GRockView::onTouchEnded(Touch* touch, Event  *event)
 
 void GRockView::update(float dt)
 {
-//     _callback(_dir,0,"");
-    rdt += dt;
-    if(rdt > 0.1f)
-    {
-        rdt = 0;
-        
-        if(fabsf(_dir.getAngle(_lastDir)) <= 0.05f)
-        {
-            
-        }
-    }
+//     _callback(_dir,1,"move");
+//    rdt += dt;
+//    if(rdt > 0.1f)
+//    {
+//        rdt = 0;
+//        
+//        if(fabsf(_dir.getAngle(_lastDir)) <= 0.05f)
+//        {
+//            
+//        }
+//    }
 }

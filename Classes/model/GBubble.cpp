@@ -27,32 +27,21 @@ GBubble* GBubble::create(GJsonObject* obj)
     bubble->name = obj->getString("name");
     std::string state = obj->getString("state");
     bubble->speed = obj->getDouble("speed");
-    bubble->accelerated = obj->getDouble("accelerated");
     bubble->sSpeed = obj->getDouble("sSpeed");
-    bubble->sAccelerated = obj->getDouble("sAccelerated");
-    bubble->sCD = obj->getDouble("sCD");
-    bubble->sDistance = obj->getInt("sDistance");
-    bubble->limitSpeed = obj->getDouble("limitSpeed");
-    bubble->limiRradius = obj->getDouble("limiRradius");
     bubble->rotateSpeed = obj->getDouble("rotateSpeed");
-    bubble->expendHP = obj->getDouble("expendHP");
     
     bubble->x = obj->getDouble("x");
     bubble->y = obj->getDouble("y");
     bubble->rotate = obj->getDouble("rotate");
+    bubble->angle = obj->getDouble("angle");
     bubble->dirX = obj->getDouble("dirX");
     bubble->dirY = obj->getDouble("dirY");
     
-    bubble->initHp = obj->getDouble("initHp");
-    bubble->HP = obj->getInt("HP");
-    bubble->currHp = obj->getInt("currHp");
     bubble->level = obj->getInt("level");
     bubble->exp = obj->getInt("exp");
     bubble->grow = obj->getDouble("grow");
     bubble->kill = obj->getInt("kill");
     bubble->die = obj->getInt("die");
-    bubble->recoverHP = obj->getInt("recoverHP");
-    bubble->recoverCD = obj->getDouble("recoverCD");
     bubble->reduceHP = obj->getInt("reduceHP");
     bubble->reduceCD = obj->getDouble("reduceCD");
     

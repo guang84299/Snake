@@ -30,7 +30,7 @@ void GRelived::initUI(GJsonObject* obj)
 {    
     std::string killMe = obj->getString("killMe");
     std::string killMeName = obj->getString("killMeName");
-    int rank = obj->getInt("rank");
+    int rank = obj->getInt("exp");
     int kill = obj->getInt("kill");
     
     int len = GTools::gbkStrLen(killMeName);
@@ -67,13 +67,15 @@ void GRelived::initUI(GJsonObject* obj)
     flags |= RichElementText::BOLD_FLAG;
     flags |= RichElementText::OUTLINE_FLAG;
     
-    auto sp = Sprite::create("jm-WZ2.png");
+    auto sp = Sprite::create("ui-wenzhi2.png");
     sp->setAnchorPoint(Vec2(1,0.5));
     sp->setScale(10/7.f);
     sp->setPosition(txt_bg->getContentSize().width/2-10,
                     txt_bg->getContentSize().height/2);
     txt_bg->addChild(sp);
     
+    if(killMeName == "0")
+        killMeName = _T("wall");
     auto info = Text::create(killMeName,"",42);
     info->setTextColor(Color4B::BLACK);
     info->setAnchorPoint(Vec2(0,0.5));
@@ -86,7 +88,7 @@ void GRelived::initUI(GJsonObject* obj)
 //    sp->setPosition(info->getPositionX()+ info->getContentSize().width/2+10, info->getPositionY());
 //    txt_bg->addChild(sp);
     
-    auto t_rank = Sprite::create("jm-WZ3.png");
+    auto t_rank = Sprite::create("ui-wenzhi1.png");
     t_rank->setAnchorPoint(Vec2(1,0.5));
     t_rank->setScale(10/7.f);
     t_rank->setPosition(Vec2(relived_bg->getContentSize().width/2+10,

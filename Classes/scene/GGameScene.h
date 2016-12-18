@@ -24,6 +24,7 @@ public:
     virtual bool init();
     void initUI();
     void resetInit();
+    void resetInitBlock();
     void initSprite();
     
     void start();
@@ -37,24 +38,28 @@ public:
     void coll(bool isSelf,cocos2d::Vec2 &pos,cocos2d::Vec2 &collPos,float rotate,std::string &uid);
     void rockHandler(cocos2d::Vec2 &dir,float power,const char *data);
     
+    //更新蛇头和敌人蛇身的碰撞
+    void updateCollBubble(float dt);
     //更新泡泡和水滴的碰撞检测
     void updateCollBubbleAndBlock(float dt);
     //更新机器人
     void updateRobot(float dt);
     //更新机器人状态
     void updateRobotState(GBubbleSprite * bubble);
+    //机器人躲避
+    void updateRobotAvoid();
     //更新所有位置
     void updateAllPos(float dt);
     //ui
     void updateCountDown(int time);
-    void rollBg();
+    void updateExp();
+    void rollBg(float dt);
     void updateRank(GJsonArray* arr);
     void openRelived(GJsonObject* obj);
     void reloved();
     void openGameOver(GJsonObject* obj);
     void updateBulletSkill(int bulletId);
     void updateSpeedCd(float time,float pro);
-    void updateAttackCd(float time,float pro);
 
     void recConn();
     CREATE_FUNC(GGameScene);
@@ -64,15 +69,16 @@ public:
     //截屏用到
     void cameraReset();
     void cameraResetClose();
+    bool isStart();
 private:
     cocos2d::Layer * gameLayer;
     cocos2d::TMXTiledMap* tmxMap;
-    cocos2d::Layer* cloundLayer;
-    cocos2d::Layer* hideLayer;
-    cocos2d::Layer* blockLayer;
-    cocos2d::Layer* bulletLayer;
     cocos2d::Layer* bubbleLayer;
-    std::vector<cocos2d::Sprite*> colls;
+    
+    cocos2d::SpriteBatchNode* blockLayer1;
+    cocos2d::SpriteBatchNode* blockLayer2;
+    cocos2d::SpriteBatchNode* blockLayer3;
+    cocos2d::SpriteBatchNode* blockLayer4;
     
     GRankView* rankView;
     
@@ -83,8 +89,10 @@ private:
     bool _start;
     GBubbleSprite* bubble;
     GNumber* _countDown;
+    RichText* myExp;
     float crystalsDt;
     float robotDt;
+    float robotAvoidDt;
     int robotNum;
     float robotCollDt;
     float updatePosDt;
@@ -93,10 +101,10 @@ private:
     bool moveBtn;
     cocos2d::Vec2 lastPos;
     cocos2d::Sprite* bulletSkill;
-    cocos2d::ProgressTimer* speedCd;
-    cocos2d::ProgressTimer* attackCd;
-    
+    cocos2d::ProgressTimer* speedCd;    
     GJsonObject* obj;
+    
+    float mapRollDt;
 };
 
 

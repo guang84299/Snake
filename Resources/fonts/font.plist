@@ -2,16 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>login ip</key>
+	<key>login ip1</key>
 	<string>http://104.238.126.116:8080/SnakeServer/user_login</string>
-	<key>login ip2</key>
-	<string>http://192.168.0.104:8080/SnakeServer/user_login</string>
+	<key>login ip</key>
+	<string>http://192.168.1.109:8080/SnakeServer/user_login</string>
+	<key>len</key>
+	<string>我的长度 </string>
+	<key>mi</key>
+	<string> 米</string>
 	<key>ranking</key>
 	<string>排名</string>
 	<key>rank_name</key>
 	<string>玩家</string>
 	<key>rank_kill</key>
-	<string>击杀</string>
+	<string>长度</string>
 	<key>rank_die</key>
 	<string>死亡</string>
 	<key>rank_reward</key>
@@ -46,5 +50,7 @@
 	<string> 奖励水晶 </string>
 	<key>share repeat</key>
 	<string>明天再来领取哦！</string>
+	<key>wall</key>
+	<string>墙壁</string>
 </dict>
 </plist>
