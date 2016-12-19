@@ -34,6 +34,7 @@ public:
     void setChild(GBodySprite* child);
     GBodySprite* getChild();
     
+    void resetScale(float sc);
     void showSpeed();
     void showSpeedEnd();
     void changeEnd();

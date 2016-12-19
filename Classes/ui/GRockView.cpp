@@ -108,7 +108,7 @@ void GRockView::onTouchMoved(Touch* touch, Event  *event)
     {
         _dir = (_rock->getPosition()-p2).getNormalized();
         float apply = _rock->getPosition().getDistance(p2) / _r;
-        if(fabsf(_dir.getAngle(_lastDir)) >= 0.1f || fabsf(apply-_lastApply) > 0.1f)
+        if(fabsf(_dir.getAngle(_lastDir)) >= 0.02f || fabsf(apply-_lastApply) > 0.1f)
         {
             _callback(_dir,1,"move");
             _lastDir = _dir;

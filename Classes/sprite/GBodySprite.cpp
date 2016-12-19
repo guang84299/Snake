@@ -93,6 +93,12 @@ bool GBodySprite::init(GBubbleSprite* bubble,cocos2d::Sprite* parent,int skinId,
     return true;
 }
 
+void GBodySprite::resetScale(float sc)
+{
+    this->sc = sc;
+    this->setScale(sc);
+}
+
 void GBodySprite::changeEnd()
 {
     this->initWithFile("juese-A3.png");

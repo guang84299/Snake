@@ -46,6 +46,7 @@ public:
     bool init(GBubble* bubble);
 
     void createShapeMode();
+    void resetAll();
     
     void initData();
     void initBody();
@@ -107,7 +108,10 @@ public:
     GBubble* bubble;
     bool isSpeedUp;
     bool isDelay;
+    bool isCheck;
     bool isColl;
+    float delayDt;
+    float angle;
     std::vector<GBodySprite*> bodys;
     std::vector<GPath> points;
     std::vector<GPath2> vecs;
