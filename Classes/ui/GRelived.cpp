@@ -32,7 +32,7 @@ void GRelived::initUI(GJsonObject* obj)
     std::string killMeName = obj->getString("killMeName");
     int rank = obj->getInt("exp");
     int kill = obj->getInt("kill");
-    
+    GCache::getInstance()->setKillMeUid(killMe);
     int len = GTools::gbkStrLen(killMeName);
     if(len > 8)
     {

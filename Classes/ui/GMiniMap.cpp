@@ -8,6 +8,7 @@
 
 #include "GMiniMap.h"
 #include "controller/GGameController.h"
+#include "data/GCache.h"
 
 USING_NS_CC;
 
@@ -52,6 +53,12 @@ void GMiniMapSprite::init(Type type,int _id)
     initSp();
 }
 
+void GMiniMapSprite::resetType(Type type)
+{
+    this->type = type;
+    initSp();
+}
+
 void GMiniMapSprite::initSp()
 {
     if(type == Type::SELF)
@@ -60,11 +67,11 @@ void GMiniMapSprite::initSp()
     }
     else if(type == Type::ENEMY)
     {
-        this->initWithFile("ui-ditu6.png");
+        this->initWithFile("ui-ditu5.png");
     }
     else if(type == Type::OBSTACLE)
     {
-        this->initWithFile("ui-ditu4.png");
+        this->initWithFile("ui-ditu6.png");
     }
     else if(type == Type::BULLET)
     {
@@ -186,10 +193,24 @@ void GMiniMap::initDta()
 
 }
 
+void GMiniMap::updateTarget()
+{
+    if(GCache::getInstance()->getKillMeUid() != "")
+    {
+        GMiniMapSprite* sp = find(GCache::getInstance()->getKillMeUid());
+        if(sp)
+        {
+            sp->resetType(GMiniMapSprite::Type::OBSTACLE);
+        }
+    }
+}
+
 void GMiniMap::add(GBubbleSprite* bubble)
 {
     std::string uid = bubble->bubble->uid;
     auto sp = GMiniMapSprite::create(GMiniMapSprite::Type::ENEMY, uid);
+    if(GCache::getInstance()->getKillMeUid() == uid)
+        sp->resetType(GMiniMapSprite::Type::OBSTACLE);
     Vec2 v(bubble->bubble->x,bubble->bubble->y);
     sp->setPosition(toVec(v));
     bg->addChild(sp);

@@ -30,6 +30,8 @@ public:
     void init(Type type,std::string uid);
     void init(Type type,int _id);
     void initSp();
+    void resetType(Type type);
+    
 public:
     Type type;
     std::string uid;
@@ -47,6 +49,8 @@ public:
     void initDta();
     
     void update(float dt);
+    
+    void updateTarget();
     
     void add(GBubbleSprite* bubble);
     void add(GBlockSprite* block);

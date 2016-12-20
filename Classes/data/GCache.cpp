@@ -197,6 +197,15 @@ int GCache::getShareAward()
     return this->shareAward;
 }
 
+void GCache::setKillMeUid(std::string killMeUid)
+{
+    this->killMeUid = killMeUid;
+}
+std::string GCache::getKillMeUid()
+{
+    return this->killMeUid;
+}
+
 int GCache::getMapPlitNum()
 {
     return 200;
@@ -242,3 +251,14 @@ bool GCache::isSound()
 {
     return UserDefault::getInstance()->getBoolForKey("sound");
 }
+
+void GCache::setHandStyle(bool isRight)
+{
+    UserDefault::getInstance()->setBoolForKey("handStyle", isRight);
+    UserDefault::getInstance()->flush();
+}
+bool GCache::isRightHand()
+{
+    return UserDefault::getInstance()->getBoolForKey("handStyle");
+}
+

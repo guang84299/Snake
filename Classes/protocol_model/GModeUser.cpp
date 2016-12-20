@@ -138,7 +138,7 @@ void GModeUser::enterRoomResult(const char *data)
             GCache::getInstance()->setMapId(mapId);
             GCache::getInstance()->setMapPosX(mapPosX);
             GCache::getInstance()->setMapPosY(mapPosY);
-            
+            GCache::getInstance()->setKillMeUid("");
             //水晶需要分批加载
 //            GJsonArray* blocks_data = val->getArray("blocks");
 //            for(int i=0;i<blocks_data->size();i++)

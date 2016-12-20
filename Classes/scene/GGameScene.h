@@ -90,6 +90,7 @@ private:
     GBubbleSprite* bubble;
     GNumber* _countDown;
     RichText* myExp;
+    cocos2d::Sprite* wifi;
     float crystalsDt;
     float robotDt;
     float robotAvoidDt;

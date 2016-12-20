@@ -75,11 +75,11 @@ void GRankView::updateItem(int index,GJsonObject* obj)
     Layout* item = (Layout*)_listView->getItem(index);
     item->setVisible(true);
     
-//    int rank = obj->getInt("rank");
+    int rank = obj->getInt("rank");
     std::string name = obj->getString("name");
     int exp = obj->getInt("exp");
     char c[7];
-//    sprintf(c, "%d",rank);
+    
     
     bool isSelf = false;
     if(name == GCache::getInstance()->getUser()->name)
@@ -112,6 +112,12 @@ void GRankView::updateItem(int index,GJsonObject* obj)
 //        t_rank->setColor(Color3B::RED);
         t_name->setColor(Color3B::RED);
         t_exp->setColor(Color3B::RED);
+        if(myRank != rank && rank <= 3)
+        {
+            sprintf(c, "%d",rank);
+            GTools::showTost2(nullptr, _T("prompt_0")+c);
+        }
+        myRank = rank;
     }
     else
     {

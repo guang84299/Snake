@@ -124,12 +124,22 @@ void GGameScene::initUI()
     myExp->pushBackElement(RichElementText::create(1,Color3B(245,230,126),255,"0","",24));
     myExp->pushBackElement(RichElementText::create(2,Color3B::WHITE,255,_T("mi"),"",24));
     
+    wifi = Sprite::create("ui-ditu6.png");
+    wifi->setAnchorPoint(Vec2(0.5,1));
+    wifi->setPosition(s.width/2-100, s.height-70);
+    wifi->setOpacity(0);
+    uiLayer->addChild(wifi);
+    
     Button* btn = Button::create("ui-anniu1.png","ui-anniu2.png");
     btn->setName("speed");
     btn->setAnchorPoint(Vec2(0.5,0));
     btn->setPosition(Vec2(s.width - btn->getContentSize().width/2 - 20,20));
     btn->addTouchEventListener(CC_CALLBACK_2(GGameScene::touchEvent, this));
     uiLayer->addChild(btn);
+    if(!GCache::isRightHand())
+    {
+        btn->setPosition(Vec2(btn->getContentSize().width/2 + 20,20));
+    }
 //    auto speed = Sprite::create("ui-anniu-jiasu1.png");
 //    speed->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
 //    btn->addChild(speed);
@@ -575,6 +585,14 @@ void GGameScene::updateCountDown(int time)
         _countDown->setNum(roomTime);
         
     }
+    
+    if(pingNum > 200)
+    {
+        wifi->runAction(Sequence::create(FadeIn::create(0.1f),
+                                         Blink::create(0.5f, 2),
+                                         FadeOut::create(0.1f),
+                                         NULL));
+    }
 }
 void GGameScene::updateExp()
 {
@@ -623,6 +641,7 @@ void GGameScene::reloved()
     bubble->changeState(GBubble::State::MOVE);
     GModeGame::move(dir,1,bubble->bubble);
     
+    miniMap->updateTarget();
     
     GTools::playSound(SOUND_START);
 }

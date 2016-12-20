@@ -24,6 +24,7 @@ public:
     CREATE_FUNC(GSetting);
     
     void initUI();
+    void onChangedRadioButtonSelect(cocos2d::ui::RadioButton* radioButton,cocos2d::ui::RadioButton::EventType type);
     void sliderEvent(Ref *pSender, Slider::EventType type);
     void touchEvent(cocos2d::Ref *pSender, Widget::TouchEventType type);
 private:

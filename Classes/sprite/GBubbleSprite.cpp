@@ -157,8 +157,9 @@ void GBubbleSprite::update(float dt)
     float angle = getUpdateRotation();
     
     float rotateSpeedSc = 1.4f;
-    if(isSpeedUp || isCheck)
-        rotateSpeedSc = 4.0f;
+    if(isSpeedUp)
+        rotateSpeedSc = 3.0f;
+        
     
     if(this->angle > angle)
     {
@@ -257,8 +258,8 @@ void GBubbleSprite::update(float dt)
     if(vecs.size())
     {
         delayDt = 0;
-        
-//        dir = (vecs.at(0).p - this->getPosition()).getNormalized();
+        if(isCheck)
+        dir = (vecs.at(0).p - this->getPosition()).getNormalized();
         lastDir = dir;
         Vec2 pos = dir*dt*speed + this->getPosition();
         this->setPosition(pos);
@@ -274,7 +275,7 @@ void GBubbleSprite::update(float dt)
     else
     {
         delayDt += dt;
-        if(delayDt>0.07f)
+        if(delayDt>0.04f)
         {
             delayDt = 0;
             isDelay = true;

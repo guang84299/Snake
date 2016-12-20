@@ -392,10 +392,52 @@ void GGameController::bulletCollision(const char *data)
     if(target)
     {
         target->die();
+        GJsonObject* dieData = obj->getObject("dieData");
         if(isSelf)
         {
-            GJsonObject* dieData = obj->getObject("dieData");
             scene->openRelived(dieData);
+        }
+        else
+        {
+            int rank = dieData->getInt("rank");
+            //先判断排名是否小于10
+            if(rank <= 10)
+            {
+                std::string killName = target->bubble->name;
+                std::string killMeName = dieData->getString("killMeName");
+                std::string killMe = dieData->getString("killMe");
+                //是否是自己击杀的
+                if(killMe == GCache::getInstance()->getUser()->uid)
+                {
+                    int killNum = dieData->getInt("killNum");
+                    if(killNum > 1 && killNum <= 5)
+                    {
+                        char c[7];
+                        sprintf(c, "%d",killNum);
+                        std::string t = "prompt_kill_";
+                        t += c;
+                        GTools::showTost2(nullptr, _T(t));
+                    }
+                    else if(killNum > 5)
+                    {
+                        GTools::showTost2(nullptr, _T("prompt_kill"));
+                    }
+                    else
+                    GTools::showTost2(nullptr, _T("prompt_2")+killName);
+                    
+                    //判断是否是上次击杀自己的人
+                    if(GCache::getInstance()->getKillMeUid() != ""
+                       && GCache::getInstance()->getKillMeUid() == target->bubble->uid)
+                    {
+                        GCache::getInstance()->setKillMeUid("");
+                        GTools::showTost(nullptr, _T("prompt_3"),0.7f);
+                    }
+                }
+                else
+                {
+                    GTools::showTost2(nullptr, killName+_T("prompt_1")+killMeName);
+                }
+            }
         }
     }
 }

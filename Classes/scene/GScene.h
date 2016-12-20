@@ -35,6 +35,7 @@ public:
 protected:
     cocos2d::Layer * uiLayer;
     cocos2d::Label* ping;
+    int pingNum;
 private:
     bool _exit;
 };

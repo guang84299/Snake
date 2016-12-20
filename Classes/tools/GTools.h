@@ -22,6 +22,8 @@ public:
     
     //ui
     static void showTost(cocos2d::Node* node,const std::string text);
+    static void showTost2(cocos2d::Node* node,const std::string text);
+    static void showTost(cocos2d::Node* node,const std::string text,float h);
     static std::string toTMXMap(std::string tmx);
     
     //sound

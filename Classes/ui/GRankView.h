@@ -34,6 +34,7 @@ public:
 private:
     ListView* _listView;
     bool conSelf;
+    int myRank;
 };
 
 #endif /* GRankView_h */
