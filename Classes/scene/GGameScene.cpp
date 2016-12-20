@@ -788,9 +788,9 @@ void GGameScene::updateCollBubbleAndBlock(float dt)
         //自己
         if(bubble->bubble->state != GBubble::State::DIE)
         {
-            for(int i=row-1;i<row+1;i++)
+            for(int i=row-1;i<row+2;i++)
             {
-                if(i > 0)
+                if(i >= 0 && i < pnum)
                 {
                     for(int j=0;j<GGameController::getInstance()->blocks[i].size();j++)
                     {
