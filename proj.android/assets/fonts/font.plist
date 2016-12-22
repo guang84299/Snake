@@ -2,9 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>login ip</key>
+	<key>login ip1</key>
 	<string>http://139.196.56.176/SnakeServer/user_login</string>
-	<key>login ip2</key>
+	<key>login ip</key>
 	<string>http://192.168.0.103:8080/SnakeServer/user_login</string>
 	<key>len</key>
 	<string>我的长度 </string>
@@ -22,6 +22,8 @@
 	<string>死亡</string>
 	<key>rank_reward</key>
 	<string>奖励</string>
+	<key>rank_title</key>
+	<string>排行榜</string>
 	<key>recConn</key>
 	<string>断线重连中...</string>
 	<key>visitor</key>

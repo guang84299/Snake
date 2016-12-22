@@ -62,6 +62,18 @@ void GGameController::start(const char* data)
 void GGameController::joinRoom(const char* data)
 {
     GJsonObject* obj = GJsonObject::create(data);
+    
+    bool clear = obj->getBool("clear");
+    if(clear)
+    {
+        std::string uid = obj->getString("uid");
+        GBubbleSprite* ps = findByUid(uid);
+        if(ps)
+        {
+            ps->leave();
+        }
+    }
+    
     GJsonObject* bubble_data = obj->getObject("bubble");
     GBubbleSprite* bubble = GBubbleSprite::create(GBubble::create(bubble_data));
     this->bubbles.push_back(bubble);
@@ -91,7 +103,7 @@ void GGameController::leaveRoom(const char *data)
             }
             else
             {
-                ps->die();
+                ps->leave();
             }
             
             break;
@@ -112,7 +124,7 @@ void GGameController::questLeaveRoom(const char *data)
         GBubbleSprite* ps = findByUid(uid);
         if(ps)
         {
-             ps->die();
+             ps->leave();
         }
     }
 }

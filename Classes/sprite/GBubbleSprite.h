@@ -64,6 +64,7 @@ public:
    
     void die();
     void dieEnd();
+    void leave();
     
     void addBody();
     void addBodyEnd();

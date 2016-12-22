@@ -1257,6 +1257,7 @@ void GGameScene::touchEvent(Ref *pSender, Widget::TouchEventType type)
             
             if(name == "speed")
             {
+                GModeUser::enterRoom();
                 speedUpBtn = false;
                 if(bubble->bubble->state != GBubble::State::DIE)
                 {

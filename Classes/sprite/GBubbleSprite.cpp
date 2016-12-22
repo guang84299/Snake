@@ -686,6 +686,20 @@ void GBubbleSprite::speedUpCDEnd()
     isSpeedUp = false;
 }
 
+void GBubbleSprite::leave()
+{
+    bubble->state = GBubble::State::DIE;
+    this->removeAllBody();
+    
+    std::string uid = bubble->uid;
+    bool robot = bubble->robot;
+    this->removeFromParent();
+    if(robot)
+        GGameController::getInstance()->deleteRobot(uid);
+    else
+        GGameController::getInstance()->deleteBubble(uid);
+}
+
 void GBubbleSprite::die()
 {
     bubble->state = GBubble::State::DIE;
