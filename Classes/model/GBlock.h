@@ -26,7 +26,7 @@ public:
 public:
     State state;
     int _id;
-    int type;//0:普通水滴  1：特殊子弹 2：血袋
+    int type;//0:普通水滴  1：掉落水晶 2：血袋
     int blockType;
     int exp;
     float x;

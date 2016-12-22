@@ -68,6 +68,7 @@ void GMiniMapSprite::initSp()
     else if(type == Type::ENEMY)
     {
         this->initWithFile("ui-ditu5.png");
+        this->setScale(0.3);
     }
     else if(type == Type::OBSTACLE)
     {
@@ -78,6 +79,7 @@ void GMiniMapSprite::initSp()
         this->initWithFile("ui-ditu5.png");
     }
 
+//    this->setAnchorPoint(Vec2(0.5,0.5));
 }
 
 
@@ -100,12 +102,19 @@ bool GMiniMap::init()
 void GMiniMap::initDta()
 {
 //    Node* node = this->getParent()->getParent()->getChildByName("map")->getChildByName("gameLayer");
-//    float sc = node->getContentSize().width / 250.f;
-//    Size s = node->getContentSize()/sc;
+//    Size s = node->getContentSize();
 //    
-//    bg->setContentSize(s);
-//    this->setContentSize(bg->getContentSize());
+//    float scw = this->getContentSize().width / s.width;
+//    float sch = this->getContentSize().height / s.height;
+    
     Size s = Director::getInstance()->getWinSize();
+    
+    Node* node = this->getParent()->getParent()->getChildByName("map")->getChildByName("gameLayer");
+    Size s2 = node->getContentSize();
+    
+    scw = this->getContentSize().width / s2.width * 0.9f;
+    sch = this->getContentSize().height / s2.height * 0.9f;
+    
     this->setPosition(Vec2(this->getContentSize().width/2,
                               s.height-this->getContentSize().height/2));
     
@@ -264,13 +273,7 @@ void GMiniMap::update(float dt)
 
 Vec2 GMiniMap::toVec(cocos2d::Vec2 &v)
 {
-    Node* node = this->getParent()->getParent()->getChildByName("map")->getChildByName("gameLayer");
-    Size s = node->getContentSize();
-    
-    float scw = (this->getContentSize().width-20) / s.width;
-    float sch = (this->getContentSize().height-20) / s.height;
-    
-    return Vec2(v.x*scw,v.y*sch);
+    return Vec2(v.x*scw,v.y*sch + 20);
 }
 
 GMiniMapSprite* GMiniMap::find(std::string uid)

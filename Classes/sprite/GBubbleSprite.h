@@ -66,7 +66,9 @@ public:
     void dieEnd();
     
     void addBody();
+    void addBodyEnd();
     void removeBody();
+    void removeBodyEnd();
     void removeAllBody();
     
     void playRelive();
@@ -99,11 +101,12 @@ private:
     cocos2d::Layer* modeLayer;
     cocos2d::Label* _name;
     cocos2d::Sprite* body;
-    cocos2d::Sprite* tou;
     bool isSelf;
     bool isSelfBubble;
     float dirPower;
     bool isSpeedDown;
+    std::vector<int> showSpeedNums;
+    float showSpeedDt;
 public:
     GBubble* bubble;
     bool isSpeedUp;

@@ -14,12 +14,16 @@
 	<string>排名</string>
 	<key>rank_name</key>
 	<string>玩家</string>
-	<key>rank_kill</key>
+	<key>rank_len</key>
 	<string>长度</string>
+	<key>rank_kill</key>
+	<string>击杀</string>
 	<key>rank_die</key>
 	<string>死亡</string>
 	<key>rank_reward</key>
 	<string>奖励</string>
+	<key>rank_title</key>
+	<string>排行榜</string>
 	<key>recConn</key>
 	<string>断线重连中...</string>
 	<key>visitor</key>

@@ -80,6 +80,11 @@ Animate* GTools::createAnimate(const std::string &file,int start,int end,float s
     return action;
 }
 
+Rect GTools::getTextureRect(const std::string &file)
+{
+    
+}
+
 void GTools::showTost(cocos2d::Node* node,const std::string text)
 {
     if(!node)
@@ -248,6 +253,8 @@ void GTools::preload()
     SimpleAudioEngine::getInstance()->preloadEffect(SOUND_GETHP);
     
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic(MUSIC_FIGHT);
+    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("she.plist");
 }
 
 

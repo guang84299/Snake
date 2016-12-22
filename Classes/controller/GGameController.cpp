@@ -246,7 +246,7 @@ void GGameController::eatBlock(const char *data)
     }
     if(sp)
     {
-        if(type == 0)
+        if(type == 0 || type == 1)
         {
             int level = obj->getInt("level");
             int exp = obj->getInt("exp");
@@ -258,14 +258,6 @@ void GGameController::eatBlock(const char *data)
                 sp->bubble->exp = exp;
                 sp->bubble->grow = grow;
                 sp->updateExp(up,false);
-            }
-        }
-        else if(type == 1)
-        {
-            int bulletId = obj->getInt("bulletId");
-            if(bulletId > 1)
-            {
-//                sp->changeSkillBullet(bulletId);
             }
         }
         else if(type == 2)
@@ -392,6 +384,7 @@ void GGameController::bulletCollision(const char *data)
     if(target)
     {
         target->die();
+        scene->updateRobotEat();
         GJsonObject* dieData = obj->getObject("dieData");
         if(isSelf)
         {
@@ -726,7 +719,7 @@ bool GGameController::isSelfBubble(GBubble* bubble)
 bool GGameController::isContain(GBubbleSprite* bubble,GBubbleSprite* target)
 {
     Size s = Director::getInstance()->getWinSize();
-    float r = sqrtf(s.width*s.width + s.height*s.height)/3;
+    float r = sqrtf(s.width*s.width + s.height*s.height);
     if(bubble != target)
     {
         int num = (int)target->bodys.size();

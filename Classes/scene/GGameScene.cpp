@@ -81,11 +81,19 @@ bool GGameScene::init()
     blockLayer4 = SpriteBatchNode::create("wujian-A4.png");
     gameLayer->addChild(blockLayer4);
     
-    bubbleLayer = Layer::create();
+    blockLayer5 = SpriteBatchNode::create("wujian-A5.png");
+    gameLayer->addChild(blockLayer5);
+    
+    blockLayer6 = SpriteBatchNode::create("wujian-A6.png");
+    gameLayer->addChild(blockLayer6);
+    
+    bubbleLayer = SpriteBatchNode::create("she.png");
     bubbleLayer->setName("bubbleLayer");
-//    bubbleLayer->setTag(GCommon::NO_COLL);
     gameLayer->addChild(bubbleLayer);
     
+    bubbleHeadLayer = Layer::create();
+    bubbleHeadLayer->setName("bubbleHeadLayer");
+    gameLayer->addChild(bubbleHeadLayer);
     
     initUI();
     resetInit();
@@ -97,6 +105,11 @@ bool GGameScene::init()
 void GGameScene::initUI()
 {
     Size s = Director::getInstance()->getWinSize();
+    
+    auto zhao = Sprite::create("jm-zz.png");
+    zhao->setScale(2);
+    zhao->setPosition(s.width/2,s.height/2);
+    uiLayer->addChild(zhao);
     
     GRockView* view = GRockView::create("ui-yaogan1.png",
                                         "ui-yaogan2.png",
@@ -124,9 +137,9 @@ void GGameScene::initUI()
     myExp->pushBackElement(RichElementText::create(1,Color3B(245,230,126),255,"0","",24));
     myExp->pushBackElement(RichElementText::create(2,Color3B::WHITE,255,_T("mi"),"",24));
     
-    wifi = Sprite::create("ui-ditu6.png");
+    wifi = Sprite::create("jm-wifi.png");
     wifi->setAnchorPoint(Vec2(0.5,1));
-    wifi->setPosition(s.width/2-100, s.height-70);
+    wifi->setPosition(s.width/2-140, s.height-60);
     wifi->setOpacity(0);
     uiLayer->addChild(wifi);
     
@@ -201,7 +214,10 @@ void GGameScene::resetInit()
     blockLayer2->removeAllChildren();
     blockLayer3->removeAllChildren();
     blockLayer4->removeAllChildren();
+    blockLayer5->removeAllChildren();
+    blockLayer6->removeAllChildren();
     bubbleLayer->removeAllChildren();
+    bubbleHeadLayer->removeAllChildren();
     
     initSprite();
     
@@ -214,6 +230,8 @@ void GGameScene::resetInitBlock()
     blockLayer2->removeAllChildren();
     blockLayer3->removeAllChildren();
     blockLayer4->removeAllChildren();
+    blockLayer5->removeAllChildren();
+    blockLayer6->removeAllChildren();
     
     //水滴
     for(int i=0;i<GGameController::getInstance()->blocks.size();i++)
@@ -242,6 +260,17 @@ void GGameScene::resetInitBlock()
                 block->init(blockLayer4->getTexture());
                 blockLayer4->addChild(block);
             }
+            else if(block->block->blockType == 5)
+            {
+                block->init(blockLayer5->getTexture());
+                blockLayer5->addChild(block);
+            }
+            else if(block->block->blockType == 6)
+            {
+                block->init(blockLayer6->getTexture());
+                blockLayer6->addChild(block);
+            }
+            
             
             block->release();
         }
@@ -272,7 +301,7 @@ void GGameScene::initSprite()
     {
         GBubbleSprite* robot = GGameController::getInstance()->robots.at(i);
         robot->setPosition(robot->bubble->x,robot->bubble->y);
-        bubbleLayer->addChild(robot,9999999);
+        bubbleHeadLayer->addChild(robot,9999999);
         robot->initBody();
         robot->release();
     }
@@ -281,14 +310,14 @@ void GGameScene::initSprite()
     {
         GBubbleSprite* bubble = GGameController::getInstance()->bubbles.at(i);
         bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
-        bubbleLayer->addChild(bubble,9999999);
+        bubbleHeadLayer->addChild(bubble,9999999);
         bubble->initBody();
         bubble->release();
     }
     //自己泡泡
     bubble = GGameController::getInstance()->bubble;
     bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
-    bubbleLayer->addChild(bubble,9999999);
+    bubbleHeadLayer->addChild(bubble,9999999);
     bubble->initBody();
     GGameController::getInstance()->bubble->release();
     
@@ -339,6 +368,37 @@ void GGameScene::rollBg(float dt)
     
     this->getDefaultCamera()->setPosition(x, y);
     uiLayer->setPosition(x-s.width/2, y-s.height/2);
+    
+    int z = this->getDefaultCamera()->getPositionZ();
+    if(z != cameraZ)
+    {
+        cameraZDt += dt;
+        if(cameraZDt > 1/30.f)
+        {
+            cameraZDt = 0;
+            if(z < cameraZ)
+                z ++;
+            else
+                z --;
+            this->getDefaultCamera()->setPositionZ(z);
+            uiLayer->setScale(z/622.f);
+        }
+    }
+    
+}
+
+void GGameScene::cameraScale()
+{
+    int sc = bubble->bubble->grow;
+    if(sc > 0)
+    {
+//        log("--------%f",bubble->bubble->grow);
+        cameraZ = 622.f*(1+sc/6.f);
+    }
+    else
+    {
+        cameraZ = 622;
+    }
 }
 
 void GGameScene::cameraReset()
@@ -400,7 +460,7 @@ void GGameScene::joinRoom(GBubbleSprite* bubble)
 {
     bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
 //    plane->updateRotation(plane->plane->rotate);
-    bubbleLayer->addChild(bubble,9999999);
+    bubbleHeadLayer->addChild(bubble,9999999);
     bubble->initBody();
     bubble->playRelive();
     
@@ -445,6 +505,16 @@ void GGameScene::addBlock(GBlockSprite* block,int x,int y)
     {
         block->init(blockLayer4->getTexture());
         blockLayer4->addChild(block);
+    }
+    else if(block->block->blockType == 5)
+    {
+        block->init(blockLayer5->getTexture());
+        blockLayer5->addChild(block);
+    }
+    else if(block->block->blockType == 6)
+    {
+        block->init(blockLayer6->getTexture());
+        blockLayer6->addChild(block);
     }
 
     if(x != 0)
@@ -586,7 +656,7 @@ void GGameScene::updateCountDown(int time)
         
     }
     
-    if(pingNum > 200)
+    if(pingNum > 260)
     {
         wifi->runAction(Sequence::create(FadeIn::create(0.1f),
                                          Blink::create(0.5f, 2),
@@ -634,7 +704,7 @@ void GGameScene::reloved()
     GGameController::getInstance()->bubble->release();
     bubble = GGameController::getInstance()->bubble;
     bubble->setPosition(bubble->bubble->x,bubble->bubble->y);
-    bubbleLayer->addChild(bubble,9999999);
+    bubbleHeadLayer->addChild(bubble,9999999);
     bubble->initBody();
     bubble->playRelive();
     Vec2 dir(bubble->bubble->dirX,bubble->bubble->dirY);
@@ -663,6 +733,7 @@ void GGameScene::openGameOver(GJsonObject* obj)
 
 void GGameScene::updateCollBubble(float dt)
 {
+    float headDis = 30;
     if(bubble->bubble->state != GBubble::State::DIE && !bubble->isColl)
     {
         //和其他人
@@ -675,7 +746,7 @@ void GGameScene::updateCollBubble(float dt)
                 {
                     GBodySprite* body = sp->bodys.at(j);
                     float dis = bubble->getUpdatePosition().getDistance(body->getPosition());
-                    if(dis < bubble->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                    if(dis < headDis + body->getCollSize().width/2*body->getScale())
                     {
 //                        bubble->changeState(GBubble::State::DIE);
                         bubble->coll();
@@ -697,7 +768,7 @@ void GGameScene::updateCollBubble(float dt)
                 {
                     GBodySprite* body = sp->bodys.at(j);
                     float dis = bubble->getUpdatePosition().getDistance(body->getPosition());
-                    if(dis < bubble->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                    if(dis < headDis + body->getCollSize().width/2*body->getScale())
                     {
 //                        bubble->changeState(GBubble::State::DIE);
                         bubble->coll();
@@ -733,7 +804,7 @@ void GGameScene::updateCollBubble(float dt)
                     {
                         GBodySprite* body = bubble->bodys.at(j);
                         float dis = sp->getUpdatePosition().getDistance(body->getPosition());
-                        if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                        if(dis < headDis + body->getCollSize().width/2*body->getScale())
                         {
 //                            sp->changeState(GBubble::State::DIE);
                             sp->coll();
@@ -753,7 +824,7 @@ void GGameScene::updateCollBubble(float dt)
                         {
                             GBodySprite* body = sp2->bodys.at(j);
                             float dis = sp->getUpdatePosition().getDistance(body->getPosition());
-                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                            if(dis < headDis + body->getCollSize().width/2*body->getScale())
                             {
 //                                sp->changeState(GBubble::State::DIE);
                                 sp->coll();
@@ -775,7 +846,7 @@ void GGameScene::updateCollBubble(float dt)
                         {
                             GBodySprite* body = sp2->bodys.at(j);
                             float dis = sp->getUpdatePosition().getDistance(body->getPosition());
-                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale())
+                            if(dis < headDis + body->getCollSize().width/2*body->getScale())
                             {
 //                                sp->changeState(GBubble::State::DIE);
                                 sp->coll();
@@ -872,28 +943,27 @@ void GGameScene::updateRobot(float dt)
         robotDt+=dt;
         robotCollDt+=dt;
         robotAvoidDt+=dt;
-        if(robotDt > 0.5f)
-        {
-            robotDt = 0;
-            
-            if(robotNum < size)
-            {
-                std::string uid = bubble->bubble->robotUid.at(robotNum);
-                GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
-                if(bubble && bubble->bubble->state != GBubble::State::DIE)
-                {
-//                    bubble->stopAttack();
-                    updateRobotState(bubble);
-                }
-            }
-            else
-            {
-                robotNum = -1;
-            }
-            robotNum++;
-        }
+//        if(robotDt > 0.5f)
+//        {
+//            robotDt = 0;
+//            
+//            if(robotNum < size)
+//            {
+//                std::string uid = bubble->bubble->robotUid.at(robotNum);
+//                GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
+//                if(bubble && bubble->bubble->state != GBubble::State::DIE)
+//                {
+//                    updateRobotState(bubble);
+//                }
+//            }
+//            else
+//            {
+//                robotNum = -1;
+//            }
+//            robotNum++;
+//        }
         
-        if(robotCollDt > 0.2)
+        if(robotCollDt > 0.3)
         {
             robotCollDt = 0;
             
@@ -903,13 +973,12 @@ void GGameScene::updateRobot(float dt)
                 GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
                 if(bubble && bubble->bubble->state != GBubble::State::DIE)
                 {
-                    if(bubble->isCollWall())
                     updateRobotState(bubble);
                 }
             }
         }
         
-        if(robotAvoidDt > 0.5)
+        if(robotAvoidDt > 0.2f)
         {
             robotAvoidDt = 0;
             
@@ -926,16 +995,50 @@ void GGameScene::updateRobotState(GBubbleSprite * bubble)
     if(state < 12)
     {
         //根据水滴找到方向
-        int size = (int)GGameController::getInstance()->blocks.size() - 1;
-        if(size <= 0)
-            return;
-        int r = random(0, size);
-        int size2 = (int)GGameController::getInstance()->blocks[r].size() - 1;
-        if(size2 <= 0)
-            return;
-        int r2 = random(0, size2);
-
-        GBlockSprite* block = GGameController::getInstance()->blocks[r].at(r2);
+        //先找经验是2的水晶
+        float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
+        int pnum = GCache::getMapPlitNum();
+        int row = bubble->getPositionX()/w;
+        
+        GBlockSprite* block = nullptr;
+        
+        for(int i=row-3;i<row+5;i++)
+        {
+            if(i >= 0 && i < pnum)
+            {
+                for(int j=0;j<GGameController::getInstance()->blocks[i].size();j++)
+                {
+                    GBlockSprite* sp = GGameController::getInstance()->blocks[i].at(j);
+                    if(sp->block->state != GBlock::State::DIE && sp->block->type == 1)
+                    {
+                        float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
+                        if(dis < 1200)
+                        {
+                            block = sp;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(block)
+                break;
+        }
+        
+        if(!block)
+        {
+            if(state < 7)
+                return;
+            int size = (int)GGameController::getInstance()->blocks.size() - 1;
+            if(size <= 0)
+                return;
+            int r = random(0, size);
+            int size2 = (int)GGameController::getInstance()->blocks[r].size() - 1;
+            if(size2 <= 0)
+                return;
+            int r2 = random(0, size2);
+            block = GGameController::getInstance()->blocks[r].at(r2);
+        }
+        
         Vec2 dir = (block->getPosition() - bubble->getPosition()).getNormalized();
         
         bubble->bubble->dirX = dir.x;
@@ -957,33 +1060,57 @@ void GGameScene::updateRobotAvoid()
             GBubbleSprite * sp = GGameController::getInstance()->findRobotByUid(uid);
             if(sp && sp->bubble->state != GBubble::State::DIE)
             {
-                //和自己
-                for(int j=0;j<bubble->bodys.size();j++)
+                //和墙壁
+                if(sp->isCollWall())
                 {
-                    GBodySprite* body = bubble->bodys.at(j);
-                    float dis = sp->getUpdatePosition().getDistance(body->getPosition());
-                    if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale() * 5)
+                    int size = (int)GGameController::getInstance()->blocks.size() - 1;
+                    if(size <= 0)
+                        continue;
+                    int r = random(0, size);
+                    int size2 = (int)GGameController::getInstance()->blocks[r].size() - 1;
+                    if(size2 <= 0)
+                        continue;
+                    int r2 = random(0, size2);
+                    GBlockSprite* block = GGameController::getInstance()->blocks[r].at(r2);
+                    Vec2 dir = (block->getPosition() - sp->getPosition()).getNormalized();
+                    
+                    sp->bubble->dirX = dir.x;
+                    sp->bubble->dirY = dir.y;
+                    sp->changeState(GBubble::State::MOVE);
+                    GModeGame::move(dir,1,sp->bubble);
+                    continue;
+                }
+                //和自己
+                if(GGameController::getInstance()->isContain(sp, this->bubble))
+                {
+                    for(int j=0;j<bubble->bodys.size();j++)
                     {
-                        Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
-                        
-                        bubble->bubble->dirX = dir.x;
-                        bubble->bubble->dirY = dir.y;
-                        bubble->changeState(GBubble::State::MOVE);
-                        GModeGame::move(dir,1,sp->bubble);
-                        break;
+                        GBodySprite* body = bubble->bodys.at(j);
+                        float dis = sp->getUpdatePosition().getDistance(body->getPosition());
+                        if(dis < sp->getContentSize().width/2 + body->getCollSize().width/2*body->getScale() * 5)
+                        {
+                            Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
+                            
+                            bubble->bubble->dirX = dir.x;
+                            bubble->bubble->dirY = dir.y;
+                            bubble->changeState(GBubble::State::MOVE);
+                            GModeGame::move(dir,1,sp->bubble);
+                            break;
+                        }
                     }
                 }
+                
                 //和其他人
                 for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
                 {
                     GBubbleSprite* sp2 = GGameController::getInstance()->bubbles.at(i);
-                    if(sp2->bubble->state != GBubble::State::DIE)
+                    if(sp2->bubble->state != GBubble::State::DIE && GGameController::getInstance()->isContain(sp, sp2))
                     {
                         for(int j=0;j<sp2->bodys.size();j++)
                         {
                             GBodySprite* body = sp2->bodys.at(j);
                             float dis = sp->getUpdatePosition().getDistance(body->getPosition());
-                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale() * 5)
+                            if(dis < sp->getContentSize().width/2 + body->getCollSize().width/2*body->getScale() * 5)
                             {
                                 Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
                                 
@@ -1002,13 +1129,13 @@ void GGameScene::updateRobotAvoid()
                 for(int i=0;i<GGameController::getInstance()->robots.size();i++)
                 {
                     GBubbleSprite* sp2 = GGameController::getInstance()->robots.at(i);
-                    if(sp2->bubble->state != GBubble::State::DIE && sp != sp2)
+                    if(sp2->bubble->state != GBubble::State::DIE && sp != sp2 && GGameController::getInstance()->isContain(sp, sp2))
                     {
                         for(int j=0;j<sp2->bodys.size();j++)
                         {
                             GBodySprite* body = sp2->bodys.at(j);
                             float dis = sp->getUpdatePosition().getDistance(body->getPosition());
-                            if(dis < sp->getContentSize().width/2 + body->getContentSize().width/2*body->getScale() * 5)
+                            if(dis < sp->getContentSize().width/2 + body->getCollSize().width/2*body->getScale() * 5)
                             {
                                 Vec2 dir = (sp->getPosition() - body->getPosition()).getNormalized();
                                 
@@ -1028,6 +1155,24 @@ void GGameScene::updateRobotAvoid()
         }
     }
 
+}
+
+void GGameScene::updateRobotEat()
+{
+    //自己的机器人
+    if(bubble->bubble->robotUid.size() > 0)
+    {
+        for(int i=0;i<bubble->bubble->robotUid.size();i++)
+        {
+            std::string uid = bubble->bubble->robotUid.at(i);
+            GBubbleSprite * sp = GGameController::getInstance()->findRobotByUid(uid);
+            
+            if(sp && sp->bubble->state != GBubble::State::DIE)
+            {
+                updateRobotState(sp);
+            }
+        }
+    }
 }
 
 void GGameScene::updateAllPos(float dt)

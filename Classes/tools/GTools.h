@@ -20,6 +20,8 @@ public:
     static cocos2d::Animate* createAnimate(const std::string &file,int num,float speed);
     static cocos2d::Animate* createAnimate(const std::string &file,int start,int end,float speed);
     
+    static cocos2d::Rect getTextureRect(const std::string &file);
+    
     //ui
     static void showTost(cocos2d::Node* node,const std::string text);
     static void showTost2(cocos2d::Node* node,const std::string text);

@@ -77,13 +77,13 @@ void GHomeScene::initUI()
     Button* btn = Button::create("an-annniu3-1.png","an-annniu3-2.png");
     btn->setName("start");
     btn->setScale9Enabled(true);
-    btn->setContentSize(Size(250,100));
+    btn->setContentSize(Size(250,130));
     btn->setPosition(Vec2(s.width/2,s.height*0.15f));
     btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
     bg->addChild(btn);
     
     auto t = Sprite::create("jm-souyeWZ1.png");
-    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(t);
     
     
@@ -107,7 +107,7 @@ void GHomeScene::initUI()
     std::string path = "juese";
     std::string path1 = path + skinId + std::string("-1.png");
     
-    head = Sprite::create(path1);
+    head = Sprite::createWithSpriteFrameName(path1);
 //    head->setAnchorPoint(Vec2(0, 0));
     head->setPosition(head_bg->getPosition());
     head->setScale(1);
@@ -228,7 +228,7 @@ void GHomeScene::updateUI()
     Node* name_bg = head->getParent();
     Vec2 p = head->getPosition();
     head->removeFromParent();
-    head = Sprite::create(path1);
+    head = Sprite::createWithSpriteFrameName(path1);
 //    head->setAnchorPoint(Vec2(0, 0));
     head->setPosition(p);
     head->setScale(1);

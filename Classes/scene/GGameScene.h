@@ -48,6 +48,8 @@ public:
     void updateRobotState(GBubbleSprite * bubble);
     //机器人躲避
     void updateRobotAvoid();
+    //机器人吃掉落水晶
+    void updateRobotEat();
     //更新所有位置
     void updateAllPos(float dt);
     //ui
@@ -66,6 +68,7 @@ public:
     
 public:
     GMiniMap* miniMap;
+    void cameraScale();
     //截屏用到
     void cameraReset();
     void cameraResetClose();
@@ -73,13 +76,16 @@ public:
 private:
     cocos2d::Layer * gameLayer;
     cocos2d::TMXTiledMap* tmxMap;
-    cocos2d::Layer* bubbleLayer;
+    cocos2d::Layer* bubbleHeadLayer;
+    cocos2d::SpriteBatchNode* bubbleLayer;
     
     cocos2d::SpriteBatchNode* blockLayer1;
     cocos2d::SpriteBatchNode* blockLayer2;
     cocos2d::SpriteBatchNode* blockLayer3;
     cocos2d::SpriteBatchNode* blockLayer4;
-    
+    cocos2d::SpriteBatchNode* blockLayer5;
+    cocos2d::SpriteBatchNode* blockLayer6;
+        
     GRankView* rankView;
     
     void touchEvent(Ref *pSender, Widget::TouchEventType type);
@@ -106,6 +112,9 @@ private:
     GJsonObject* obj;
     
     float mapRollDt;
+    
+    int cameraZ;
+    float cameraZDt;
 };
 
 

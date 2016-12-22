@@ -26,10 +26,15 @@ bool GRankView::init()
     bg->setPosition(s.width, s.height);
     this->addChild(bg);
     
+    Text* title = Text::create(_T("rank_title"),"",14);
+    title->setColor(Color3B::GRAY);
+    title->setPosition(Vec2(bg->getContentSize().width/2,bg->getContentSize().height - 12));
+    bg->addChild(title);
+    
     _listView = ListView::create();
     _listView->setDirection(ui::ScrollView::Direction::VERTICAL);
-    _listView->setContentSize(Size(160, 290));
-    _listView->setPosition(Vec2(10,8));
+    _listView->setContentSize(Size(140, 280));
+    _listView->setPosition(Vec2(22,26));
     bg->addChild(_listView);
     
 //    _listView->pushBackCustomItem(createHead());
@@ -110,8 +115,8 @@ void GRankView::updateItem(int index,GJsonObject* obj)
     if(isSelf)
     {
 //        t_rank->setColor(Color3B::RED);
-        t_name->setColor(Color3B::RED);
-        t_exp->setColor(Color3B::RED);
+        t_name->setColor(Color3B(97,194,76));
+        t_exp->setColor(Color3B(97,194,76));
         if(myRank != rank && rank <= 3)
         {
             sprintf(c, "%d",rank);
@@ -122,8 +127,8 @@ void GRankView::updateItem(int index,GJsonObject* obj)
     else
     {
 //        t_rank->setColor(Color3B::WHITE);
-        t_name->setColor(Color3B::WHITE);
-        t_exp->setColor(Color3B::WHITE);
+        t_name->setColor(Color3B::GRAY);
+        t_exp->setColor(Color3B::GRAY);
     }
 }
 
@@ -167,6 +172,7 @@ Layout* GRankView::createItem()
     
     Text* t_name = Text::create("", "", 18);
     t_name->setName("name");
+    t_name->setColor(Color3B::GRAY);
     t_name->setAnchorPoint(Vec2(0,0));
 //    t_name->setPosition(Vec2(_listView->getContentSize().width/6*3, 0));
     t_name->setPosition(Vec2(_listView->getContentSize().width/6+10, 0));
@@ -174,6 +180,7 @@ Layout* GRankView::createItem()
     
     Text* t_exp = Text::create("", "", 18);
     t_exp->setName("exp");
+    t_exp->setColor(Color3B::GRAY);
     t_exp->setAnchorPoint(Vec2(0.5,0));
 //    t_exp->setPosition(Vec2(_listView->getContentSize().width/6*5, 0));
     t_exp->setPosition(Vec2(_listView->getContentSize().width/6*5, 0));

@@ -74,7 +74,7 @@ void GUserInfo::initUI()
     std::string path = "juese";
     std::string path1 = path + skinId + std::string("-1.png");
     
-    auto skeleton = Sprite::create(path1);
+    auto skeleton = Sprite::createWithSpriteFrameName(path1);
 //    skeleton->setAnchorPoint(Vec2(0, 0));
     skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.65f);
     skeleton->setScale(1);
@@ -183,7 +183,7 @@ void GUserInfo::initLoginUI()
     std::string path = "juese";
     std::string path1 = path + skinId + std::string("-1.png");
     
-    auto skeleton = Sprite::create(path1);
+    auto skeleton = Sprite::createWithSpriteFrameName(path1);
 //    skeleton->setAnchorPoint(Vec2(0, 0));
     skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.65f);
     skeleton->setScale(1);
@@ -422,7 +422,7 @@ void GUserInfoUpdate::initUI()
     std::string path = "juese";
     std::string path1 = path + skinId + std::string("-1.png");
     
-    auto skeleton = Sprite::create(path1);
+    auto skeleton = Sprite::createWithSpriteFrameName(path1);
 //    skeleton->setAnchorPoint(Vec2(0, 0));
     skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.5f);
     skeleton->setScale(1.4f);

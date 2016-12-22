@@ -66,6 +66,9 @@ private:
     GMiniMapSprite* selfSp;
     std::vector<GMiniMapSprite*> enemySp;
     std::vector<GMiniMapSprite*> bulletSp;
+    
+    float scw;
+    float sch;
 };
 
 #endif /* GMiniMap_h */
