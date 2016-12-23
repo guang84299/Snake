@@ -146,6 +146,7 @@ void GMainScene::login()
         GCache::getInstance()->setUid(uid);
         GCache::setMusic(true);
         GCache::setSound(true);
+        GCache::setHandStyle(true);
     }
     val->putString("uid", uid.c_str());
     std::string data = "data="+val->toString();

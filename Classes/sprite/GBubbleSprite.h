@@ -49,6 +49,7 @@ public:
     void resetAll();
     
     void initData();
+    void initNew();
     void initBody();
     
     void update(float dt);
@@ -64,9 +65,12 @@ public:
    
     void die();
     void dieEnd();
+    void leave();
     
     void addBody();
+    void addBodyEnd();
     void removeBody();
+    void removeBodyEnd();
     void removeAllBody();
     
     void playRelive();
@@ -99,17 +103,19 @@ private:
     cocos2d::Layer* modeLayer;
     cocos2d::Label* _name;
     cocos2d::Sprite* body;
-    cocos2d::Sprite* tou;
     bool isSelf;
     bool isSelfBubble;
     float dirPower;
     bool isSpeedDown;
+    std::vector<int> showSpeedNums;
+    float showSpeedDt;
 public:
     GBubble* bubble;
     bool isSpeedUp;
     bool isDelay;
     bool isCheck;
     bool isColl;
+    bool isNew;
     float delayDt;
     float angle;
     std::vector<GBodySprite*> bodys;

@@ -99,6 +99,42 @@ void GSetting::initUI()
     if(GCache::isSound())
         slider->setPercent(100/4*3-3);
     
+    auto radioButtonGroup = RadioButtonGroup::create();
+    setBg->addChild(radioButtonGroup);
+    
+    RadioButton* radioButton = RadioButton::create("radio_button_off.png", "radio_button_on.png");
+    radioButton->setPosition(Vec2(setBg->getContentSize().width/2-50, 30));
+    radioButton->setName("left");
+    radioButtonGroup->addRadioButton(radioButton);
+    radioButton->addEventListener(CC_CALLBACK_2(GSetting::onChangedRadioButtonSelect, this));
+    setBg->addChild(radioButton);
+    
+    
+    Text* left = Text::create("LEFT","",16);
+    left->setAnchorPoint(Vec2(1,0.5));
+    left->setPosition(Vec2(radioButton->getPositionX() - radioButton->getContentSize().width/2 - 10,
+                           radioButton->getPositionY()));
+    setBg->addChild(left);
+
+
+    radioButton = RadioButton::create("radio_button_off.png", "radio_button_on.png");
+    radioButton->setPosition(Vec2(setBg->getContentSize().width/2+50, 30));
+    radioButton->setName("right");
+    radioButtonGroup->addRadioButton(radioButton);
+    radioButton->addEventListener(CC_CALLBACK_2(GSetting::onChangedRadioButtonSelect, this));
+    setBg->addChild(radioButton);
+    
+    if(GCache::isRightHand())
+    {
+        radioButtonGroup->setSelectedButton(1);
+    }
+    
+    Text* right = Text::create("RIGHT","",16);
+    right->setAnchorPoint(Vec2(1,0.5));
+    right->setPosition(Vec2(radioButton->getPositionX() - radioButton->getContentSize().width/2 - 10,
+                           radioButton->getPositionY()));
+    setBg->addChild(right);
+    
     //账号信息
 //    if(GCache::getInstance()->getUser()->login)
 //    {
@@ -136,6 +172,39 @@ void GSetting::initUI()
 //        t_sp->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
 //        btn->addChild(t_sp);
 //    }
+}
+
+
+void GSetting::onChangedRadioButtonSelect(RadioButton* radioButton, RadioButton::EventType type)
+{
+    if(radioButton == nullptr)
+    {
+        return;
+    }
+    std::string name = radioButton->getName();
+    switch (type)
+    {
+        case RadioButton::EventType::SELECTED:
+        {
+            if (name == "left") {
+                GCache::setHandStyle(false);
+            }
+            else
+            {
+                 GCache::setHandStyle(true);
+            }
+            break;
+        }
+            
+        case RadioButton::EventType::UNSELECTED:
+        {
+            radioButton->setSelected(false);
+            break;
+        }
+        default:
+            break;
+    }
+
 }
 
 void GSetting::sliderEvent(Ref *pSender, Slider::EventType type)

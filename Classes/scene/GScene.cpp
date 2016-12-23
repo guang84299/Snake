@@ -42,6 +42,7 @@ bool GScene::init()
 
 void GScene::updatePing(int pin)
 {
+    this->pingNum = pin;
     char c[7];
     sprintf(c, "%d",pin);
     std::string str = "Ping: ";

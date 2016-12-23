@@ -80,6 +80,11 @@ Animate* GTools::createAnimate(const std::string &file,int start,int end,float s
     return action;
 }
 
+Rect GTools::getTextureRect(const std::string &file)
+{
+    
+}
+
 void GTools::showTost(cocos2d::Node* node,const std::string text)
 {
     if(!node)
@@ -104,6 +109,59 @@ void GTools::showTost(cocos2d::Node* node,const std::string text)
     bg->addChild(l_text);
     
     bg->runAction(Sequence::create(FadeTo::create(0.1f,255),DelayTime::create(2.0f), FadeOut::create(0.2f),RemoveSelf::create(true), nullptr));
+}
+
+void GTools::showTost2(cocos2d::Node* node,const std::string text)
+{
+    if(!node)
+    {
+        node = Director::getInstance()->getRunningScene();
+        node = node->getChildByName("uiLayer");
+    }
+    
+    
+    Size s = Director::getInstance()->getWinSize();
+    
+    Label* l_text = Label::createWithSystemFont(text, "", 20);
+    
+    Size l_s = l_text->getContentSize();
+    
+    auto bg = Scale9Sprite::create("jm-tishi1.png");
+    bg->setContentSize(Size(MAX(l_s.width+20,200),MAX(l_s.height+20,60)));
+    bg->setPosition(Vec2(s.width/2,s.height*0.76f));
+    node->addChild(bg,1000000);
+    
+    l_text->setPosition(bg->getContentSize().width/2, bg->getContentSize().height/2);
+    bg->addChild(l_text);
+    
+    bg->runAction(Sequence::create(FadeTo::create(0.1f,255),DelayTime::create(2.0f), FadeOut::create(0.2f),RemoveSelf::create(true), nullptr));
+}
+
+void GTools::showTost(cocos2d::Node* node,const std::string text,float h)
+{
+    if(!node)
+    {
+        node = Director::getInstance()->getRunningScene();
+        node = node->getChildByName("uiLayer");
+    }
+    
+    
+    Size s = Director::getInstance()->getWinSize();
+    
+    Label* l_text = Label::createWithSystemFont(text, "", 20);
+    
+    Size l_s = l_text->getContentSize();
+    
+    auto bg = Scale9Sprite::create("jm-tishi1.png");
+    bg->setContentSize(Size(MAX(l_s.width+20,200),MAX(l_s.height+20,60)));
+    bg->setPosition(Vec2(s.width/2,s.height*h));
+    node->addChild(bg,1000000);
+    
+    l_text->setPosition(bg->getContentSize().width/2, bg->getContentSize().height/2);
+    bg->addChild(l_text);
+    
+    bg->runAction(Sequence::create(FadeTo::create(0.1f,255),DelayTime::create(2.0f), FadeOut::create(0.2f),RemoveSelf::create(true), nullptr));
+
 }
 
 
@@ -195,6 +253,8 @@ void GTools::preload()
     SimpleAudioEngine::getInstance()->preloadEffect(SOUND_GETHP);
     
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic(MUSIC_FIGHT);
+    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("she.plist");
 }
 
 

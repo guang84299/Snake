@@ -32,7 +32,7 @@ void GRelived::initUI(GJsonObject* obj)
     std::string killMeName = obj->getString("killMeName");
     int rank = obj->getInt("exp");
     int kill = obj->getInt("kill");
-    
+    GCache::getInstance()->setKillMeUid(killMe);
     int len = GTools::gbkStrLen(killMeName);
     if(len > 8)
     {
@@ -55,10 +55,20 @@ void GRelived::initUI(GJsonObject* obj)
     
     auto relived_bg = Sprite::create("jm-diban2.png");
     relived_bg->setPosition(s.width/2, s.height*0.7f);
-    bg->addChild(relived_bg);
+    bg->addChild(relived_bg,1);
+    
+    auto top_guang = Sprite::create("jm-diban4.png");
+    top_guang->setPosition(relived_bg->getPositionX(), relived_bg->getPositionY() + relived_bg->getContentSize().height/2-60);
+    top_guang->setScale(relived_bg->getContentSize().width/top_guang->getContentSize().width*0.6);
+    bg->addChild(top_guang,0);
+    
+    auto bottom_guang = Sprite::create("jm-diban3.png");
+    bottom_guang->setPosition(relived_bg->getPositionX(), relived_bg->getPositionY() - relived_bg->getContentSize().height/2+80);
+    bottom_guang->setScale(relived_bg->getContentSize().width/bottom_guang->getContentSize().width*0.6);
+    bg->addChild(bottom_guang,0);
     
     
-    auto txt_bg = Scale9Sprite::create("jm-tiao4.png");
+    auto txt_bg = Scale9Sprite::create("jm-tiao3.png");
     txt_bg->setContentSize(Size(relived_bg->getContentSize().width*0.85f,80));
     txt_bg->setPosition(relived_bg->getContentSize().width/2, relived_bg->getContentSize().height*0.7f);
     relived_bg->addChild(txt_bg);
@@ -77,7 +87,7 @@ void GRelived::initUI(GJsonObject* obj)
     if(killMeName == "0")
         killMeName = _T("wall");
     auto info = Text::create(killMeName,"",42);
-    info->setTextColor(Color4B::BLACK);
+//    info->setTextColor(Color4B::BLACK);
     info->setAnchorPoint(Vec2(0,0.5));
     info->setPosition(Vec2(sp->getPositionX() + 10, sp->getPositionY()));
     txt_bg->addChild(info);
@@ -125,7 +135,7 @@ void GRelived::initUI(GJsonObject* obj)
     bg->addChild(btn);
     
     auto title = Sprite::create("an-WZ5.png");
-    title->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+    title->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(title);
 
 

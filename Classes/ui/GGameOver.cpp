@@ -38,59 +38,63 @@ void GGameOver::initUI()
     auto gameover_bg = Sprite::create("jm-diban1.png");
     gameover_bg->setAnchorPoint(Vec2(0.5,1));
     gameover_bg->setPosition(s.width/2, s.height-30);
-    bg->addChild(gameover_bg);
+    bg->addChild(gameover_bg,1);
     
-    auto gameover_title = Sprite::create("jm-biaoti1.png");
-    gameover_title->setAnchorPoint(Vec2(0.5,1));
-    gameover_title->setPosition(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height+10);
-    gameover_bg->addChild(gameover_title);
+    auto top_guang = Sprite::create("jm-diban4.png");
+    top_guang->setAnchorPoint(Vec2(0.5,0));
+    top_guang->setPosition(gameover_bg->getPositionX(), gameover_bg->getPositionY()-40);
+    bg->addChild(top_guang,0);
+    
+    auto bottom_guang = Sprite::create("jm-diban3.png");
+    bottom_guang->setAnchorPoint(Vec2(0.5,1));
+    bottom_guang->setPosition(gameover_bg->getPositionX(), gameover_bg->getPositionY() - gameover_bg->getContentSize().height+34);
+    bg->addChild(bottom_guang,0);
     
     auto t_title = Sprite::create("jm-biaotiWZ1.png");
     t_title->setAnchorPoint(Vec2(0.5,1));
-    t_title->setPosition(Vec2(gameover_title->getContentSize().width/2,
-                              gameover_title->getContentSize().height-10));
-    gameover_title->addChild(t_title);
+    t_title->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height-32));
+    gameover_bg->addChild(t_title);
     
     Button* btn = Button::create("an-annniu2-1.png","an-annniu2-2.png");
     btn->setName("home");
-    btn->setPosition(Vec2(s.width/2-230,s.height*0.12f));
+    btn->setPosition(Vec2(s.width/2-230,s.height*0.1f));
     btn->addTouchEventListener(CC_CALLBACK_2(GGameOver::touchEvent, this));
     bg->addChild(btn);
     
     auto t = Sprite::create("an-WZ2.png");
-    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(t);
     
     btn = Button::create("an-annniu2-1.png","an-annniu2-2.png");
     btn->setName("again");
-    btn->setPosition(Vec2(s.width/2,s.height*0.12f));
+    btn->setPosition(Vec2(s.width/2,s.height*0.1f));
     btn->addTouchEventListener(CC_CALLBACK_2(GGameOver::touchEvent, this));
     bg->addChild(btn);
     
     t = Sprite::create("an-WZ3.png");
-    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(t);
     
     btn = Button::create("an-annniu3-1.png","an-annniu3-2.png");
     btn->setName("show");
-    btn->setPosition(Vec2(s.width/2+230,s.height*0.12f));
+    btn->setPosition(Vec2(s.width/2+230,s.height*0.1f));
     btn->addTouchEventListener(CC_CALLBACK_2(GGameOver::touchEvent, this));
     bg->addChild(btn);
     
     t = Sprite::create("an-WZ4.png");
-    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(t);
     
     
     _listView = ListView::create();
     _listView->setDirection(ui::ScrollView::Direction::VERTICAL);
-    _listView->setContentSize(Size(630, 330));
-    _listView->setPosition(Vec2(30, 88));
+    _listView->setContentSize(Size(656, 350));
+    _listView->setPosition(Vec2(28, 90));
     gameover_bg->addChild(_listView);
     
     Layout* head = createHead();
     head->setPosition(Vec2(_listView->getPositionX(),
-                           _listView->getContentSize().height+_listView->getPositionY()+10));
+                           _listView->getContentSize().height+_listView->getPositionY()+20));
     gameover_bg->addChild(head);
     
     end = createEnd();
@@ -149,7 +153,7 @@ void GGameOver::updateItem(int index,GJsonObject* obj)
     int rank = obj->getInt("rank");
     std::string name = obj->getString("name");
     int kill = obj->getInt("exp");
-    int die = obj->getInt("die");
+    int die = obj->getInt("kill");
     int rewardNum = obj->getInt("rewardNum");
     char c[7];
 //    sprintf(c, "%d",rank);
@@ -211,6 +215,14 @@ void GGameOver::updateItem(int index,GJsonObject* obj)
     
     GNumber* t_reward = (GNumber*)item->getChildByName("reward");
     t_reward->setNum(rewardNum);
+    
+    if(isSelf)
+    {
+        t_name->setColor(Color3B::WHITE);
+        t_kill->setColor(Color3B::WHITE);
+        t_die->setColor(Color3B::WHITE);
+        t_reward->setColor(Color3B::WHITE);
+    }
 }
 
 Layout* GGameOver::createHead()
@@ -229,34 +241,33 @@ Layout* GGameOver::createHead()
     item->addChild(txt_bg);
     
     Text* t_rank = Text::create(_T("ranking"), "", 20);
-    t_rank->setColor(Color3B(164,89,6));
+    t_rank->setColor(Color3B(255,247,156));
     t_rank->setAnchorPoint(Vec2(0.5,0.5));
-    t_rank->setPosition(Vec2(w*0.1f, h/2));
+    t_rank->setPosition(Vec2(w*0.1f, 0));
     txt_bg->addChild(t_rank);
     
     Text* t_name = Text::create(_T("rank_name"), "", 20);
-    t_name->setColor(Color3B(164,89,6));
+    t_name->setColor(Color3B(255,247,156));
     t_name->setAnchorPoint(Vec2(0.5,0.5));
-    t_name->setPosition(Vec2(w*0.3f, h/2));
+    t_name->setPosition(Vec2(w*0.3f, 0));
     txt_bg->addChild(t_name);
     
-    Text* t_kill = Text::create(_T("rank_kill"), "", 20);
-    t_kill->setColor(Color3B(164,89,6));
+    Text* t_kill = Text::create(_T("rank_len"), "", 20);
+    t_kill->setColor(Color3B(255,247,156));
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
-    t_kill->setPosition(Vec2(w*0.6f, h/2));
+    t_kill->setPosition(Vec2(w*0.5f, 0));
     txt_bg->addChild(t_kill);
     
-    Text* t_die = Text::create(_T("rank_die"), "", 20);
-    t_die->setColor(Color3B(164,89,6));
+    Text* t_die = Text::create(_T("rank_kill"), "", 20);
+    t_die->setColor(Color3B(255,247,156));
     t_die->setAnchorPoint(Vec2(0.5,0.5));
-    t_die->setPosition(Vec2(w*0.73f, h/2));
+    t_die->setPosition(Vec2(w*0.65f, 0));
     txt_bg->addChild(t_die);
-    t_die->setVisible(false);
     
     Text* t_reward = Text::create(_T("rank_reward"), "", 20);
-    t_reward->setColor(Color3B(164,89,6));
+    t_reward->setColor(Color3B(255,247,156));
     t_reward->setAnchorPoint(Vec2(0.5,0.5));
-    t_reward->setPosition(Vec2(w*0.85f, h/2));
+    t_reward->setPosition(Vec2(w*0.85f, 0));
     txt_bg->addChild(t_reward);
 
     
@@ -273,10 +284,10 @@ Layout* GGameOver::createItem()
     item->setContentSize(Size(w,h));
     item->setPosition(Vec2(0,0));
     
-    auto txt_bg = Scale9Sprite::create("jm-tiao2.png");
+    auto txt_bg = Scale9Sprite::create("jm-tiao3.png");
     txt_bg->setName("bg");
     txt_bg->setAnchorPoint(Vec2(0.5,0.5));
-    txt_bg->setContentSize(Size(w*sc,h));
+    txt_bg->setContentSize(Size(w*sc,h*0.8f));
     txt_bg->setPosition(w/2, h/2);
     item->addChild(txt_bg);
     
@@ -287,7 +298,7 @@ Layout* GGameOver::createItem()
     item->addChild(t_rank);
     
     Text* t_name = Text::create("aaaa", "", 23);
-    t_name->setColor(Color3B::WHITE);
+    t_name->setColor(Color3B(165,255,226));
     t_name->setName("name");
     t_name->setAnchorPoint(Vec2(0.5,0.5));
     t_name->setPosition(Vec2(w*0.3f, h/2));
@@ -296,23 +307,22 @@ Layout* GGameOver::createItem()
     item->addChild(t_name);
     
     Text* t_kill = Text::create("23", "", 24);
-    t_kill->setColor(Color3B::WHITE);
+    t_kill->setColor(Color3B(165,255,226));
     t_kill->setName("kill");
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
-    t_kill->setPosition(Vec2(w*0.6f, h/2));
+    t_kill->setPosition(Vec2(w*0.5f, h/2));
     t_kill->enableOutline(Color4B::BLACK,1);
     t_kill->enableGlow(Color4B::BLACK);
     item->addChild(t_kill);
     
     Text* t_die = Text::create("32", "", 24);
-    t_die->setColor(Color3B(248,65,58));
+    t_die->setColor(Color3B(165,255,226));
     t_die->setName("die");
     t_die->setAnchorPoint(Vec2(0.5,0.5));
-    t_die->setPosition(Vec2(w*0.73f, h/2));
+    t_die->setPosition(Vec2(w*0.65f, h/2));
     t_die->enableOutline(Color4B::BLACK,1);
     t_die->enableGlow(Color4B::BLACK);
     item->addChild(t_die);
-    t_die->setVisible(false);
 
     auto sp = Sprite::create("jm-zuanshi1.png");
     sp->setAnchorPoint(Vec2(1,0.5));
@@ -320,6 +330,7 @@ Layout* GGameOver::createItem()
     item->addChild(sp);
     
     auto t_reward = GNumber::create(0);
+    t_reward->setColor(Color3B(165,255,226));
     t_reward->setName("reward");
     t_reward->setAnchorPoint(Vec2(0,0.5));
     t_reward->setPosition(Vec2(w*0.85f+3, h/2));
@@ -343,6 +354,12 @@ Layout* GGameOver::createEnd()
     txt_bg->setPosition(w/2, h/2);
     item->addChild(txt_bg);
     
+    auto z = Sprite::create("jm-tiao2.png");
+    z->setName("z");
+    z->setAnchorPoint(Vec2(0.5,0.5));
+    z->setPosition(w/2, h+3);
+    item->addChild(z);
+    
     GNumber* t_rank = GNumber::create(1);
     t_rank->setName("rank");
     t_rank->setAnchorPoint(Vec2(0.5,0.5));
@@ -362,20 +379,19 @@ Layout* GGameOver::createEnd()
     t_kill->setColor(Color3B::WHITE);
     t_kill->setName("kill");
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
-    t_kill->setPosition(Vec2(w*0.6f, h/2));
+    t_kill->setPosition(Vec2(w*0.5f, h/2));
     t_kill->enableOutline(Color4B::BLACK,1);
     t_kill->enableGlow(Color4B::BLACK);
     item->addChild(t_kill);
     
     Text* t_die = Text::create("32", "", 24);
-    t_die->setColor(Color3B(248,65,58));
+    t_die->setColor(Color3B::WHITE);
     t_die->setName("die");
     t_die->setAnchorPoint(Vec2(0.5,0.5));
-    t_die->setPosition(Vec2(w*0.73f, h/2));
+    t_die->setPosition(Vec2(w*0.65f, h/2));
     t_die->enableOutline(Color4B::BLACK,1);
     t_die->enableGlow(Color4B::BLACK);
     item->addChild(t_die);
-    t_die->setVisible(false);
     
     auto sp = Sprite::create("jm-zuanshi1.png");
     sp->setAnchorPoint(Vec2(1,0.5));

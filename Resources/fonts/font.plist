@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>login ip</key>
+	<key>login ip1</key>
 	<string>http://139.196.56.176/SnakeServer/user_login</string>
-	<key>login ip2</key>
-	<string>http://192.168.1.109:8080/SnakeServer/user_login</string>
+	<key>login ip</key>
+	<string>http://192.168.0.103:8080/SnakeServer/user_login</string>
 	<key>len</key>
 	<string>我的长度 </string>
 	<key>mi</key>
@@ -14,12 +14,16 @@
 	<string>排名</string>
 	<key>rank_name</key>
 	<string>玩家</string>
-	<key>rank_kill</key>
+	<key>rank_len</key>
 	<string>长度</string>
+	<key>rank_kill</key>
+	<string>击杀</string>
 	<key>rank_die</key>
 	<string>死亡</string>
 	<key>rank_reward</key>
 	<string>奖励</string>
+	<key>rank_title</key>
+	<string>排行榜</string>
 	<key>recConn</key>
 	<string>断线重连中...</string>
 	<key>visitor</key>
@@ -52,5 +56,23 @@
 	<string>明天再来领取哦！</string>
 	<key>wall</key>
 	<string>墙壁</string>
+	<key>prompt_0</key>
+	<string>您当前的排名为：</string>
+	<key>prompt_1</key>
+	<string> 撞上了 </string>
+	<key>prompt_2</key>
+	<string>你击杀了 </string>
+	<key>prompt_3</key>
+	<string>复仇成功！</string>
+	<key>prompt_kill_2</key>
+	<string>双杀</string>
+	<key>prompt_kill_3</key>
+	<string>三杀</string>
+	<key>prompt_kill_4</key>
+	<string>四杀</string>
+	<key>prompt_kill_5</key>
+	<string>五杀</string>
+	<key>prompt_kill</key>
+	<string>超神</string>
 </dict>
 </plist>

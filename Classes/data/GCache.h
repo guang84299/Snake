@@ -63,6 +63,9 @@ public:
     void setShareAward(int shareAward);
     int getShareAward();
     
+    void setKillMeUid(std::string killMeUid);
+    std::string getKillMeUid();
+    
     static int getMapPlitNum();
     
     std::string getFont(const std::string &key);
@@ -75,6 +78,8 @@ public:
     static bool isMusic();
     static void setSound(bool sound);
     static bool isSound();
+    static void setHandStyle(bool isRight);
+    static bool isRightHand();
 private:
     std::string lang;
     GUser* _user;
@@ -89,6 +94,7 @@ private:
     std::vector<std::string> exps;
     std::vector<std::string> grows;
     std::string skins;
+    std::string killMeUid;
     int shareAward;
 };
 

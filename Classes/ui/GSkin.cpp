@@ -182,27 +182,27 @@ Layout* GSkin::createItem(int index)
     std::string path4 = path + skinId + std::string("-4.png");
     std::string path5 = path + skinId + std::string("-5.png");
     
-    auto skeleton = Sprite::create(path1);
+    auto skeleton = Sprite::createWithSpriteFrameName(path1);
     skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f);
     skeleton->setScale(1);
     bg->addChild(skeleton,5);
     
-    skeleton = Sprite::create(path4);
+    skeleton = Sprite::createWithSpriteFrameName(path4);
     skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30);
     skeleton->setScale(1);
     bg->addChild(skeleton,4);
     
-    skeleton = Sprite::create(path4);
+    skeleton = Sprite::createWithSpriteFrameName(path4);
     skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30*2);
     skeleton->setScale(1);
     bg->addChild(skeleton,3);
     
-    skeleton = Sprite::create(path4);
+    skeleton = Sprite::createWithSpriteFrameName(path4);
     skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30*3);
     skeleton->setScale(1);
     bg->addChild(skeleton,2);
     
-    skeleton = Sprite::create(path5);
+    skeleton = Sprite::createWithSpriteFrameName(path5);
     skeleton->setPosition(bg->getContentSize().width/2,bg->getContentSize().height*0.72f-30*4);
     skeleton->setScale(1);
     bg->addChild(skeleton,1);

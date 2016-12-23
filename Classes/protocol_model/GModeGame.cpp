@@ -68,7 +68,7 @@ void GModeGame::move(cocos2d::Vec2 &dir,float power,GBubble* bubble)
 
 void GModeGame::moveResult(const char *data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene && GGameController::getInstance()->scene->isStart())
         GGameController::getInstance()->move(data);
 }
 
@@ -96,13 +96,13 @@ void GModeGame::roomCountDownResult(const char *data)
 {
     GJsonObject* val = GJsonObject::create(data);
     int time = val->getInt("time");
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene && GGameController::getInstance()->scene->isStart())
     GGameController::getInstance()->updateCountDown(time);
 }
 
 void GModeGame::roomTimeOutResult(const char *data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene && GGameController::getInstance()->scene->isStart())
         GGameController::getInstance()->roomTimeOut(data);
 //    GUserController::getInstance()->enterHomeScene();
 }
@@ -130,7 +130,7 @@ void GModeGame::questLeaveRoomResult(const char *data)
 
 void GModeGame::addBlockResult(const char *data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene && GGameController::getInstance()->scene->isStart())
     GGameController::getInstance()->addBlock(data);
 }
 
@@ -152,7 +152,7 @@ void GModeGame::eatBlock(GBlock* block,GBubble* bubble)
 
 void GModeGame::eatBlockResult(const char *data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene && GGameController::getInstance()->scene->isStart())
     GGameController::getInstance()->eatBlock(data);
 }
 
@@ -288,7 +288,7 @@ void GModeGame::addRobotResult(const char *data)
 
 void GModeGame::rankingResult(const char *data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene  && GGameController::getInstance()->scene->isStart())
         GGameController::getInstance()->ranking(data);
 }
 //type 复活
@@ -379,7 +379,7 @@ void GModeGame::updatePos(GBubble* target)
 }
 void GModeGame::updatePosResult(const char* data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene  && GGameController::getInstance()->scene->isStart())
         GGameController::getInstance()->updatePos(data);
 }
 
@@ -399,7 +399,7 @@ void GModeGame::updateHp(GBubble* target,int type,const cocos2d::Vec2 &dropPos)
 }
 void GModeGame::updateHpResult(const char* data)
 {
-    if(GGameController::getInstance()->scene)
+    if(GGameController::getInstance()->scene  && GGameController::getInstance()->scene->isStart())
         GGameController::getInstance()->updateHp(data);
 }
 

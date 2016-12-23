@@ -30,6 +30,8 @@ public:
     void init(Type type,std::string uid);
     void init(Type type,int _id);
     void initSp();
+    void resetType(Type type);
+    
 public:
     Type type;
     std::string uid;
@@ -48,6 +50,8 @@ public:
     
     void update(float dt);
     
+    void updateTarget();
+    
     void add(GBubbleSprite* bubble);
     void add(GBlockSprite* block);
     
@@ -62,6 +66,9 @@ private:
     GMiniMapSprite* selfSp;
     std::vector<GMiniMapSprite*> enemySp;
     std::vector<GMiniMapSprite*> bulletSp;
+    
+    float scw;
+    float sch;
 };
 
 #endif /* GMiniMap_h */

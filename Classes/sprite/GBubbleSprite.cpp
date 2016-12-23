@@ -76,12 +76,18 @@ bool GBubbleSprite::init(GBubble *bubble)
     dirPower = 1;
     body_z = 99999;
     sSpeed = 0;
-
+    
     updateExp(false,false);
 //    this->schedule(SEL_SCHEDULE(&GBubbleSprite::update));
     this->runAction(Sequence::create(DelayTime::create(1),
                                      CallFunc::create(CC_CALLBACK_0(GBubbleSprite::initData, this)), NULL));
-    
+    if(bubble->state == GBubble::State::BORN)
+    {
+        isNew = true;
+        this->runAction(Sequence::create(DelayTime::create(3),
+                                         CallFunc::create(CC_CALLBACK_0(GBubbleSprite::initNew, this)), NULL));
+        body->setOpacity(80);
+    }
     return true;
 }
 
@@ -91,9 +97,18 @@ void GBubbleSprite::initData()
     
 }
 
+void GBubbleSprite::initNew()
+{
+    isNew = false;
+    for(int i=0;i<bodys.size();i++)
+        bodys.at(i)->runAction(FadeIn::create(0.5f));
+    
+    body->runAction(FadeIn::create(0.5f));
+}
+
 void GBubbleSprite::initBody()
 {
-    for(int i=0;i<bubble->level+14;i++)
+    for(int i=0;i<bubble->level+4;i++)
         addBody();
 }
 
@@ -120,17 +135,14 @@ void GBubbleSprite::createShapeMode()
     
     std::string path = "juese";
     std::string path1 = path + skinId + std::string("-1.png");
-    body = Sprite::create(path1);
+    body = Sprite::createWithSpriteFrameName(path1);
 //    body->setAnchorPoint(Vec2(0.5,1));
     body->setRotation(bubble->rotate);
     body->setScale(bubble->grow);
     modeLayer->addChild(body);
     
-    tou = Sprite::create();
-    body->addChild(tou);
     
     modeLayer->setContentSize(body->getContentSize()*body->getScale());
-    tou->setPosition(0, modeLayer->getContentSize().height/2);
 
     this->setContentSize(modeLayer->getContentSize());
 }
@@ -139,7 +151,6 @@ void GBubbleSprite::resetAll()
 {
     body->setScale(bubble->grow);
     modeLayer->setContentSize(body->getContentSize()*body->getScale());
-    tou->setPosition(0, modeLayer->getContentSize().height/2);
     
     this->setContentSize(modeLayer->getContentSize());
 
@@ -157,8 +168,9 @@ void GBubbleSprite::update(float dt)
     float angle = getUpdateRotation();
     
     float rotateSpeedSc = 1.4f;
-    if(isSpeedUp || isCheck)
-        rotateSpeedSc = 4.0f;
+    if(isSpeedUp)
+        rotateSpeedSc = 3.0f;
+        
     
     if(this->angle > angle)
     {
@@ -211,6 +223,21 @@ void GBubbleSprite::update(float dt)
             if(isSelf)
                 GModeGame::updateHp(bubble, 0,bodys.at(bodys.size()-1)->getPosition());
         }
+        
+        showSpeedDt += dt;
+        if(showSpeedDt > 0.03f)
+        {
+            showSpeedDt = 0;
+            for(int i=0;i<showSpeedNums.size();i++)
+            {
+                int showSpeedNum = showSpeedNums.at(i);
+                showSpeedNum++;
+                if(showSpeedNum >= bodys.size())
+                    showSpeedNum = 0;
+                showSpeedNums[i] = showSpeedNum;
+            }
+           
+        }
     }
     
     if(isCheck)
@@ -244,7 +271,18 @@ void GBubbleSprite::update(float dt)
             sp->setPosition(path.p);
             sp->setRotation(path.angle);
             if(isSpeedUp)
-                sp->showSpeed();
+            {
+                for(int j=0;j<showSpeedNums.size();j++)
+                {
+                    int showSpeedNum = showSpeedNums.at(j);
+                    if(i == showSpeedNum)
+                    {
+                        sp->showSpeed();
+                        break;
+                    }
+                }
+            }
+            
         }
     }
 //    int m_l = (int)bodys.size() * lag;
@@ -257,13 +295,13 @@ void GBubbleSprite::update(float dt)
     if(vecs.size())
     {
         delayDt = 0;
-        
-//        dir = (vecs.at(0).p - this->getPosition()).getNormalized();
+        if(isCheck)
+        dir = (vecs.at(0).p - this->getPosition()).getNormalized();
         lastDir = dir;
         Vec2 pos = dir*dt*speed + this->getPosition();
         this->setPosition(pos);
         float dis = vecs.at(0).p.getDistance(pos);
-        float d = 10;
+        float d = 15;
         if(isCheck || isSpeedUp)
             d = d*2;
         if(dis <= d)
@@ -274,11 +312,10 @@ void GBubbleSprite::update(float dt)
     else
     {
         delayDt += dt;
-        if(delayDt>0.07f)
+        if(delayDt>0.04f)
         {
             delayDt = 0;
             isDelay = true;
-            log("isDelay");
         }
         if(!isDelay)
         {
@@ -430,18 +467,21 @@ Vec2 GBubbleSprite::getMoveVec(Vec2 &v)
 
 bool GBubbleSprite::isCollWall()
 {
+    float dp = 10;
+    if(bubble->robot)
+        dp = 100;
     float w = this->getParent()->getParent()->getContentSize().width;
     float h = this->getParent()->getParent()->getContentSize().height;
     float dis = MAX(this->getContentSize().width/2,this->getContentSize().height/2);
     bool b = false;
     Vec2 v =  this->getPosition();
-    if(v.x < dis+10)
+    if(v.x < dis+dp)
         b = true;
-    if(v.x > w-dis-10)
+    if(v.x > w-dis-dp)
         b = true;
-    if(v.y < dis+10)
+    if(v.y < dis+dp)
         b = true;
-    if(v.y > h-dis-10)
+    if(v.y > h-dis-dp)
         b = true;
 
     return b;
@@ -487,7 +527,9 @@ void GBubbleSprite::updateExp(bool up,bool move)
     }
     if(up)
     {
-        addBody();
+        int num = bubble->level + 4 - (int)bodys.size();
+        for(int i=0;i<num;i++)
+            addBody();
     }
     if(move)
     {
@@ -506,6 +548,7 @@ void GBubbleSprite::updateExp(bool up,bool move)
         if(game)
         {
             game->updateExp();
+            game->cameraScale();
         }
     }
 }
@@ -658,6 +701,20 @@ void GBubbleSprite::speedUpCDEnd()
     isSpeedUp = false;
 }
 
+void GBubbleSprite::leave()
+{
+    bubble->state = GBubble::State::DIE;
+    this->removeAllBody();
+    
+    std::string uid = bubble->uid;
+    bool robot = bubble->robot;
+    this->removeFromParent();
+    if(robot)
+        GGameController::getInstance()->deleteRobot(uid);
+    else
+        GGameController::getInstance()->deleteBubble(uid);
+}
+
 void GBubbleSprite::die()
 {
     bubble->state = GBubble::State::DIE;
@@ -668,6 +725,11 @@ void GBubbleSprite::die()
                                      nullptr);
     this->stopAllActions();
     this->runAction(stop);
+    
+    for(int i=0;i<bodys.size();i++)
+        bodys.at(i)->runAction(FadeOut::create(0.9f));
+    
+    body->runAction(FadeOut::create(0.9f));
 }
 
 void GBubbleSprite::dieEnd()
@@ -713,28 +775,62 @@ void GBubbleSprite::addBody()
     if(bodys.size() == 0)
     {
         parent = this;
+        addBodyEnd();
     }
     else
     {
         parent = bodys.at(bodys.size()-1);
     }
-    auto b = GBodySprite::create(this,parent,bubble->skinId,(int)bodys.size(),body->getScale());
+    Node* bubbleLayer = this->getParent()->getParent()->getChildByName("bubbleLayer");
+    auto b = GBodySprite::create();
+    b->init(bubble->skinId,(int)bodys.size(),body->getScale(),false);
     b->setRotation(parent->getRotation());
     b->setPosition(parent->getPosition() );//+ getBodyDir(parent)*-14);
-    parent->getParent()->addChild(b,--body_z);
-    bodys.push_back(b);
+    bubbleLayer->addChild(b,--body_z);
+    bodys.insert(bodys.end()-1, b);
+    
+    if(isNew)
+    {
+        b->setOpacity(80);
+    }
 }
 
-void GBubbleSprite::removeBody()
+void GBubbleSprite::addBodyEnd()
+{
+    Sprite* parent = this;
+    Node* bubbleLayer = this->getParent()->getParent()->getChildByName("bubbleLayer");
+    auto b = GBodySprite::create();
+    b->init(bubble->skinId,(int)bodys.size(),body->getScale(),true);
+    b->setRotation(parent->getRotation());
+    b->setPosition(parent->getPosition() );//+ getBodyDir(parent)*-14);
+    bubbleLayer->addChild(b,0);
+    bodys.push_back(b);
+    
+    if(isNew)
+    {
+        b->setOpacity(80);
+    }
+}
+
+void GBubbleSprite::removeBodyEnd()
 {
     if(bodys.size() <= 4)
         return;
     GBodySprite* b = bodys.at(bodys.size()-1);
     b->removeFromParent();
     bodys.erase(bodys.begin() + (bodys.size()-1));
+}
+
+void GBubbleSprite::removeBody()
+{
+    if(bodys.size() <= 4)
+        return;
+    GBodySprite* b = bodys.at(bodys.size()-2);
+    b->removeFromParent();
+    bodys.erase(bodys.begin() + bodys.size()-2);
     
-    b = bodys.at(bodys.size()-1);
-    b->changeEnd();
+//    b = bodys.at(bodys.size()-2);
+//    b->changeEnd();
 }
 
 void GBubbleSprite::removeAllBody()
@@ -755,6 +851,7 @@ void GBubbleSprite::playRelive()
     sp->runAction(Sequence::create(GTools::createAnimate("tx-fuhuo", 9, 0.1f),
                                    RemoveSelf::create(),
                                    NULL));
+    
 }
 
 GGameScene* GBubbleSprite::getSelfGame()
@@ -917,31 +1014,43 @@ void GBubbleSprite::updatePos(float x,float y,float rotate,float time,bool up)
                     for (int i=0; i<ps.size(); i++) {
                         points.push_back(ps.at(i));
                     }
+                    
+                    int num = (int)bodys.size() / 10;
+                    showSpeedNums.clear();
+                    for(int i=0;i<=num;i++)
+                    {
+                        showSpeedNums.push_back(i*10);
+                    }
                 }
             }
             else
             {
                 this->isSpeedUp = false;
-                std::vector<GPath> ps;
-                for (int i = 0; i < points.size()-1; i++) {
-                    GPath p1 = points.at(i);
-                    GPath p2 = points.at(i+1);
-                    
-                    ps.push_back(p1);
-                    Vec2 p = (p2.p - p1.p).getNormalized() * p2.p.getDistance(p1.p) / 2;
-                    ps.push_back(GPath(p+p1.p,p2.angle));
-                }
-                ps.push_back(points.at(points.size()-1));
-                points.clear();
-                for (int i=0; i<ps.size(); i++)
+                if(points.size())
                 {
-                    points.push_back(ps.at(i));
+                    std::vector<GPath> ps;
+                    for (int i = 0; i < points.size()-1; i++) {
+                        GPath p1 = points.at(i);
+                        GPath p2 = points.at(i+1);
+                        
+                        ps.push_back(p1);
+                        Vec2 p = (p2.p - p1.p).getNormalized() * p2.p.getDistance(p1.p) / 2;
+                        ps.push_back(GPath(p+p1.p,p2.angle));
+                    }
+                    ps.push_back(points.at(points.size()-1));
+                    points.clear();
+                    for (int i=0; i<ps.size(); i++)
+                    {
+                        points.push_back(ps.at(i));
+                    }
+                    
+                    for(int i=0;i<bodys.size();i++)
+                    {
+                        bodys.at(i)->showSpeedEnd();
+                    }
+
                 }
                 
-                for(int i=0;i<bodys.size();i++)
-                {
-                    bodys.at(i)->showSpeedEnd();
-                }
             }
         }
         
@@ -1021,7 +1130,7 @@ void GBubbleSprite::move3()
 float GBubbleSprite::getCollAndBlock()
 {
 //    float r = MAX(this->getContentSize().width/2,this->getContentSize().height/2)*4.0f;
-    return  120;
+    return  100;
 }
 
 Vec2 GBubbleSprite::getBulletPosition(int type)
@@ -1035,7 +1144,7 @@ Vec2 GBubbleSprite::getBulletPosition(int type)
     else
     {
 //         v = body->getParent()->convertToWorldSpace(body->getPosition())-bulletLayer->getParent()->getPosition();
-        v = body->convertToWorldSpace(tou->getPosition())-bulletLayer->getParent()->getPosition();
+//        v = body->convertToWorldSpace(tou->getPosition())-bulletLayer->getParent()->getPosition();
     }
     return v;
 }

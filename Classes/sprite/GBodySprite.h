@@ -28,26 +28,24 @@ public:
 class GBodySprite : public cocos2d::Sprite
 {
 public:
-    static GBodySprite* create(GBubbleSprite* bubble,cocos2d::Sprite* parent,int skinId,int tag,float sc);
-    bool init(GBubbleSprite* bubble,cocos2d::Sprite* parent,int skinId,int tag,float sc);
+    static GBodySprite* create();
+    void init(int skinId,int tag,float sc,bool isEnd);
 
-    void setChild(GBodySprite* child);
-    GBodySprite* getChild();
     
     void resetScale(float sc);
     void showSpeed();
     void showSpeedEnd();
-    void changeEnd();
+    
+    const cocos2d::Size& getCollSize();
 public:
-    cocos2d::Sprite* parent;
-    GBodySprite* child;
-    GBubbleSprite* bubble;
     cocos2d::Sprite* color;
     cocos2d::Sprite* speed;
     bool isTou;
+    bool isEnd;
     int tag;
     int skinId;
     float op;
+    float op2;
     float sc;
 };
 

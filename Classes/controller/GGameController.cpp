@@ -46,6 +46,7 @@ void GGameController::start(const char* data)
     if(uid == GCache::getInstance()->getUser()->uid)
     {
         bubble->changeState(GBubble::State::IDLE);
+        scene->start();
     }
     else
     {
@@ -55,13 +56,24 @@ void GGameController::start(const char* data)
             bubble->changeState(GBubble::State::IDLE);
         }
     }
-    scene->start();
     log("start game");
 }
 
 void GGameController::joinRoom(const char* data)
 {
     GJsonObject* obj = GJsonObject::create(data);
+    
+    bool clear = obj->getBool("clear");
+    if(clear)
+    {
+        std::string uid = obj->getString("uid");
+        GBubbleSprite* ps = findByUid(uid);
+        if(ps)
+        {
+            ps->leave();
+        }
+    }
+    
     GJsonObject* bubble_data = obj->getObject("bubble");
     GBubbleSprite* bubble = GBubbleSprite::create(GBubble::create(bubble_data));
     this->bubbles.push_back(bubble);
@@ -91,7 +103,7 @@ void GGameController::leaveRoom(const char *data)
             }
             else
             {
-                ps->die();
+                ps->leave();
             }
             
             break;
@@ -112,7 +124,7 @@ void GGameController::questLeaveRoom(const char *data)
         GBubbleSprite* ps = findByUid(uid);
         if(ps)
         {
-             ps->die();
+             ps->leave();
         }
     }
 }
@@ -246,7 +258,7 @@ void GGameController::eatBlock(const char *data)
     }
     if(sp)
     {
-        if(type == 0)
+        if(type == 0 || type == 1)
         {
             int level = obj->getInt("level");
             int exp = obj->getInt("exp");
@@ -258,14 +270,6 @@ void GGameController::eatBlock(const char *data)
                 sp->bubble->exp = exp;
                 sp->bubble->grow = grow;
                 sp->updateExp(up,false);
-            }
-        }
-        else if(type == 1)
-        {
-            int bulletId = obj->getInt("bulletId");
-            if(bulletId > 1)
-            {
-//                sp->changeSkillBullet(bulletId);
             }
         }
         else if(type == 2)
@@ -392,10 +396,53 @@ void GGameController::bulletCollision(const char *data)
     if(target)
     {
         target->die();
+        scene->updateRobotEat();
+        GJsonObject* dieData = obj->getObject("dieData");
         if(isSelf)
         {
-            GJsonObject* dieData = obj->getObject("dieData");
             scene->openRelived(dieData);
+        }
+        else
+        {
+            int rank = dieData->getInt("rank");
+            //先判断排名是否小于10
+            if(rank <= 10)
+            {
+                std::string killName = target->bubble->name;
+                std::string killMeName = dieData->getString("killMeName");
+                std::string killMe = dieData->getString("killMe");
+                //是否是自己击杀的
+                if(killMe == GCache::getInstance()->getUser()->uid)
+                {
+                    int killNum = dieData->getInt("killNum");
+                    if(killNum > 1 && killNum <= 5)
+                    {
+                        char c[7];
+                        sprintf(c, "%d",killNum);
+                        std::string t = "prompt_kill_";
+                        t += c;
+                        GTools::showTost2(nullptr, _T(t));
+                    }
+                    else if(killNum > 5)
+                    {
+                        GTools::showTost2(nullptr, _T("prompt_kill"));
+                    }
+                    else
+                    GTools::showTost2(nullptr, _T("prompt_2")+killName);
+                    
+                    //判断是否是上次击杀自己的人
+                    if(GCache::getInstance()->getKillMeUid() != ""
+                       && GCache::getInstance()->getKillMeUid() == target->bubble->uid)
+                    {
+                        GCache::getInstance()->setKillMeUid("");
+                        GTools::showTost(nullptr, _T("prompt_3"),0.7f);
+                    }
+                }
+                else
+                {
+                    GTools::showTost2(nullptr, killName+_T("prompt_1")+killMeName);
+                }
+            }
         }
     }
 }
@@ -511,6 +558,11 @@ void GGameController::addRobot(const char *data)
 //    std::string uid = obj->getString("uid");
     GJsonObject* robot = obj->getObject("robot");
     GBubble *bubble = GBubble::create(robot);
+    GBubbleSprite* b = findRobotByUid(bubble->uid);
+    if(b)
+    {
+        deleteRobot(bubble->uid);
+    }
     GBubbleSprite* bubblesp = GBubbleSprite::create(bubble);
     bubblesp->retain();
     this->robots.push_back(bubblesp);
@@ -684,7 +736,7 @@ bool GGameController::isSelfBubble(GBubble* bubble)
 bool GGameController::isContain(GBubbleSprite* bubble,GBubbleSprite* target)
 {
     Size s = Director::getInstance()->getWinSize();
-    float r = sqrtf(s.width*s.width + s.height*s.height)/3;
+    float r = sqrtf(s.width*s.width + s.height*s.height);
     if(bubble != target)
     {
         int num = (int)target->bodys.size();

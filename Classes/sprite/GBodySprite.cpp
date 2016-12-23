@@ -11,10 +11,10 @@
 
 USING_NS_CC;
 
-GBodySprite* GBodySprite::create(GBubbleSprite* bubble,cocos2d::Sprite* parent,int skinId,int tag,float sc)
+GBodySprite* GBodySprite::create()
 {
     GBodySprite* sp = new GBodySprite();
-    if(sp && sp->init(bubble,parent,skinId,tag,sc))
+    if(sp)
     {
         sp->autorelease();
         return sp;
@@ -24,15 +24,13 @@ GBodySprite* GBodySprite::create(GBubbleSprite* bubble,cocos2d::Sprite* parent,i
 
 }
 
-bool GBodySprite::init(GBubbleSprite* bubble,cocos2d::Sprite* parent,int skinId,int tag,float sc)
+void GBodySprite::init(int skinId,int tag,float sc,bool isEnd)
 {
-    this->parent = parent;
     this->isTou = false;
+    this->isEnd = isEnd;
     this->skinId = skinId;
     this->tag = tag;
     this->sc = sc;
-    this->child = nullptr;
-    this->bubble = dynamic_cast<GBubbleSprite*>(parent);
     
     char c[7];
     sprintf(c, "%d",skinId);
@@ -40,57 +38,45 @@ bool GBodySprite::init(GBubbleSprite* bubble,cocos2d::Sprite* parent,int skinId,
     
     std::string path = "juese";
     std::string path2 = path + sId + std::string("-2.png");
-    std::string path3 = path + sId + std::string("-3.png");
+//    std::string path3 = path + sId + std::string("-3.png");
     std::string path4 = path + sId + std::string("-4.png");
     std::string path5 = path + sId + std::string("-5.png");
     
-    if(this->bubble)
-    {
-        this->isTou = true;
-    }
-    else
-    {
-        this->bubble = bubble;
-        GBodySprite* b = dynamic_cast<GBodySprite*>(parent);
-        if(b)
-        {
-            if(b->tag/5 % 2 == 1)
-            {
-                int t = b->tag % 5;
+    
+    if(isEnd)
+        this->initWithSpriteFrameName(path5);
 
-                b->color->setVisible(true);
-                float op = 0.2f;
-                if(t == 1)
-                    op = 0.7;
-                else if(t == 2)
-                    op = 1.0;
-                else if(t == 3)
-                    op = 0.5;
-                else if(t == 4)
-                    op = 0.3;
-                b->color->setOpacity(255*op);
-            }
-            b->initWithFile(path3);
-            
-            b->setChild(this);
-        }
-    }
-    this->initWithFile(path5);
-    
-    color = Sprite::create(path4);
-    color->setPosition(this->getContentSize().width/2, this->getContentSize().height/2);
-    color->setVisible(false);
-    this->addChild(color);
-    
-    speed  = Sprite::create(path2);
+    else
+        this->initWithSpriteFrameName(path4);
+
+//    color = Sprite::createWithSpriteFrameName(path4);
+//    color->setPosition(this->getContentSize().width/2, this->getContentSize().height/2);
+//    this->addChild(color);
+
+    speed  = Sprite::createWithSpriteFrameName(path2);
     speed->setPosition(this->getContentSize().width/2, this->getContentSize().height/2);
     speed->setOpacity(0);
     this->addChild(speed);
     
     this->setScale(sc);
-//    this->setContentSize(this->getContentSize()*sc);
-    this->op = 255 * ((20-(tag%20))/20.f);
-    return true;
+    
+//    if(tag/10 % 3 == 0)
+//    {
+//        this->op2 = 255 * (tag%10)/10.f;
+//    }
+//    else if(tag/10 % 3 == 1)
+//    {
+//        this->op2 = 255 * (10-(tag%10))/10.f;
+//    }
+//    else
+//    {
+//        this->op2 = 0;
+//        isShowSpeed = false;
+//    }
+    
+    this->op = this->op2;
+//    this->op = 255 * (tag%10)/10.f;
+    
 }
 
 void GBodySprite::resetScale(float sc)
@@ -99,32 +85,28 @@ void GBodySprite::resetScale(float sc)
     this->setScale(sc);
 }
 
-void GBodySprite::changeEnd()
-{
-    this->initWithFile("juese-A3.png");
-    child = nullptr;
-}
 
 void GBodySprite::showSpeed()
 {
-    this->op += 20;
-    if(this->op > 255)
-        this->op = 0;
-    speed->setOpacity(this->op);
+//    this->op -= 10;
+//    if(this->op > 255)
+//        this->op = 0;
+//    speed->setOpacity(this->op);
+    speed->setOpacity(0);
+    speed->runAction(Sequence::create(FadeIn::create(0.15f),
+                                      FadeOut::create(0.15f),
+                                      NULL));
 }
 
 void GBodySprite::showSpeedEnd()
 {
-    this->op = 255 * ((10-(tag%10))/10.f);
+//    this->op = this->op2;
     speed->setOpacity(0);
     speed->stopAllActions();
 }
 
-void GBodySprite::setChild(GBodySprite* child)
+
+const Size& GBodySprite::getCollSize()
 {
-    this->child = child;
-}
-GBodySprite* GBodySprite::getChild()
-{
-    return this->child;
+    return  this->getContentSize()*sc;
 }

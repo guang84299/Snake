@@ -26,9 +26,10 @@ public:
     void initUI();
     void initLoginUI();
     void touchEvent(cocos2d::Ref *pSender, Widget::TouchEventType type);
+    void textFieldEvent(cocos2d::Ref* sender, cocos2d::ui::TextField::EventType type);
 private:
     cocos2d::Layer* bg;
-    
+    TextField* nameField;
 };
 
 class GUserInfoUpdate : public cocos2d::Layer
