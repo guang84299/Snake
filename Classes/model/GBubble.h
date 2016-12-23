@@ -62,6 +62,8 @@ public:
 //    float currSp;
 //    float rotateTime;
     bool isf;
+    long killTime;
+    int killNum;
 };
 
 #endif /* GBubble_h */

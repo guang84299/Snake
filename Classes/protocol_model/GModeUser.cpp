@@ -38,25 +38,43 @@ void GModeUser::loginResult(const char* data)
     if(val->getBool("result"))
     {
         //成功缓存公用数据
-        int bulletId = val->getInt("bulletId");
+//        int bulletId = val->getInt("bulletId");
         std::string exps = val->getString("exps");
         std::string grows = val->getString("grows");
-        std::string skins = val->getArray("skins")->toString();
+        GJsonArray* arrskins = val->getArray("skins");
+        std::string skins = arrskins->toString();
+        std::string bubble = val->getObject("bubble")->toString();
         int shareAward = val->getInt("shareAward");
-        
-        std::vector<GBullet*> bullets;
-        GJsonArray* arr = val->getArray("bullets");
-        for(int i=0;i<arr->size();i++)
-        {
-            GBullet* bullet = GBullet::create(arr->at(i));
-            bullets.push_back(bullet);
-        }
-        GCache::getInstance()->setBulletId(bulletId);
-        GCache::getInstance()->setBullets(bullets);
+        std::string res_name = val->getString("res_name");
+//        std::vector<GBullet*> bullets;
+//        GJsonArray* arr = val->getArray("bullets");
+//        for(int i=0;i<arr->size();i++)
+//        {
+//            GBullet* bullet = GBullet::create(arr->at(i));
+//            bullets.push_back(bullet);
+//        }
+//        GCache::getInstance()->setBulletId(bulletId);
+//        GCache::getInstance()->setBullets(bullets);
         GCache::getInstance()->setExps(exps);
         GCache::getInstance()->setGrows(grows);
         GCache::getInstance()->setSkins(skins);
+        GCache::getInstance()->setSkinNum(arrskins->size());
+        GCache::getInstance()->setNames(res_name);
+        GCache::getInstance()->setBubble(bubble);
         GCache::getInstance()->setShareAward(shareAward);
+        
+        
+        int roomWidth = val->getInt("roomWidth");
+        int roomHeight = val->getInt("roomHeight");
+        int mapId = val->getInt("mapId");
+        float mapPosX = val->getDouble("mapPosX");
+        float mapPosY = val->getDouble("mapPosY");
+        GCache::getInstance()->setRoomWidth(roomWidth);
+        GCache::getInstance()->setRoomHeight(roomHeight);
+        GCache::getInstance()->setMapId(mapId);
+        GCache::getInstance()->setMapPosX(mapPosX);
+        GCache::getInstance()->setMapPosY(mapPosY);
+        
         
         GUserController::getInstance()->enterHomeScene();
         log("login success");

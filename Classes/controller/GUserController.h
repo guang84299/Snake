@@ -20,6 +20,7 @@ public:
     
     void enterHomeScene();
     void enterGameScene();
+    void enterGameScene2();
 private:
     
 };

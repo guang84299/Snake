@@ -179,6 +179,29 @@ float GCache::getGrow(int level)
 
 }
 
+int GCache::getLevel(int exp)
+{
+    if(exp <= 0)
+        return 0;
+    for(int i=1;i<exps.size();i++)
+    {
+        if(exp >= getExp(i) && exp < getExp(i+1))
+            return i+1;
+    }
+    return (int)exps.size();
+}
+
+void GCache::setNames(std::string names)
+{
+    this->names = GTools::subString(names, ",");
+}
+std::string GCache::getName()
+{
+    std::string name = this->names.at(random(0, (int)this->names.size()-1));
+    name = name.replace(0, 1, "");
+    return name.replace(name.size()-1,1,"");
+}
+
 void GCache::setSkins(std::string skins)
 {
     this->skins = skins;
@@ -186,6 +209,23 @@ void GCache::setSkins(std::string skins)
 std::string GCache::getSkins()
 {
     return this->skins;
+}
+void GCache::setSkinNum(int skinNum)
+{
+    this->skinNum = skinNum;
+}
+int GCache::getSkinNum()
+{
+    return this->skinNum;
+}
+
+void GCache::setBubble(std::string bubble)
+{
+    this->bubble = bubble;
+}
+std::string GCache::getBubble()
+{
+    return this->bubble;
 }
 
 void GCache::setShareAward(int shareAward)

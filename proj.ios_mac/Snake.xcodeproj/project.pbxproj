@@ -52,6 +52,8 @@
 		521A8EA919F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		521A8EAA19F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		6241B6601E0CC2C900733CB7 /* GGameScene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6241B65E1E0CC2C900733CB7 /* GGameScene2.cpp */; };
+		6241B6611E0CC2C900733CB7 /* GGameScene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6241B65E1E0CC2C900733CB7 /* GGameScene2.cpp */; };
 		624CC1DE1DF9597100F691DB /* GCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC1DC1DF9597100F691DB /* GCommon.cpp */; };
 		624CC1DF1DF9597500F691DB /* GCommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC1DC1DF9597100F691DB /* GCommon.cpp */; };
 		624CC1E51DF9598C00F691DB /* GGameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 624CC1E11DF9598B00F691DB /* GGameController.cpp */; };
@@ -233,6 +235,8 @@
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		521A8EA819F11F5000D177D7 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		6241B65E1E0CC2C900733CB7 /* GGameScene2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GGameScene2.cpp; path = scene/GGameScene2.cpp; sourceTree = "<group>"; };
+		6241B65F1E0CC2C900733CB7 /* GGameScene2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGameScene2.h; path = scene/GGameScene2.h; sourceTree = "<group>"; };
 		624CC1DC1DF9597100F691DB /* GCommon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GCommon.cpp; path = common/GCommon.cpp; sourceTree = "<group>"; };
 		624CC1DD1DF9597100F691DB /* GCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCommon.h; path = common/GCommon.h; sourceTree = "<group>"; };
 		624CC1E11DF9598B00F691DB /* GGameController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GGameController.cpp; path = controller/GGameController.cpp; sourceTree = "<group>"; };
@@ -622,6 +626,8 @@
 				624CC2301DF95A3900F691DB /* GMainScene.h */,
 				624CC2311DF95A3900F691DB /* GScene.cpp */,
 				624CC2321DF95A3900F691DB /* GScene.h */,
+				6241B65E1E0CC2C900733CB7 /* GGameScene2.cpp */,
+				6241B65F1E0CC2C900733CB7 /* GGameScene2.h */,
 			);
 			name = scene;
 			sourceTree = "<group>";
@@ -829,6 +835,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6241B6601E0CC2C900733CB7 /* GGameScene2.cpp in Sources */,
 				624CC20C1DF959E600F691DB /* GHttp.cpp in Sources */,
 				624CC2751DF95A9800F691DB /* GRockView.cpp in Sources */,
 				624CC2011DF959C100F691DB /* GUser.cpp in Sources */,
@@ -917,6 +924,7 @@
 				624CC2031DF959C700F691DB /* GBubble.cpp in Sources */,
 				624CC2881DF95AB800F691DB /* GTouchLayer.cpp in Sources */,
 				624CC27F1DF95AA000F691DB /* GNumber.cpp in Sources */,
+				6241B6611E0CC2C900733CB7 /* GGameScene2.cpp in Sources */,
 				624CC2851DF95AAF00F691DB /* GShaderView.cpp in Sources */,
 				624CC2811DF95AA500F691DB /* GRelived.cpp in Sources */,
 				624CC2381DF95A3E00F691DB /* GHomeScene.cpp in Sources */,

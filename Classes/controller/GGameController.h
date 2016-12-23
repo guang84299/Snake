@@ -16,6 +16,7 @@
 #include "sprite/GBulletSprite.h"
 #include "sprite/GCloundSprite.h"
 #include "scene/GGameScene.h"
+#include "scene/GGameScene2.h"
 
 
 class GGameController : public cocos2d::Ref
@@ -26,6 +27,7 @@ private:
 public:
     static GGameController* getInstance();
     void init(GGameScene * scene);
+    void init2(GGameScene2 * scene);
     
     void start(const char* data);
     void joinRoom(const char* data);
@@ -70,6 +72,7 @@ public:
     GBlockSprite* findBlock(int _id,float x,float y);
 public:
     GGameScene * scene;
+    GGameScene2 * scene2;
     GBubbleSprite* bubble;
     std::vector<GBubbleSprite* > bubbles;
     

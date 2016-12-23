@@ -23,6 +23,7 @@ using namespace spine;
 using namespace cocos2d::ui;
 
 class GGameScene;
+class GGameScene2;
 
 class GPath2
 {
@@ -53,7 +54,8 @@ public:
     void initBody();
     
     void update(float dt);
-    void updateBody(cocos2d::Action* ac);
+    void update2(float dt);
+    void updateAngle(const cocos2d::Vec2 &dir);
     
     void move(cocos2d::Vec2 &dir,float power,bool speedUp);
     void move2();
@@ -65,6 +67,8 @@ public:
    
     void die();
     void dieEnd();
+    void die2();
+    void dieEnd2();
     void leave();
     
     void addBody();
@@ -89,6 +93,7 @@ public:
     bool isRotate();
     void changeState(GBubble::State state);
     GGameScene* getSelfGame();
+    GGameScene2* getSelfGame2();
     
     void updatePos(float x,float y,float rotate,float time,bool up);
     void move3();
