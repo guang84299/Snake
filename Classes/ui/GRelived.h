@@ -25,6 +25,7 @@ public:
     
     CREATE_FUNC(GRelived);
     
+    void setGame2(bool game2);
     void initUI(GJsonObject* obj);
     void updateTime(float dt);
     void touchEvent(cocos2d::Ref *pSender, Widget::TouchEventType type);
@@ -33,6 +34,7 @@ private:
     GNumber* t_time;
     
     int time;
+    bool game2;
 };
 
 #endif /* GRelived_h */

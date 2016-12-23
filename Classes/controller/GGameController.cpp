@@ -39,6 +39,11 @@ void GGameController::init(GGameScene *scene)
     this->scene = scene;
 }
 
+void GGameController::init2(GGameScene2 *scene2)
+{
+    this->scene2 = scene2;
+}
+
 void GGameController::start(const char* data)
 {
     GJsonObject* obj = GJsonObject::create(data);
@@ -898,8 +903,10 @@ void GGameController::deleteBubble(std::string &uid)
             break;
         }
     }
-    
-    scene->miniMap->remove(uid);
+    if(scene)
+        scene->miniMap->remove(uid);
+    else if(scene2)
+        scene2->miniMap->remove(uid);
 }
 
 void GGameController::deleteRobot(std::string &uid)
@@ -920,5 +927,8 @@ void GGameController::deleteRobot(std::string &uid)
             break;
         }
     }
-    scene->miniMap->remove(uid);
+    if(scene)
+        scene->miniMap->remove(uid);
+    else if(scene2)
+        scene2->miniMap->remove(uid);
 }

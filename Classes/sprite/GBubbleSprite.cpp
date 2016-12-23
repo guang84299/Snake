@@ -326,12 +326,188 @@ void GBubbleSprite::update(float dt)
     }
 }
 
-void GBubbleSprite::updateBody(cocos2d::Action* ac)
+void GBubbleSprite::update2(float dt)
 {
+    if(bubble->state == GBubble::State::DIE)
+        return;
+    
+    float angle = getUpdateRotation();
+    
+    
+    if(this->angle > angle)
+    {
+        float dis = this->angle - angle;
+        float dis2 = 360 - this->angle + angle;
+        if(dis < dis2)
+        {
+            angle = angle + bubble->rotateSpeed*dt;
+            if(angle > this->angle)
+                angle = this->angle;
+        }
+        else
+        {
+            angle = angle - bubble->rotateSpeed*dt;
+            if(angle < 0)
+                angle = 360 + angle;
+        }
+    }
+    else
+    {
+        float dis = angle - this->angle;
+        float dis2 = 360 - angle + this->angle;
+        if(dis < dis2)
+        {
+            angle = angle - bubble->rotateSpeed*dt;
+            if(angle < this->angle)
+                angle = this->angle;
+        }
+        else
+        {
+            angle = angle + bubble->rotateSpeed*dt;
+            if(angle > 360)
+                angle = angle - 360;
+        }
+    }
+    updateRotation(angle);
+    
+    Vec2 dir = getCurrDir();
+    
+    float speed = bubble->speed;
+    int lag = 40*body->getScale();
+    if(isSpeedUp)
+    {
+        speed = bubble->sSpeed;
+        lag =  roundf(lag/2.f);
+        sSpeed += dt;
+        if(sSpeed >= bubble->reduceCD)
+        {
+            sSpeed = 0;
+//            if(isSelf)
+//                GModeGame::updateHp(bubble, 0,bodys.at(bodys.size()-1)->getPosition());
+        }
+        
+        showSpeedDt += dt;
+        if(showSpeedDt > 0.03f)
+        {
+            showSpeedDt = 0;
+            for(int i=0;i<showSpeedNums.size();i++)
+            {
+                int showSpeedNum = showSpeedNums.at(i);
+                showSpeedNum++;
+                if(showSpeedNum >= bodys.size())
+                    showSpeedNum = 0;
+                showSpeedNums[i] = showSpeedNum;
+            }
+            
+        }
+    }
+    
+    float t = dt/4;
+    for(int i=1;i<=4;i++)
+    {
+        Vec2 pos = dir * speed * t * i + this->getPosition();
+        points.push_back(GPath(pos, this->getUpdateRotation()));
+    }
+    
+    int p = (int)points.size()-1;
     for(int i=0;i<bodys.size();i++)
     {
-//        GBodySprite* sp = bodys.at(i);
-//        sp->move(0.1f*i,ac->clone());
+        p = p - lag;
+        if(p>=0)
+        {
+            GBodySprite* sp = bodys.at(i);
+            GPath path = points.at(p);
+            sp->setPosition(path.p);
+            sp->setRotation(path.angle);
+            if(isSpeedUp)
+            {
+                for(int j=0;j<showSpeedNums.size();j++)
+                {
+                    int showSpeedNum = showSpeedNums.at(j);
+                    if(i == showSpeedNum)
+                    {
+                        sp->showSpeed();
+                        break;
+                    }
+                }
+            }
+            
+        }
+    }
+    //    int m_l = (int)bodys.size() * lag;
+    if(p > 10)
+    {
+        points.erase(points.begin(),points.begin() + (p-10));
+    }
+    
+    lastDir = dir;
+    Vec2 pos = dir*dt*speed + this->getPosition();
+    this->setPosition(pos);
+}
+
+void GBubbleSprite::updateAngle(const cocos2d::Vec2 &dir)
+{
+    float angle = -180 / M_PI * dir.getAngle() + 90;
+    angle = angle < 0 ? (360 + angle) : angle;
+    
+    bubble->angle = angle;
+    this->angle = angle;
+    
+    bool speedUp = (bubble->state == GBubble::State::SPEEDUP);
+    
+    if(this->isSpeedUp != speedUp)
+    {
+        if(speedUp)
+        {
+            if(bubble->exp > 0)
+            {
+                this->isSpeedUp = true;
+                std::vector<GPath> ps;
+                for (int i=0; i<points.size(); i+=2) {
+                    ps.push_back(points.at(i));
+                }
+                points.clear();
+                for (int i=0; i<ps.size(); i++) {
+                    points.push_back(ps.at(i));
+                }
+                
+                int num = (int)bodys.size() / 10;
+                showSpeedNums.clear();
+                for(int i=0;i<=num;i++)
+                {
+                    showSpeedNums.push_back(i*10);
+                }
+            }
+        }
+        else
+        {
+            this->isSpeedUp = false;
+            if(points.size())
+            {
+                std::vector<GPath> ps;
+                for (int i = 0; i < points.size()-1; i++) {
+                    GPath p1 = points.at(i);
+                    GPath p2 = points.at(i+1);
+                    
+                    ps.push_back(p1);
+                    Vec2 p = (p2.p - p1.p).getNormalized() * p2.p.getDistance(p1.p) / 2;
+                    ps.push_back(GPath(p+p1.p,p2.angle));
+                }
+                ps.push_back(points.at(points.size()-1));
+                points.clear();
+                for (int i=0; i<ps.size(); i++)
+                {
+                    points.push_back(ps.at(i));
+                }
+                
+                for(int i=0;i<bodys.size();i++)
+                {
+                    bodys.at(i)->showSpeedEnd();
+                }
+                
+            }
+            
+        }
     }
 }
 
@@ -769,6 +945,49 @@ void GBubbleSprite::dieEnd()
         GTools::playSound(SOUND_SCORE);
 }
 
+void GBubbleSprite::die2()
+{
+    bubble->state = GBubble::State::DIE;
+    
+    Action * stop = Sequence::create(
+                                     FadeOut::create(1),
+                                     CallFunc::create(CC_CALLBACK_0(GBubbleSprite::dieEnd2, this)),
+                                     nullptr);
+    this->stopAllActions();
+    this->runAction(stop);
+    
+    for(int i=0;i<bodys.size();i++)
+        bodys.at(i)->runAction(FadeOut::create(0.9f));
+    
+    body->runAction(FadeOut::create(0.9f));
+}
+
+void GBubbleSprite::dieEnd2()
+{
+    GGameScene2* game = getSelfGame2();
+    if(game)
+        game->drop(this);
+    
+    this->removeAllBody();
+    if(isSelf)
+    {
+        this->setVisible(false);
+    }
+    else
+    {
+        std::string uid = bubble->uid;
+        GGameController::getInstance()->deleteRobot(uid);
+        if(game)
+            game->robotReloved(this);
+        
+        this->removeFromParent();
+    }
+    if(isSelf)
+        GTools::playSound(SOUND_DIE);
+    else
+        GTools::playSound(SOUND_SCORE);
+}
+
 void GBubbleSprite::addBody()
 {
     Sprite* parent = nullptr;
@@ -863,6 +1082,15 @@ GGameScene* GBubbleSprite::getSelfGame()
     return nullptr;
 }
 
+GGameScene2* GBubbleSprite::getSelfGame2()
+{
+    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
+    GGameScene2* game = dynamic_cast<GGameScene2*>(sc);
+    if (game)
+        return game;
+    return nullptr;
+}
+
 void GBubbleSprite::updatePosAndRotate()
 {
     bubble->x = this->getUpdatePosition().x;
@@ -888,7 +1116,7 @@ void GBubbleSprite::coll()
     if(this->isColl)
         return;
     this->isColl = true;
-    this->runAction(Sequence::create(DelayTime::create(2),
+    this->runAction(Sequence::create(DelayTime::create(1),
                                      CallFunc::create(CC_CALLBACK_0(GBubbleSprite::collEnd, this)),
                                      NULL));
 }

@@ -63,6 +63,8 @@ GBubble* GBubble::create(GJsonObject* obj)
     bubble->robotUid = vec_robotUid;
     
     bubble->isf = true;
+    bubble->killTime = 0;
+    bubble->killNum = 0;
     bubble->autorelease();
     return bubble;
 }

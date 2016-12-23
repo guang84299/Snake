@@ -10,6 +10,7 @@
 #include "scene/GScene.h"
 #include "scene/GHomeScene.h"
 #include "scene/GGameScene.h"
+#include "scene/GGameScene2.h"
 
 USING_NS_CC;
 
@@ -34,4 +35,9 @@ void GUserController::enterGameScene()
 {
 //    auto t = TransitionFade::create(0.1f, GGameScene::createScene(), Color3B::BLACK);
     Director::getInstance()->replaceScene(GGameScene::createScene());
+}
+
+void GUserController::enterGameScene2()
+{
+    Director::getInstance()->replaceScene(GGameScene2::createScene());
 }

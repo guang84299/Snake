@@ -12,6 +12,7 @@
 #include "data/GCache.h"
 #include "protocol_model/GModeGame.h"
 #include "ui/GNumber.h"
+#include "scene/GGameScene2.h"
 USING_NS_CC;
 
 bool GRelived::init()
@@ -23,7 +24,13 @@ bool GRelived::init()
     
     bg = GTouchLayer::create();
     this->addChild(bg);
+    this->game2 = false;
     return true;
+}
+
+void GRelived::setGame2(bool game2)
+{
+    this->game2 = game2;
 }
 
 void GRelived::initUI(GJsonObject* obj)
@@ -160,7 +167,20 @@ void GRelived::updateTime(float dt)
     
     if(time <= 0)
     {
-        GModeGame::relived();
+        if(game2)
+        {
+            GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
+            GGameScene2* game = dynamic_cast<GGameScene2*>(sc);
+            if (game)
+            {
+                game->reloved();
+            }
+        }
+        else
+        {
+            GModeGame::relived();
+        }
+        
         this->unschedule(SEL_SCHEDULE(&GRelived::updateTime));
         this->runAction(Sequence::create(DelayTime::create(0.2f),RemoveSelf::create(), NULL));
     }
@@ -183,7 +203,19 @@ void GRelived::touchEvent(Ref *pSender, Widget::TouchEventType type)
             
             if(name == "relived")
             {
-                GModeGame::relived();
+                if(game2)
+                {
+                    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
+                    GGameScene2* game = dynamic_cast<GGameScene2*>(sc);
+                    if (game)
+                    {
+                        game->reloved();
+                    }
+                }
+                else
+                {
+                    GModeGame::relived();
+                }
                 this->runAction(Sequence::create(DelayTime::create(0.2f),RemoveSelf::create(), NULL));
             }
             else if(name == "relived_home")

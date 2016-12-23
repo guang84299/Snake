@@ -57,8 +57,18 @@ public:
     void setGrows(std::string grows);
     float getGrow(int level);
     
+    int getLevel(int exp);
+    
     void setSkins(std::string skins);
     std::string getSkins();
+    void setSkinNum(int skinNum);
+    int getSkinNum();
+    
+    void setNames(std::string names);
+    std::string getName();
+    
+    void setBubble(std::string bubble);
+    std::string getBubble();
     
     void setShareAward(int shareAward);
     int getShareAward();
@@ -93,9 +103,12 @@ private:
     cocos2d::ValueMap v_font;
     std::vector<std::string> exps;
     std::vector<std::string> grows;
+    std::vector<std::string> names;
     std::string skins;
     std::string killMeUid;
+    std::string bubble;
     int shareAward;
+    int skinNum;
 };
 
 #endif /* GUserCache_h */

@@ -17,6 +17,7 @@
 #include "tools/GTools.h"
 #include "common/GCommon.h"
 #include "ui/GNumber.h"
+#include "controller/GUserController.h"
 
 USING_NS_CC;
 
@@ -330,7 +331,8 @@ void GHomeScene::touchEvent(Ref *pSender, Widget::TouchEventType type)
             
             if(name == "start")
             {
-                GModeUser::enterRoom();
+//                GModeUser::enterRoom();
+                GUserController::getInstance()->enterGameScene2();
             }
 			else if (name == "startdanji")
 			{//单机开始游戏接口

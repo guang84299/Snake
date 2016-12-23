@@ -80,9 +80,12 @@ Animate* GTools::createAnimate(const std::string &file,int start,int end,float s
     return action;
 }
 
-Rect GTools::getTextureRect(const std::string &file)
+long GTools::getNowTime()
 {
-	return Rect(0,0,100,100);
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    long time_sec = ((long long)tv.tv_sec) * 1000+ tv.tv_usec / 1000;
+    return time_sec;
 }
 
 void GTools::showTost(cocos2d::Node* node,const std::string text)
