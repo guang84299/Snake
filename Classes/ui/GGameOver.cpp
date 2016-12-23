@@ -409,6 +409,7 @@ Layout* GGameOver::createEnd()
 
 void GGameOver::removeShare()
 {
+	
     GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
     GGameScene* game = dynamic_cast<GGameScene*>(sc);
     if(game)
@@ -432,7 +433,7 @@ void GGameOver::openShare()
     auto lay = GTouchLayer::create();
 //    lay->setColor(Color4B(0, 0, 0, 60));
     lay->setName("openShare");
-    bg->addChild(lay);
+    bg->addChild(lay,10);
     
     auto guang1 = Sprite::create("jm-fengxiang3.png");
     guang1->setScale(2);
@@ -440,13 +441,14 @@ void GGameOver::openShare()
     lay->addChild(guang1);
     
     auto gameover_bg = Scale9Sprite::create("jm-diban2.png");
-    gameover_bg->setContentSize(Size(570,348));
+    gameover_bg->setContentSize(Size(500,300));
     gameover_bg->setAnchorPoint(Vec2(0.5,0.5));
     gameover_bg->setPosition(s.width/2, s.height*0.58f);
     lay->addChild(gameover_bg);
     
     auto gameover_title = Sprite::create("logo.png");
     gameover_title->setAnchorPoint(Vec2(0.5,0.5));
+	gameover_title->setScale(0.7);
     gameover_title->setPosition(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height-20);
     gameover_bg->addChild(gameover_title,2);
     
@@ -459,18 +461,23 @@ void GGameOver::openShare()
     auto setBg = Scale9Sprite::create("jm-tiao1.png");
     setBg->setContentSize(Size(508,36));
     setBg->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.77f));
-    gameover_bg->addChild(setBg);
+    //gameover_bg->addChild(setBg);
     
     auto shareBg = Sprite::create("ui-wenzhi3.png");
     shareBg->setAnchorPoint(Vec2(1,0.5));
     shareBg->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.6f));
     gameover_bg->addChild(shareBg);
     
+	auto setBg2 = Scale9Sprite::create("jm-tiao4.png");
+	setBg2->setContentSize(Size(300, 100));
+	setBg2->setPosition(Vec2(gameover_bg->getContentSize().width / 2, gameover_bg->getContentSize().height*0.38));
+	gameover_bg->addChild(setBg2);
+
     GNumber* t_kill = GNumber::create(this->kill);
-    t_kill->setColor(Color3B::GREEN);
+    t_kill->setColor(Color3B::WHITE);
     t_kill->setAnchorPoint(Vec2(0.5,0.5));
-    t_kill->setScale(2);
-    t_kill->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.35f));
+    t_kill->setScale(1.6);
+    t_kill->setPosition(Vec2(gameover_bg->getContentSize().width/2,gameover_bg->getContentSize().height*0.38f));
     gameover_bg->addChild(t_kill);
 }
 

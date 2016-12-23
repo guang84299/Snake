@@ -9,3 +9,6 @@
 /proj.win8.1-universal
 /proj.win10
 !/proj.android-studio
+proj.win32/Debug.win32/
+proj.win32/Snake.opensdf
+proj.win32/Snake.sdf

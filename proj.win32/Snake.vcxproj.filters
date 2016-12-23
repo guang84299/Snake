@@ -7,30 +7,309 @@
     <Filter Include="resource">
       <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{b17eee54-96aa-4b53-99fd-bed47718cc45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\common">
+      <UniqueIdentifier>{5adf42c3-efe8-415f-9d91-b7032257897e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\controller">
+      <UniqueIdentifier>{55003210-2e99-4d64-8f01-c38b2917f4f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\data">
+      <UniqueIdentifier>{0d462793-84f9-4ddc-a47e-9e329dfbf121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\model">
+      <UniqueIdentifier>{0632edbb-86cf-4a76-8e65-84de06198152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\network">
+      <UniqueIdentifier>{647ddd72-755b-4334-a2bd-0fd300297281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\protocol">
+      <UniqueIdentifier>{08cc9170-386e-4ec6-bb11-920ec46ba195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\protocol_model">
+      <UniqueIdentifier>{93b4c498-4d5b-4859-a89b-76f0afe2ba98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\scene">
+      <UniqueIdentifier>{71e70c19-3a6e-4960-b2b3-5e0291a3fae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\sprite">
+      <UniqueIdentifier>{041f45c8-c9d8-48e3-badb-c812eb2062fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\tools">
+      <UniqueIdentifier>{59d34e53-ff31-4739-97f9-b0df8bb9d026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\ui">
+      <UniqueIdentifier>{146d270d-c352-4a71-9a14-11563ed06e48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\common\GCommon.cpp">
+      <Filter>Classes\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\controller\GGameController.cpp">
+      <Filter>Classes\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\controller\GUserController.cpp">
+      <Filter>Classes\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\data\GCache.cpp">
+      <Filter>Classes\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\data\GJson.cpp">
+      <Filter>Classes\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\model\GBlock.cpp">
+      <Filter>Classes\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\model\GBubble.cpp">
+      <Filter>Classes\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\model\GBullet.cpp">
+      <Filter>Classes\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\model\GClound.cpp">
+      <Filter>Classes\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\model\GUser.cpp">
+      <Filter>Classes\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\network\GHttp.cpp">
+      <Filter>Classes\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\network\GServer.cpp">
+      <Filter>Classes\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\protocol\GData.cpp">
+      <Filter>Classes\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\protocol\GHandler.cpp">
+      <Filter>Classes\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\protocol\GProtocol.cpp">
+      <Filter>Classes\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\protocol\GReflect.cpp">
+      <Filter>Classes\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\protocol_model\GModeGame.cpp">
+      <Filter>Classes\protocol_model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\protocol_model\GModeUser.cpp">
+      <Filter>Classes\protocol_model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\scene\GGameScene.cpp">
+      <Filter>Classes\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\scene\GHomeScene.cpp">
+      <Filter>Classes\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\scene\GMainScene.cpp">
+      <Filter>Classes\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\scene\GScene.cpp">
+      <Filter>Classes\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\sprite\GBlockSprite.cpp">
+      <Filter>Classes\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\sprite\GBodySprite.cpp">
+      <Filter>Classes\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\sprite\GBubbleSprite.cpp">
+      <Filter>Classes\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\sprite\GBulletSprite.cpp">
+      <Filter>Classes\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\sprite\GCloundSprite.cpp">
+      <Filter>Classes\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tools\GJNITools.cpp">
+      <Filter>Classes\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tools\GTools.cpp">
+      <Filter>Classes\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GGameOver.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GMiniMap.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GNumber.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GRankView.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GRelived.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GRockView.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GRule.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GSetting.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GShaderView.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GShare.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GSkin.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GTouchLayer.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ui\GUserInfo.cpp">
+      <Filter>Classes\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\common\GCommon.h">
+      <Filter>Classes\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\controller\GGameController.h">
+      <Filter>Classes\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\controller\GUserController.h">
+      <Filter>Classes\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\data\GCache.h">
+      <Filter>Classes\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\data\GJson.h">
+      <Filter>Classes\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\model\GBlock.h">
+      <Filter>Classes\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\model\GBubble.h">
+      <Filter>Classes\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\model\GBullet.h">
+      <Filter>Classes\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\model\GClound.h">
+      <Filter>Classes\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\model\GUser.h">
+      <Filter>Classes\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\network\GHttp.h">
+      <Filter>Classes\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\network\GServer.h">
+      <Filter>Classes\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\protocol\GData.h">
+      <Filter>Classes\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\protocol\GHandler.h">
+      <Filter>Classes\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\protocol\GProtocol.h">
+      <Filter>Classes\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\protocol\GReflect.h">
+      <Filter>Classes\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\protocol_model\GModeGame.h">
+      <Filter>Classes\protocol_model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\protocol_model\GModeUser.h">
+      <Filter>Classes\protocol_model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\scene\GGameScene.h">
+      <Filter>Classes\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\scene\GHomeScene.h">
+      <Filter>Classes\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\scene\GMainScene.h">
+      <Filter>Classes\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\scene\GScene.h">
+      <Filter>Classes\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\sprite\GBlockSprite.h">
+      <Filter>Classes\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\sprite\GBodySprite.h">
+      <Filter>Classes\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\sprite\GBubbleSprite.h">
+      <Filter>Classes\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\sprite\GBulletSprite.h">
+      <Filter>Classes\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\sprite\GCloundSprite.h">
+      <Filter>Classes\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tools\GJNITools.h">
+      <Filter>Classes\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tools\GTools.h">
+      <Filter>Classes\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GGameOver.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GMiniMap.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GNumber.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GRankView.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GRelived.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GRockView.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GRule.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GSetting.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GShaderView.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GShare.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GSkin.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GTouchLayer.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ui\GUserInfo.h">
+      <Filter>Classes\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -39,7 +39,17 @@ void GSkin::initUI()
     
     auto skin_bg = Sprite::create("jm-diban1.png");
     skin_bg->setPosition(s.width/2, s.height*0.5f);
-    bg->addChild(skin_bg);
+    bg->addChild(skin_bg,1);
+
+	auto top_guang = Sprite::create("jm-diban4.png");
+	top_guang->setAnchorPoint(Vec2(0.5, 0));
+	top_guang->setPosition(skin_bg->getPositionX(), skin_bg->getPositionY() + skin_bg->getContentSize().height / 2 - 40);
+	bg->addChild(top_guang, 0);
+
+	auto bottom_guang = Sprite::create("jm-diban3.png");
+	bottom_guang->setAnchorPoint(Vec2(0.5, 1));
+	bottom_guang->setPosition(skin_bg->getPositionX(), skin_bg->getPositionY() - skin_bg->getContentSize().height / 2 + 34);
+	bg->addChild(bottom_guang, 0);
     
     auto info_title = Sprite::create("jm-biaoti1.png");
     info_title->setAnchorPoint(Vec2(0.5,1));

@@ -33,9 +33,21 @@ void GSetting::initUI()
 {
     Size s = Director::getInstance()->getWinSize();
     
+	
+
     auto setting_bg = Sprite::create("jm-diban2.png");
     setting_bg->setPosition(s.width/2, s.height*0.5f);
-    bg->addChild(setting_bg);
+    bg->addChild(setting_bg,1);
+
+	auto top_guang = Sprite::create("jm-diban4.png");
+	top_guang->setAnchorPoint(Vec2(0.5, 0));
+	top_guang->setPosition(setting_bg->getPositionX(), setting_bg->getPositionY() + setting_bg->getContentSize().height / 2 - 40);
+	bg->addChild(top_guang, 0);
+
+	auto bottom_guang = Sprite::create("jm-diban3.png");
+	bottom_guang->setAnchorPoint(Vec2(0.5, 1));
+	bottom_guang->setPosition(setting_bg->getPositionX(), setting_bg->getPositionY() - setting_bg->getContentSize().height / 2 + 34);
+	bg->addChild(bottom_guang, 0);
     
     auto info_title = Sprite::create("jm-biaoti1.png");
     info_title->setAnchorPoint(Vec2(0.5,1));
