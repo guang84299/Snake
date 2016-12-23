@@ -82,7 +82,7 @@ Animate* GTools::createAnimate(const std::string &file,int start,int end,float s
 
 Rect GTools::getTextureRect(const std::string &file)
 {
-    
+	return Rect(0,0,100,100);
 }
 
 void GTools::showTost(cocos2d::Node* node,const std::string text)

@@ -44,13 +44,12 @@ void GSkin::initUI()
     auto info_title = Sprite::create("jm-biaoti1.png");
     info_title->setAnchorPoint(Vec2(0.5,1));
     info_title->setPosition(skin_bg->getContentSize().width/2,skin_bg->getContentSize().height+20);
-    skin_bg->addChild(info_title);
+    //skin_bg->addChild(info_title);
     
     auto t_title = Sprite::create("jm-biaotiWZ6.png");
     t_title->setAnchorPoint(Vec2(0.5,1));
-    t_title->setPosition(Vec2(info_title->getContentSize().width/2,
-                              info_title->getContentSize().height-10));
-    info_title->addChild(t_title);
+	t_title->setPosition(Vec2(skin_bg->getContentSize().width / 2, skin_bg->getContentSize().height - 30));
+	skin_bg->addChild(t_title);
     
     
     s = skin_bg->getContentSize();
@@ -58,19 +57,19 @@ void GSkin::initUI()
     Button* btn = Button::create("jm-guanbi1.png");
     btn->setAnchorPoint(Vec2(1,1));
     btn->setName("close");
-    btn->setPosition(Vec2(s.width-20,s.height-20));
+    btn->setPosition(Vec2(s.width-40,s.height-35));
     btn->addTouchEventListener(CC_CALLBACK_2(GSkin::touchEvent, this));
     skin_bg->addChild(btn,2);
     
     auto setBg = Scale9Sprite::create("jm-tiao1.png");
-    setBg->setContentSize(Size(630,40));
-    setBg->setPosition(Vec2(s.width/2,s.height*0.8f));
+    setBg->setContentSize(Size(670,40));
+    setBg->setPosition(Vec2(s.width/2,s.height*0.86f));
     skin_bg->addChild(setBg);
     
     auto crystalBg = Scale9Sprite::create("jm-tiao6.png");
     crystalBg->setContentSize(Size(150,30));
     crystalBg->setAnchorPoint(Vec2(0,0.5));
-    crystalBg->setPosition(Vec2(40,setBg->getContentSize().height/2));
+    crystalBg->setPosition(Vec2(30,setBg->getContentSize().height/2 - 30));
     setBg->addChild(crystalBg);
     
     auto sp_crystal = Sprite::create("jm-zuanshi1.png");
@@ -85,7 +84,7 @@ void GSkin::initUI()
     auto skinBg = Scale9Sprite::create("jm-tiao6.png");
     skinBg->setContentSize(Size(150,30));
     skinBg->setAnchorPoint(Vec2(0,0.5));
-    skinBg->setPosition(Vec2(crystalBg->getPositionX() + crystalBg->getContentSize().width + 50,setBg->getContentSize().height/2));
+    skinBg->setPosition(Vec2(crystalBg->getPositionX() + crystalBg->getContentSize().width + 50,setBg->getContentSize().height/2 - 30));
     setBg->addChild(skinBg);
     
     auto sp_skin = Sprite::create("jm-pifu1.png");
@@ -111,7 +110,7 @@ void GSkin::initUI()
     _listView = ListView::create();
     _listView->setDirection(ui::ScrollView::Direction::HORIZONTAL);
     _listView->setContentSize(Size(630, 500));
-    _listView->setPosition(Vec2(33,63));
+    _listView->setPosition(Vec2(33,43));
     skin_bg->addChild(_listView);
     
     for(int i=0;i<_data->size();i++)
@@ -159,8 +158,9 @@ Layout* GSkin::createItem(int index)
     item->setContentSize(Size(w,h));
     item->setPosition(Vec2(0,0));
     
-    auto bg = Scale9Sprite::create("jm-tiao7.png");
-    bg->setContentSize(Size(150,245));
+    //auto bg = Scale9Sprite::create("jm-tiao7.png");
+	auto bg = Scale9Sprite::create("jm-tiao4.png");
+    bg->setContentSize(Size(150,286));
     bg->setAnchorPoint(Vec2(0.5,0));
     bg->setPosition(Vec2(w/2,80));
     item->addChild(bg);
@@ -208,7 +208,8 @@ Layout* GSkin::createItem(int index)
     bg->addChild(skeleton,1);
     
     
-    auto sel = Sprite::create("jm-xuanzhong2.png");
+    //auto sel = Sprite::create("jm-xuanzhong2.png");
+	auto sel = Sprite::create("jm-pifu4.png");
     sel->setAnchorPoint(Vec2(1,0));
     sel->setPosition(bg->getContentSize().width-5,-1);
     bg->addChild(sel);
@@ -227,7 +228,7 @@ Layout* GSkin::createItem(int index)
     t_sp->setAnchorPoint(Vec2(1,0.5));
     t_sp->setPosition(btn->getContentSize().width/2 - 5, btn->getContentSize().height/2);
     btn->addChild(t_sp);
-    
+	
     auto n_price = GNumber::create(price);
     n_price->setAnchorPoint(Vec2(0,0.5));
     n_price->setPosition(btn->getContentSize().width/2 + 5, btn->getContentSize().height/2);
@@ -237,7 +238,7 @@ Layout* GSkin::createItem(int index)
     {
         btn->removeChild(n_price);
         t_sp->setAnchorPoint(Vec2(0.5,0.5));
-        t_sp->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2);
+        t_sp->setPosition(btn->getContentSize().width/2, btn->getContentSize().height/2 + 2);
         
         btn->setName("use");
         
@@ -258,6 +259,11 @@ Layout* GSkin::createItem(int index)
         }
        
     }
+	else
+	{
+		t_sp->setScale(0.65);
+		n_price->setScale(0.65);
+	}
     
     return item;
 }

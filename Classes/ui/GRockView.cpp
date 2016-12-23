@@ -37,7 +37,7 @@ bool GRockView::init(const std::string &bg,const std::string &gan, const std::st
     this->_r = r;
     this->_callback = callback;
     
-    
+	isMove = false;
     _bg->setPosition(200, 100);
     this->addChild(_bg,0);
     

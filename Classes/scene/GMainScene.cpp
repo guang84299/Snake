@@ -175,21 +175,21 @@ void GMainScene::loginCallback(bool state, const char *data)
             
             GCache::getInstance()->setUser(user);
             GServer::getInstance()->start();
-            log("登录成功!");
+         //   cocos2d::log("登录成功!");
             this->schedule(SEL_SCHEDULE(&GMainScene::updateServerState),0.5f);
         }
         else if(state == 0)
         {
-            log("注册失败！");
+		//	cocos2d::log("注册失败！");
         }
         else
         {
-            log("登录失败！");
+		//	cocos2d::log("登录失败！");
         }
     }
     else
     {
-        log("登录失败！");
+		//cocos2d::log("登录失败！");
     }
 }
 

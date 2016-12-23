@@ -39,7 +39,7 @@ void GReflect::invoke(std::string name, const char* data)
     }
     else
     {
-        CCLOG("数据解析失败！");
+//        CCLOG("数据解析失败！");
     }
 }
 

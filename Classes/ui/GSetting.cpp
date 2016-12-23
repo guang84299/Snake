@@ -40,32 +40,36 @@ void GSetting::initUI()
     auto info_title = Sprite::create("jm-biaoti1.png");
     info_title->setAnchorPoint(Vec2(0.5,1));
     info_title->setPosition(setting_bg->getContentSize().width/2,setting_bg->getContentSize().height+20);
-    setting_bg->addChild(info_title);
+    //setting_bg->addChild(info_title);
     
     auto t_title = Sprite::create("jm-biaotiWZ5.png");
     t_title->setAnchorPoint(Vec2(0.5,1));
-    t_title->setPosition(Vec2(info_title->getContentSize().width/2,
-                              info_title->getContentSize().height-10));
-    info_title->addChild(t_title);
+	t_title->setPosition(Vec2(setting_bg->getContentSize().width / 2, setting_bg->getContentSize().height - 30));
+	setting_bg->addChild(t_title);
     
     
     s = setting_bg->getContentSize();
+
+	auto setBg2 = Scale9Sprite::create("jm-tiao1.png");
+	setBg2->setContentSize(Size(670, 40));
+	setBg2->setPosition(Vec2(s.width / 2, s.height*0.82f));
+	setting_bg->addChild(setBg2);
     
     Button* btn = Button::create("jm-guanbi1.png");
     btn->setAnchorPoint(Vec2(1,1));
     btn->setName("close");
-    btn->setPosition(Vec2(s.width-20,s.height-20));
+    btn->setPosition(Vec2(s.width-40,s.height-35));
     btn->addTouchEventListener(CC_CALLBACK_2(GSetting::touchEvent, this));
     setting_bg->addChild(btn);
     
     auto setBg = Scale9Sprite::create("jm-tiao4.png");
-    setBg->setContentSize(Size(560,s.height*0.6f));
-    setBg->setPosition(Vec2(s.width/2,s.height*0.5f));
+    setBg->setContentSize(Size(560,s.height*0.3f));
+    setBg->setPosition(Vec2(s.width/2,s.height*0.6f));
     setting_bg->addChild(setBg);
 
     auto sp = Sprite::create("jm-shezhiWZ1.png");
     sp->setAnchorPoint(Vec2(0.5,0.5));
-    sp->setPosition(150, setBg->getContentSize().height*0.74f);
+    sp->setPosition(Vec2(150, setBg->getContentSize().height*0.74f));
     setBg->addChild(sp);
     
     Slider* slider = Slider::create();
@@ -83,7 +87,7 @@ void GSetting::initUI()
     
     sp = Sprite::create("jm-shezhiWZ2.png");
     sp->setAnchorPoint(Vec2(0.5,0.5));
-    sp->setPosition(setBg->getContentSize().width - 150, setBg->getContentSize().height*0.74f);
+	sp->setPosition(Vec2(setBg->getContentSize().width - 150, setBg->getContentSize().height*0.74f));
     setBg->addChild(sp);
     
     slider = Slider::create();
@@ -99,6 +103,29 @@ void GSetting::initUI()
     if(GCache::isSound())
         slider->setPercent(100/4*3-3);
     
+	auto setBg3 = Scale9Sprite::create("jm-tiao4.png");
+	setBg3->setContentSize(Size(260, s.height*0.3f));
+	setBg3->setPosition(Vec2(s.width / 2, s.height*0.28f));
+	setting_bg->addChild(setBg3);
+
+	sp = Sprite::create("jm-shezhiWZ5.png");
+	sp->setAnchorPoint(Vec2(0.5, 0.5));
+	sp->setPosition(Vec2(setBg3->getContentSize().width/2, setBg3->getContentSize().height*0.74f));
+	setBg3->addChild(sp);
+
+	slider = Slider::create();
+	slider->loadBarTexture("jm-shezhi1.png");
+	slider->loadSlidBallTextures("jm-shezhi2.png", "jm-shezhi2.png", "");
+	slider->setName("yaogan");
+	slider->setMaxPercent(100);
+	slider->setPercent(100 / 4 + 3);
+	slider->setPosition(Vec2(sp->getPositionX(), setBg3->getContentSize().height*0.32f));
+	slider->addEventListener(CC_CALLBACK_2(GSetting::sliderEvent, this));
+	setBg3->addChild(slider);
+
+	if (GCache::isRightHand())
+		slider->setPercent(100 / 4 * 3 - 3);
+	/*
     auto radioButtonGroup = RadioButtonGroup::create();
     setBg->addChild(radioButtonGroup);
     
@@ -134,7 +161,7 @@ void GSetting::initUI()
     right->setPosition(Vec2(radioButton->getPositionX() - radioButton->getContentSize().width/2 - 10,
                            radioButton->getPositionY()));
     setBg->addChild(right);
-    
+    */
     //账号信息
 //    if(GCache::getInstance()->getUser()->login)
 //    {
@@ -240,6 +267,10 @@ void GSetting::sliderEvent(Ref *pSender, Slider::EventType type)
             {
                 GCache::setSound(false);
             }
+			else if (name == "yaogan")
+			{
+				GCache::setHandStyle(false);
+			}
         }
         else if(percent > maxPercent/2)
         {
@@ -253,6 +284,10 @@ void GSetting::sliderEvent(Ref *pSender, Slider::EventType type)
             {
                 GCache::setSound(true);
             }
+			else if (name == "yaogan")
+			{
+				GCache::setHandStyle(true);
+			}
         }
     }
 }

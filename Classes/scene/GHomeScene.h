@@ -36,6 +36,7 @@ private:
     Text* name;
     cocos2d::Sprite * head;
     GNumber* n_kill;
+	GNumber* n_killByDanji;
 };
 
 

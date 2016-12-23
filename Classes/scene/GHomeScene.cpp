@@ -58,32 +58,90 @@ void GHomeScene::initUI()
     
     auto bg = Layer::create();
     uiLayer->addChild(bg, 1);
-    
-    
+
     auto logo = Sprite::create("logo.png");
-    logo->setPosition(Vec2(s.width/2,s.height*0.7f));
+    logo->setPosition(Vec2(s.width/2,s.height*0.75f));
     bg->addChild(logo);
  
+	auto node = Node::create();
+	node->setPosition(s.width / 2 - 230, s.height*0.47f);
+	bg->addChild(node);
+
+	auto setting_bg = Sprite::create("jm-diban2.png");
+	setting_bg->setPosition(0, 0);
+	setting_bg->setScale(0.5);
+	node->addChild(setting_bg);
+
+	auto setBg2 = Scale9Sprite::create("jm-tiao1.png");
+	setBg2->setContentSize(Size(340, 30));
+	setBg2->setPosition(Vec2(0, 35));
+	node->addChild(setBg2);
+
+	auto title1 = Scale9Sprite::create("jm-souyeWZ3.png");
+	title1->setPosition(Vec2(0, 65));
+	node->addChild(title1);
+
+	auto des = Sprite::create("jm-souyeWZ2.png");
+	des->setPosition(Vec2(-40, -30));
+	node->addChild(des);
+
+	n_killByDanji = GNumber::create(GCache::getInstance()->getUser()->maxKill);
+	n_killByDanji->setColor(Color3B(109, 244, 78));
+	n_killByDanji->setAnchorPoint(Vec2(0, 0.5));
+	n_killByDanji->setPosition(des->getPositionX() + des->getContentSize().width / 2 + 20, des->getPositionY());
+	node->addChild(n_killByDanji);
+
+	Button* btn2 = Button::create("an-annniu2-1.png", "an-annniu2-2.png");
+	btn2->setName("startdanji");
+	btn2->setScale9Enabled(true);
+	btn2->setContentSize(Size(250, 130));
+	btn2->setPosition(Vec2(0, -200));
+	btn2->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
+	node->addChild(btn2);
+
+	auto t2 = Sprite::create("jm-souyeWZ1.png");
+	t2->setPosition(btn2->getContentSize().width / 2, btn2->getContentSize().height*0.65f);
+	btn2->addChild(t2);
+
+	//添加联网模式
+	node = Node::create();
+	node->setPosition(s.width / 2 + 230, s.height*0.47f);
+	bg->addChild(node);
+
+	setting_bg = Sprite::create("jm-diban2.png");
+	setting_bg->setPosition(0, 0);
+	setting_bg->setScale(0.5);
+	node->addChild(setting_bg);
+
+	setBg2 = Scale9Sprite::create("jm-tiao1.png");
+	setBg2->setContentSize(Size(340, 30));
+	setBg2->setPosition(Vec2(0, 35));
+	node->addChild(setBg2);
+
+	title1 = Scale9Sprite::create("jm-souyeWZ4.png");
+	title1->setPosition(Vec2(0, 65));
+	node->addChild(title1);
+
     auto t_kill = Sprite::create("jm-souyeWZ2.png");
-    t_kill->setPosition(Vec2(s.width/2-30,s.height*0.32f));
-    bg->addChild(t_kill);
+    t_kill->setPosition(Vec2(-40,-30));
+	node->addChild(t_kill);
 
     n_kill = GNumber::create(GCache::getInstance()->getUser()->maxKill);
     n_kill->setColor(Color3B(109,244,78));
     n_kill->setAnchorPoint(Vec2(0,0.5));
     n_kill->setPosition(t_kill->getPositionX()+t_kill->getContentSize().width/2 + 20, t_kill->getPositionY());
-    bg->addChild(n_kill);
+	node->addChild(n_kill);
     
     Button* btn = Button::create("an-annniu3-1.png","an-annniu3-2.png");
     btn->setName("start");
     btn->setScale9Enabled(true);
     btn->setContentSize(Size(250,130));
-    btn->setPosition(Vec2(s.width/2,s.height*0.15f));
+    btn->setPosition(Vec2(0,-200));
     btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
-    bg->addChild(btn);
+	node->addChild(btn);
     
     auto t = Sprite::create("jm-souyeWZ1.png");
-    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
+    t->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.65f);
     btn->addChild(t);
     
     
@@ -274,6 +332,10 @@ void GHomeScene::touchEvent(Ref *pSender, Widget::TouchEventType type)
             {
                 GModeUser::enterRoom();
             }
+			else if (name == "startdanji")
+			{//单机开始游戏接口
+				
+			}
             else if(name == "info")
             {
                 auto info = GUserInfo::create();
