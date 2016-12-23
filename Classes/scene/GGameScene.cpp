@@ -978,7 +978,7 @@ void GGameScene::updateRobot(float dt)
 //            }
 //        }
         
-        if(robotAvoidDt > 0.05f)
+        if(robotAvoidDt > 0.1f)
         {
             robotAvoidDt = 0;
             

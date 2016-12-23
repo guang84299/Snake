@@ -302,3 +302,14 @@ bool GCache::isRightHand()
     return UserDefault::getInstance()->getBoolForKey("handStyle");
 }
 
+void GCache::setMaxLen(int maxLen)
+{
+    UserDefault::getInstance()->setIntegerForKey("maxLen", maxLen);
+    UserDefault::getInstance()->flush();
+}
+
+int GCache::getMaxLen()
+{
+    return UserDefault::getInstance()->getIntegerForKey("maxLen");
+}
+

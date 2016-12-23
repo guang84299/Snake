@@ -27,6 +27,7 @@ public:
     bool visitor;
     int maxKill;
     int cumKill;//累计击杀
+    int maxLen;
     int skinNum;
     int mvp;
     int headId;

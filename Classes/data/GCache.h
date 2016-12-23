@@ -90,6 +90,9 @@ public:
     static bool isSound();
     static void setHandStyle(bool isRight);
     static bool isRightHand();
+    
+    static void setMaxLen(int maxLen);
+    static int getMaxLen();
 private:
     std::string lang;
     GUser* _user;

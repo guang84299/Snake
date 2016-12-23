@@ -144,6 +144,19 @@ void GRelived::initUI(GJsonObject* obj)
     auto title = Sprite::create("an-WZ5.png");
     title->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(title);
+    
+    if(game2)
+    {
+        btn->setPosition(Vec2(s.width/2-150,s.height*0.38f));
+        
+        btn = Button::create("an-annniu2-1.png","an-annniu2-2.png");
+        btn->setName("home");
+        btn->setTitleText("go home");
+        btn->setPosition(Vec2(s.width/2+150,s.height*0.38f));
+        btn->addTouchEventListener(CC_CALLBACK_2(GRelived::touchEvent, this));
+        bg->addChild(btn);
+    }
+   
 
 
     time = 5;
@@ -218,9 +231,17 @@ void GRelived::touchEvent(Ref *pSender, Widget::TouchEventType type)
                 }
                 this->runAction(Sequence::create(DelayTime::create(0.2f),RemoveSelf::create(), NULL));
             }
-            else if(name == "relived_home")
+            else if(name == "home")
             {
-                GModeGame::questLeaveRoom();
+                if(game2)
+                {
+                    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
+                    GGameScene2* game = dynamic_cast<GGameScene2*>(sc);
+                    if (game)
+                    {
+                        game->leaveRoom();
+                    }
+                }
             }
             break;
             

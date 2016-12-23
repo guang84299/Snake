@@ -86,7 +86,7 @@ void GHomeScene::initUI()
 	des->setPosition(Vec2(-40, -30));
 	node->addChild(des);
 
-	n_killByDanji = GNumber::create(GCache::getInstance()->getUser()->maxKill);
+	n_killByDanji = GNumber::create(GCache::getMaxLen());
 	n_killByDanji->setColor(Color3B(109, 244, 78));
 	n_killByDanji->setAnchorPoint(Vec2(0, 0.5));
 	n_killByDanji->setPosition(des->getPositionX() + des->getContentSize().width / 2 + 20, des->getPositionY());
@@ -127,7 +127,7 @@ void GHomeScene::initUI()
     t_kill->setPosition(Vec2(-40,-30));
 	node->addChild(t_kill);
 
-    n_kill = GNumber::create(GCache::getInstance()->getUser()->maxKill);
+    n_kill = GNumber::create(GCache::getInstance()->getUser()->maxLen);
     n_kill->setColor(Color3B(109,244,78));
     n_kill->setAnchorPoint(Vec2(0,0.5));
     n_kill->setPosition(t_kill->getPositionX()+t_kill->getContentSize().width/2 + 20, t_kill->getPositionY());
@@ -293,7 +293,8 @@ void GHomeScene::updateUI()
     head->setScale(1);
     name_bg->addChild(head);
     
-    n_kill->setNum(GCache::getInstance()->getUser()->maxKill);
+    n_kill->setNum(GCache::getInstance()->getUser()->maxLen);
+    n_killByDanji->setNum(GCache::getMaxLen());
     
     GUserInfoUpdate* info = dynamic_cast<GUserInfoUpdate*>(uiLayer->getChildByName("UserInfoUpdate")) ;
     if(info)
@@ -331,12 +332,11 @@ void GHomeScene::touchEvent(Ref *pSender, Widget::TouchEventType type)
             
             if(name == "start")
             {
-//                GModeUser::enterRoom();
-                GUserController::getInstance()->enterGameScene2();
+                GModeUser::enterRoom();
             }
 			else if (name == "startdanji")
 			{//单机开始游戏接口
-				
+				GUserController::getInstance()->enterGameScene2();
 			}
             else if(name == "info")
             {

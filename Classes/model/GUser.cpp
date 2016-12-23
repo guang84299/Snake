@@ -27,6 +27,7 @@ GUser* GUser::create(GJsonObject* obj)
     user->visitor = obj->getBool("visitor");
     user->maxKill = obj->getInt("maxKill");
     user->cumKill = obj->getInt("cumKill");
+    user->maxLen = obj->getInt("maxLen");
     user->skinNum = obj->getInt("skinNum");
     user->mvp = obj->getInt("mvp");
     user->headId = obj->getInt("headId");
@@ -46,6 +47,7 @@ void GUser::updateData(GUser* old,GUser* news)
     old->visitor = news->visitor;
     old->maxKill = news->maxKill;
     old->cumKill = news->cumKill;
+    old->maxLen = news->maxLen;
     old->skinNum = news->skinNum;
     old->mvp = news->mvp;
     old->headId = news->headId;

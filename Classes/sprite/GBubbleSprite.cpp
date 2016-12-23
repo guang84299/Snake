@@ -960,6 +960,12 @@ void GBubbleSprite::die2()
         bodys.at(i)->runAction(FadeOut::create(0.9f));
     
     body->runAction(FadeOut::create(0.9f));
+    
+    if(isSelf)
+    {
+        if(bubble->exp > GCache::getMaxLen())
+            GCache::setMaxLen(bubble->exp);
+    }
 }
 
 void GBubbleSprite::dieEnd2()

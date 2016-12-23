@@ -111,21 +111,21 @@ void GGameScene2::initUI()
                                         GROCK_CALLBACK(GGameScene2::rockHandler, this));
     uiLayer->addChild(view);
     
-    auto timeBg = Sprite::create("ui-shijian1.png");
-    timeBg->setAnchorPoint(Vec2(0.5,1));
-    timeBg->setPosition(s.width/2,s.height-10);
-    uiLayer->addChild(timeBg);
-    
-    _countDown = GNumber::create(0);
-    _countDown->setAnchorPoint(Vec2(0,0.5));
-    _countDown->setScale(0.7f);
-    _countDown->useTimeStyle();
-    _countDown->setPosition(154,timeBg->getContentSize().height/2-2);
-    timeBg->addChild(_countDown);
+//    auto timeBg = Sprite::create("ui-shijian1.png");
+//    timeBg->setAnchorPoint(Vec2(0.5,1));
+//    timeBg->setPosition(s.width/2,s.height-10);
+//    uiLayer->addChild(timeBg);
+//    
+//    _countDown = GNumber::create(0);
+//    _countDown->setAnchorPoint(Vec2(0,0.5));
+//    _countDown->setScale(0.7f);
+//    _countDown->useTimeStyle();
+//    _countDown->setPosition(154,timeBg->getContentSize().height/2-2);
+//    timeBg->addChild(_countDown);
     
     myExp = RichText::create();
     myExp->setAnchorPoint(Vec2(0.5,1));
-    myExp->setPosition(Vec2(s.width/2,s.height-70));
+    myExp->setPosition(Vec2(s.width/2,s.height-20));
     uiLayer->addChild(myExp);
     myExp->pushBackElement(RichElementText::create(0,Color3B::WHITE,255,_T("len"),"",24));
     myExp->pushBackElement(RichElementText::create(1,Color3B(245,230,126),255,"0","",24));
@@ -134,7 +134,7 @@ void GGameScene2::initUI()
     wifi = Sprite::create("jm-wifi.png");
     wifi->setAnchorPoint(Vec2(0.5,1));
     wifi->setPosition(s.width/2-140, s.height-60);
-    wifi->setOpacity(0);
+    wifi->setVisible(false);
     uiLayer->addChild(wifi);
     
     Button* btn = Button::create("ui-anniu1.png","ui-anniu2.png");
