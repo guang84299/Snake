@@ -151,30 +151,38 @@ void GUserInfo::initLoginUI()
     info_bg->setPosition(s.width/2, s.height*0.5f);
     bg->addChild(info_bg);
     
-    auto info_title = Sprite::create("jm-biaoti1.png");
-    info_title->setAnchorPoint(Vec2(0.5,1));
-    info_title->setPosition(info_bg->getContentSize().width/2,info_bg->getContentSize().height+20);
-    info_bg->addChild(info_title);
+    
+    auto top_guang = Sprite::create("jm-diban4.png");
+    top_guang->setAnchorPoint(Vec2(0.5,0));
+    top_guang->setPosition(info_bg->getPositionX(), info_bg->getPositionY()+info_bg->getContentSize().height/2-40);
+    bg->addChild(top_guang,0);
+    
+    auto bottom_guang = Sprite::create("jm-diban3.png");
+    bottom_guang->setAnchorPoint(Vec2(0.5,1));
+    bottom_guang->setPosition(info_bg->getPositionX(), info_bg->getPositionY() - info_bg->getContentSize().height/2+34);
+    bg->addChild(bottom_guang,0);
     
     auto t_title = Sprite::create("jm-biaotiWZ2.png");
     t_title->setAnchorPoint(Vec2(0.5,1));
-    t_title->setPosition(Vec2(info_title->getContentSize().width/2,
-                              info_title->getContentSize().height-10));
-    info_title->addChild(t_title);
+    t_title->setPosition(Vec2(info_bg->getContentSize().width/2,info_bg->getContentSize().height-32));
+    info_bg->addChild(t_title);
+
+    
     
     s = info_bg->getContentSize();
     
     Button* btn = Button::create("jm-guanbi1.png");
     btn->setAnchorPoint(Vec2(1,1));
     btn->setName("close");
-    btn->setPosition(Vec2(s.width-20,s.height-20));
+    btn->setPosition(Vec2(s.width-50,s.height-30));
     btn->addTouchEventListener(CC_CALLBACK_2(GUserInfo::touchEvent, this));
     info_bg->addChild(btn);
     
-    auto nameBg = Scale9Sprite::create("jm-tiao4.png");
-    nameBg->setContentSize(Size(248,188));
-    nameBg->setPosition(Vec2(s.width/2,s.height*0.7f));
-    info_bg->addChild(nameBg);
+    auto txt_bg = Scale9Sprite::create("jm-tiao1.png");
+    txt_bg->setAnchorPoint(Vec2(0.5,0));
+    txt_bg->setContentSize(Size(s.width*0.94f,36));
+    txt_bg->setPosition(s.width/2, s.height*0.83f);
+    info_bg->addChild(txt_bg);
     
     char c[7];
     sprintf(c, "%d",GCache::getInstance()->getUser()->skinId);
@@ -185,9 +193,9 @@ void GUserInfo::initLoginUI()
     
     auto skeleton = Sprite::createWithSpriteFrameName(path1);
 //    skeleton->setAnchorPoint(Vec2(0, 0));
-    skeleton->setPosition(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.65f);
-    skeleton->setScale(1);
-    nameBg->addChild(skeleton);
+    skeleton->setPosition(s.width*0.35f, s.height*0.68f);
+    skeleton->setScale(1.4f);
+    info_bg->addChild(skeleton);
 
     
 //    auto stencil = Sprite::create("jm-souye2.png");
@@ -217,24 +225,84 @@ void GUserInfo::initLoginUI()
     std::string userName = GCache::getInstance()->getUser()->name;
     if(GCache::getInstance()->getUser()->visitor)
         userName = _T("visitor") + userName;
-    auto t_name = Text::create(userName,"",34);
-    t_name->setColor(Color3B::BLACK);
-    t_name->setPosition(Vec2(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.27f));
-    nameBg->addChild(t_name);
+//    auto t_name = Text::create(userName,"",34);
+//    t_name->setColor(Color3B::WHITE);
+//    t_name->setPosition(Vec2(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.5f));
+//    nameBg->addChild(t_name);
     
     std::string uid = "ID: "+GCache::getInstance()->getUser()->uid;
     auto t_uid = Text::create(uid,"",20);
-    t_uid->setColor(Color3B::RED);
-    t_uid->setPosition(Vec2(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.11f));
-    nameBg->addChild(t_uid);
+    t_uid->setAnchorPoint(Vec2(0, 0.5));
+    t_uid->setColor(Color3B(104,12,12));
+    t_uid->setPosition(Vec2(skeleton->getContentSize().width/2+skeleton->getPositionX()+5, skeleton->getPositionY()+25));
+    info_bg->addChild(t_uid);
     
-    btn = Button::create("jm-souye4.png");
-    btn->setName("update");
-    btn->setScale(1.2f);
-    btn->setAnchorPoint(Vec2(1,1));
-    btn->setPosition(Vec2(nameBg->getContentSize().width-12, nameBg->getContentSize().height-16));
-    btn->addTouchEventListener(CC_CALLBACK_2(GUserInfo::touchEvent, this));
-    nameBg->addChild(btn);
+    auto nameBg = Scale9Sprite::create("jm-tiao4.png");
+//    nameBg->setAnchorPoint(Vec2(0, 0.5));
+    nameBg->setContentSize(Size(224,60));
+    nameBg->setPosition(Vec2(skeleton->getContentSize().width/2+skeleton->getPositionX()+nameBg->getContentSize().width/2,
+                             skeleton->getPositionY()-30));
+    info_bg->addChild(nameBg);
+    
+    nameField = TextField::create(userName, "", 24);
+    nameField->setTextColor(Color4B::WHITE);
+    nameField->setPlaceHolderColor(Color4B::WHITE);
+    nameField->setTouchSize(nameBg->getContentSize());
+    nameField->setTouchAreaEnabled(true);
+    //    nameField->setTextAreaSize(name_bg->getContentSize());
+    nameField->setMaxLength(8);
+    nameField->setMaxLengthEnabled(true);
+    nameField->setAnchorPoint(Vec2(0.5, 0.5));
+    nameField->setPosition(Vec2(nameBg->getContentSize().width/2, nameBg->getContentSize().height/2));
+    nameField->addEventListener(CC_CALLBACK_2(GUserInfo::textFieldEvent, this));
+    nameBg->addChild(nameField);
+    
+    //    btn = Button::create("an-annniu1-1.png","an-annniu1-2.png");
+    //    btn->setScale9Enabled(true);
+    //    btn->setContentSize(Size(130,50));
+    //    btn->setName("nick");
+    //    btn->setAnchorPoint(Vec2(1,0.5));
+    //    btn->setPosition(Vec2(nick_bg->getContentSize().width-8, nick_bg->getContentSize().height/2));
+    //    btn->addTouchEventListener(CC_CALLBACK_2(GUserInfoUpdate::touchEvent, this));
+    //    nick_bg->addChild(btn);
+    
+    auto t_sp2 = Sprite::create("jm-souye5.png");
+    t_sp2->setAnchorPoint(Vec2(0,0.5));
+    t_sp2->setPosition(nameBg->getContentSize().width+6, nameBg->getContentSize().height/2);
+    nameBg->addChild(t_sp2);
+    
+//    btn = Button::create("jm-souye4.png");
+//    btn->setName("update");
+//    btn->setScale(1.2f);
+//    btn->setAnchorPoint(Vec2(1,1));
+//    btn->setPosition(Vec2(nameBg->getContentSize().width-12, nameBg->getContentSize().height-16));
+//    btn->addTouchEventListener(CC_CALLBACK_2(GUserInfo::touchEvent, this));
+//    nameBg->addChild(btn);
+    
+    auto tiao1 = Scale9Sprite::create("jm-tiao4.png");
+    tiao1->setAnchorPoint(Vec2(0.5,0.5));
+    tiao1->setContentSize(Size(s.width*0.9f,60));
+    tiao1->setPosition(s.width/2, s.height*0.4f);
+    info_bg->addChild(tiao1);
+    
+    tiao1 = Scale9Sprite::create("jm-tiao4.png");
+    tiao1->setAnchorPoint(Vec2(0.5,0.5));
+    tiao1->setContentSize(Size(s.width*0.9f,60));
+    tiao1->setPosition(s.width/2, s.height*0.305f);
+    info_bg->addChild(tiao1);
+    
+    tiao1 = Scale9Sprite::create("jm-tiao4.png");
+    tiao1->setAnchorPoint(Vec2(0.5,0.5));
+    tiao1->setContentSize(Size(s.width*0.9f,60));
+    tiao1->setPosition(s.width/2, s.height*0.215f);
+    info_bg->addChild(tiao1);
+    
+    tiao1 = Scale9Sprite::create("jm-tiao4.png");
+    tiao1->setAnchorPoint(Vec2(0.5,0.5));
+    tiao1->setContentSize(Size(s.width*0.9f,60));
+    tiao1->setPosition(s.width/2, s.height*0.12f);
+    info_bg->addChild(tiao1);
+    
     
     //下面为详细信息
     auto infoBg = Sprite::create("jm-WZ5.png");
@@ -243,9 +311,9 @@ void GUserInfo::initLoginUI()
     info_bg->addChild(infoBg);
     //已收集皮肤数量
     auto* t_skin = GNumber::create(GCache::getInstance()->getUser()->skinNum);
-    t_skin->setColor(Color3B::GREEN);
+//    t_skin->setColor(Color3B::GREEN);
     t_skin->setAnchorPoint(Vec2(0,0.5));
-    t_skin->setPosition(Vec2(190,146));
+    t_skin->setPosition(Vec2(190,174));
     infoBg->addChild(t_skin);
     
     auto t_sp = Sprite::create("jm-WZ6.png");
@@ -255,16 +323,16 @@ void GUserInfo::initLoginUI()
     
     RichText* t_skin_rank = RichText::create();
     sprintf(c, "%d",(int)(GCache::getInstance()->getUser()->skinNumRank*100));
-    t_skin_rank->pushBackElement(RichElementText::create(0, Color3B::BLACK, 255, _T("server rank") + c+std::string("%"), "", 20));
+    t_skin_rank->pushBackElement(RichElementText::create(0, Color3B::WHITE, 255, _T("server rank") + c+std::string("%"), "", 20));
     t_skin_rank->setAnchorPoint(Vec2(0,0.5));
     t_skin_rank->setPosition(Vec2(t_sp->getPositionX()+t_sp->getContentSize().width+10,t_sp->getPositionY()));
     infoBg->addChild(t_skin_rank);
     
     //累计杀敌数量
     auto* t_cum_kill = GNumber::create(GCache::getInstance()->getUser()->cumKill);
-    t_cum_kill->setColor(Color3B::GREEN);
+//    t_cum_kill->setColor(Color3B::GREEN);
     t_cum_kill->setAnchorPoint(Vec2(0,0.5));
-    t_cum_kill->setPosition(Vec2(t_skin->getPositionX(),t_skin->getPositionY() - 44));
+    t_cum_kill->setPosition(Vec2(t_skin->getPositionX(),t_skin->getPositionY() - 54));
     infoBg->addChild(t_cum_kill);
 
     t_sp = Sprite::create("jm-WZ6.png");
@@ -274,16 +342,16 @@ void GUserInfo::initLoginUI()
     
     RichText* t_cum_kill_rank = RichText::create();
     sprintf(c, "%d",(int)(GCache::getInstance()->getUser()->cumKillRank*100));
-    t_cum_kill_rank->pushBackElement(RichElementText::create(0, Color3B::BLACK, 255, _T("server rank") +c+std::string("%"), "", 20));
+    t_cum_kill_rank->pushBackElement(RichElementText::create(0, Color3B::WHITE, 255, _T("server rank") +c+std::string("%"), "", 20));
     t_cum_kill_rank->setAnchorPoint(Vec2(0,0.5));
     t_cum_kill_rank->setPosition(Vec2(t_sp->getPositionX()+t_sp->getContentSize().width+10,t_sp->getPositionY()));
     infoBg->addChild(t_cum_kill_rank);
     
     //最多击杀
     auto* t_max_kill = GNumber::create(GCache::getInstance()->getUser()->maxKill);
-    t_max_kill->setColor(Color3B::GREEN);
+//    t_max_kill->setColor(Color3B::GREEN);
     t_max_kill->setAnchorPoint(Vec2(0,0.5));
-    t_max_kill->setPosition(Vec2(t_skin->getPositionX(),t_skin->getPositionY() - 44*2));
+    t_max_kill->setPosition(Vec2(t_skin->getPositionX(),t_skin->getPositionY() - 54*2));
     infoBg->addChild(t_max_kill);
     
     t_sp = Sprite::create("jm-WZ6.png");
@@ -293,16 +361,16 @@ void GUserInfo::initLoginUI()
     
     RichText* t_max_kill_rank = RichText::create();
     sprintf(c, "%d",(int)(GCache::getInstance()->getUser()->maxKillRank*100));
-    t_max_kill_rank->pushBackElement(RichElementText::create(0, Color3B::BLACK, 255, _T("server rank") +c+std::string("%"), "", 20));
+    t_max_kill_rank->pushBackElement(RichElementText::create(0, Color3B::WHITE, 255, _T("server rank") +c+std::string("%"), "", 20));
     t_max_kill_rank->setAnchorPoint(Vec2(0,0.5));
     t_max_kill_rank->setPosition(Vec2(t_sp->getPositionX()+t_sp->getContentSize().width+10,t_sp->getPositionY()));
     infoBg->addChild(t_max_kill_rank);
     
     //MVP次数
     auto* t_mvp = GNumber::create(GCache::getInstance()->getUser()->mvp);
-    t_mvp->setColor(Color3B::GREEN);
+//    t_mvp->setColor(Color3B::GREEN);
     t_mvp->setAnchorPoint(Vec2(0,0.5));
-    t_mvp->setPosition(Vec2(t_skin->getPositionX(),t_skin->getPositionY() - 44*3));
+    t_mvp->setPosition(Vec2(t_skin->getPositionX(),t_skin->getPositionY() - 54*3));
     infoBg->addChild(t_mvp);
     
     t_sp = Sprite::create("jm-WZ6.png");
@@ -312,11 +380,41 @@ void GUserInfo::initLoginUI()
     
     RichText* t_mvp_rank = RichText::create();
     sprintf(c, "%d",(int)(GCache::getInstance()->getUser()->mvpRank*100));
-    t_mvp_rank->pushBackElement(RichElementText::create(0, Color3B::BLACK, 255, _T("server rank") +c+std::string("%"), "", 20));
+    t_mvp_rank->pushBackElement(RichElementText::create(0, Color3B::WHITE, 255, _T("server rank") +c+std::string("%"), "", 20));
     t_mvp_rank->setAnchorPoint(Vec2(0,0.5));
     t_mvp_rank->setPosition(Vec2(t_sp->getPositionX()+t_sp->getContentSize().width+10,t_sp->getPositionY()));
     infoBg->addChild(t_mvp_rank);
 }
+
+void GUserInfo::textFieldEvent(Ref *pSender, TextField::EventType type)
+{
+    TextField* textField = dynamic_cast<TextField*>(pSender);
+    std::string s = textField->getString();
+    switch (type)
+    {
+        case TextField::EventType::ATTACH_WITH_IME:
+            if(s.length() > 24)
+            {
+                s = GTools::gbkSubStr(s, 0, 8);
+                textField->setString(s);
+            }
+            break;
+            
+        case TextField::EventType::DETACH_WITH_IME:
+            GModeUser::updateName(s);
+            break;
+            
+        case TextField::EventType::INSERT_TEXT:
+            break;
+            
+        case TextField::EventType::DELETE_BACKWARD:
+            break;
+            
+        default:
+            break;
+    }
+}
+
 
 void GUserInfo::touchEvent(Ref *pSender, Widget::TouchEventType type)
 {

@@ -49,6 +49,7 @@ public:
     void resetAll();
     
     void initData();
+    void initNew();
     void initBody();
     
     void update(float dt);
@@ -114,6 +115,7 @@ public:
     bool isDelay;
     bool isCheck;
     bool isColl;
+    bool isNew;
     float delayDt;
     float angle;
     std::vector<GBodySprite*> bodys;

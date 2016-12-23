@@ -76,12 +76,18 @@ bool GBubbleSprite::init(GBubble *bubble)
     dirPower = 1;
     body_z = 99999;
     sSpeed = 0;
-
+    
     updateExp(false,false);
 //    this->schedule(SEL_SCHEDULE(&GBubbleSprite::update));
     this->runAction(Sequence::create(DelayTime::create(1),
                                      CallFunc::create(CC_CALLBACK_0(GBubbleSprite::initData, this)), NULL));
-    
+    if(bubble->state == GBubble::State::BORN)
+    {
+        isNew = true;
+        this->runAction(Sequence::create(DelayTime::create(3),
+                                         CallFunc::create(CC_CALLBACK_0(GBubbleSprite::initNew, this)), NULL));
+        body->setOpacity(80);
+    }
     return true;
 }
 
@@ -89,6 +95,15 @@ void GBubbleSprite::initData()
 {
     isSelfBubble = (isSelf || (bubble->robot && GGameController::getInstance()->isSelfBubble(bubble)));
     
+}
+
+void GBubbleSprite::initNew()
+{
+    isNew = false;
+    for(int i=0;i<bodys.size();i++)
+        bodys.at(i)->runAction(FadeIn::create(0.5f));
+    
+    body->runAction(FadeIn::create(0.5f));
 }
 
 void GBubbleSprite::initBody()
@@ -710,6 +725,11 @@ void GBubbleSprite::die()
                                      nullptr);
     this->stopAllActions();
     this->runAction(stop);
+    
+    for(int i=0;i<bodys.size();i++)
+        bodys.at(i)->runAction(FadeOut::create(0.9f));
+    
+    body->runAction(FadeOut::create(0.9f));
 }
 
 void GBubbleSprite::dieEnd()
@@ -768,6 +788,11 @@ void GBubbleSprite::addBody()
     b->setPosition(parent->getPosition() );//+ getBodyDir(parent)*-14);
     bubbleLayer->addChild(b,--body_z);
     bodys.insert(bodys.end()-1, b);
+    
+    if(isNew)
+    {
+        b->setOpacity(80);
+    }
 }
 
 void GBubbleSprite::addBodyEnd()
@@ -780,6 +805,11 @@ void GBubbleSprite::addBodyEnd()
     b->setPosition(parent->getPosition() );//+ getBodyDir(parent)*-14);
     bubbleLayer->addChild(b,0);
     bodys.push_back(b);
+    
+    if(isNew)
+    {
+        b->setOpacity(80);
+    }
 }
 
 void GBubbleSprite::removeBodyEnd()
@@ -821,6 +851,7 @@ void GBubbleSprite::playRelive()
     sp->runAction(Sequence::create(GTools::createAnimate("tx-fuhuo", 9, 0.1f),
                                    RemoveSelf::create(),
                                    NULL));
+    
 }
 
 GGameScene* GBubbleSprite::getSelfGame()

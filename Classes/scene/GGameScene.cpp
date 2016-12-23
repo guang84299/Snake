@@ -734,7 +734,7 @@ void GGameScene::openGameOver(GJsonObject* obj)
 void GGameScene::updateCollBubble(float dt)
 {
     float headDis = 30;
-    if(bubble->bubble->state != GBubble::State::DIE && !bubble->isColl)
+    if(bubble->bubble->state != GBubble::State::DIE && !bubble->isColl && !bubble->isNew)
     {
         //和其他人
         for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
@@ -795,7 +795,7 @@ void GGameScene::updateCollBubble(float dt)
         {
             std::string uid = bubble->bubble->robotUid.at(i);
             GBubbleSprite * sp = GGameController::getInstance()->findRobotByUid(uid);
-            if(sp && sp->bubble->state != GBubble::State::DIE && !sp->isColl)
+            if(sp && sp->bubble->state != GBubble::State::DIE && !sp->isColl && !sp->isNew)
             {
                 //和自己
                 if(bubble->bubble->state != GBubble::State::DIE && !bubble->isColl && GGameController::getInstance()->isContain(sp, this->bubble))
@@ -943,42 +943,42 @@ void GGameScene::updateRobot(float dt)
         robotDt+=dt;
         robotCollDt+=dt;
         robotAvoidDt+=dt;
-//        if(robotDt > 0.5f)
-//        {
-//            robotDt = 0;
-//            
-//            if(robotNum < size)
-//            {
-//                std::string uid = bubble->bubble->robotUid.at(robotNum);
-//                GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
-//                if(bubble && bubble->bubble->state != GBubble::State::DIE)
-//                {
-//                    updateRobotState(bubble);
-//                }
-//            }
-//            else
-//            {
-//                robotNum = -1;
-//            }
-//            robotNum++;
-//        }
-        
-        if(robotCollDt > 0.3)
+        if(robotDt > 0.5f)
         {
-            robotCollDt = 0;
+            robotDt = 0;
             
-            for(int i=0;i< bubble->bubble->robotUid.size();i++)
+            if(robotNum < size)
             {
-                std::string uid = bubble->bubble->robotUid.at(i);
+                std::string uid = bubble->bubble->robotUid.at(robotNum);
                 GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
                 if(bubble && bubble->bubble->state != GBubble::State::DIE)
                 {
                     updateRobotState(bubble);
                 }
             }
+            else
+            {
+                robotNum = -1;
+            }
+            robotNum++;
         }
         
-        if(robotAvoidDt > 0.2f)
+//        if(robotCollDt > 0.3)
+//        {
+//            robotCollDt = 0;
+//            
+//            for(int i=0;i< bubble->bubble->robotUid.size();i++)
+//            {
+//                std::string uid = bubble->bubble->robotUid.at(i);
+//                GBubbleSprite * bubble = GGameController::getInstance()->findRobotByUid(uid);
+//                if(bubble && bubble->bubble->state != GBubble::State::DIE)
+//                {
+//                    updateRobotState(bubble);
+//                }
+//            }
+//        }
+        
+        if(robotAvoidDt > 0.05f)
         {
             robotAvoidDt = 0;
             
@@ -995,55 +995,23 @@ void GGameScene::updateRobotState(GBubbleSprite * bubble)
     if(state < 12)
     {
         //根据水滴找到方向
-        //先找经验是2的水晶
-        float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
-        int pnum = GCache::getMapPlitNum();
-        int row = bubble->getPositionX()/w;
-        
-        GBlockSprite* block = nullptr;
-        
-        for(int i=row-3;i<row+5;i++)
-        {
-            if(i >= 0 && i < pnum)
-            {
-                for(int j=0;j<GGameController::getInstance()->blocks[i].size();j++)
-                {
-                    GBlockSprite* sp = GGameController::getInstance()->blocks[i].at(j);
-                    if(sp->block->state != GBlock::State::DIE && sp->block->type == 1)
-                    {
-                        float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
-                        if(dis < 1200)
-                        {
-                            block = sp;
-                            break;
-                        }
-                    }
-                }
-            }
-            if(block)
-                break;
-        }
-        
-        if(!block)
-        {
-            if(state < 7)
-                return;
-            int size = (int)GGameController::getInstance()->blocks.size() - 1;
-            if(size <= 0)
-                return;
-            int r = random(0, size);
-            int size2 = (int)GGameController::getInstance()->blocks[r].size() - 1;
-            if(size2 <= 0)
-                return;
-            int r2 = random(0, size2);
-            block = GGameController::getInstance()->blocks[r].at(r2);
-        }
+        int size = (int)GGameController::getInstance()->blocks.size() - 1;
+        if(size <= 0)
+            return;
+        int r = random(0, size);
+        int size2 = (int)GGameController::getInstance()->blocks[r].size() - 1;
+        if(size2 <= 0)
+            return;
+        int r2 = random(0, size2);
+        GBlockSprite* block = GGameController::getInstance()->blocks[r].at(r2);
         
         Vec2 dir = (block->getPosition() - bubble->getPosition()).getNormalized();
         
         bubble->bubble->dirX = dir.x;
         bubble->bubble->dirY = dir.y;
         bubble->changeState(GBubble::State::MOVE);
+        if(state == 5)
+            bubble->changeState(GBubble::State::SPEEDUP);
         GModeGame::move(dir,1,bubble->bubble);
     }
 }
@@ -1060,6 +1028,7 @@ void GGameScene::updateRobotAvoid()
             GBubbleSprite * sp = GGameController::getInstance()->findRobotByUid(uid);
             if(sp && sp->bubble->state != GBubble::State::DIE)
             {
+                bool b = false;
                 //和墙壁
                 if(sp->isCollWall())
                 {
@@ -1078,6 +1047,7 @@ void GGameScene::updateRobotAvoid()
                     sp->bubble->dirY = dir.y;
                     sp->changeState(GBubble::State::MOVE);
                     GModeGame::move(dir,1,sp->bubble);
+                    b = true;
                     continue;
                 }
                 //和自己
@@ -1095,11 +1065,13 @@ void GGameScene::updateRobotAvoid()
                             bubble->bubble->dirY = dir.y;
                             bubble->changeState(GBubble::State::MOVE);
                             GModeGame::move(dir,1,sp->bubble);
+                            b = true;
                             break;
                         }
                     }
                 }
-                
+                if(b)
+                    continue;
                 //和其他人
                 for(int i=0;i<GGameController::getInstance()->bubbles.size();i++)
                 {
@@ -1118,11 +1090,12 @@ void GGameScene::updateRobotAvoid()
                                 bubble->bubble->dirY = dir.y;
                                 bubble->changeState(GBubble::State::MOVE);
                                 GModeGame::move(dir,1,sp->bubble);
+                                b = true;
                                 break;
                             }
                         }
                     }
-                    if(sp->bubble->state == GBubble::State::DIE)
+                    if(sp->bubble->state == GBubble::State::DIE || b)
                         break;
                 }
                 //和机器人
@@ -1143,13 +1116,56 @@ void GGameScene::updateRobotAvoid()
                                 bubble->bubble->dirY = dir.y;
                                 bubble->changeState(GBubble::State::MOVE);
                                 GModeGame::move(dir,1,sp->bubble);
+                                b = true;
                                 break;
                             }
                         }
                     }
-                    if(sp->bubble->state == GBubble::State::DIE)
+                    if(sp->bubble->state == GBubble::State::DIE || b)
                         break;
                 }
+                //如果没有闪躲
+                if(!b)
+                {
+                    //先找经验是2的水晶
+                    float w = GCache::getInstance()->getRoomWidth()/GCache::getMapPlitNum();
+                    int pnum = GCache::getMapPlitNum();
+                    int row = bubble->getPositionX()/w;
+                    
+                    GBlockSprite* block = nullptr;
+                    
+                    for(int i=row-3;i<row+5;i++)
+                    {
+                        if(i >= 0 && i < pnum)
+                        {
+                            for(int j=0;j<GGameController::getInstance()->blocks[i].size();j++)
+                            {
+                                GBlockSprite* sp = GGameController::getInstance()->blocks[i].at(j);
+                                if(sp->block->state != GBlock::State::DIE && sp->block->type == 1)
+                                {
+                                    float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
+                                    if(dis < 1200)
+                                    {
+                                        block = sp;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if(block)
+                            break;
+                    }
+                    if(block)
+                    {
+                        Vec2 dir = (block->getPosition() - sp->getPosition()).getNormalized();
+                        
+                        sp->bubble->dirX = dir.x;
+                        sp->bubble->dirY = dir.y;
+                        sp->changeState(GBubble::State::SPEEDUP);
+                        GModeGame::move(dir,1,sp->bubble);
+                    }
+                }
+                
                 
             }
         }
@@ -1202,6 +1218,12 @@ void GGameScene::updateAllPos(float dt)
     bubble->update(dt);
     bubble->updatePosAndRotate();
     bubble->bubble->resetPosDt += dt;
+    
+//    if(updatePosDt > 1)
+//    {
+//        updatePosDt = 0;
+//        log("robots=%d  %d",(int)GGameController::getInstance()->robots.size(),(int)bubble->bubble->robotUid.size());
+//    }
     
 //    if(updatePosDt > UPDATE_DT)
 //    {
@@ -1257,7 +1279,6 @@ void GGameScene::touchEvent(Ref *pSender, Widget::TouchEventType type)
             
             if(name == "speed")
             {
-                GModeUser::enterRoom();
                 speedUpBtn = false;
                 if(bubble->bubble->state != GBubble::State::DIE)
                 {

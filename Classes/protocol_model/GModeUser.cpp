@@ -160,6 +160,11 @@ void GModeUser::enterRoomResult(const char *data)
             for(int i=0;i<robots_data->size();i++)
             {
                 GBubbleSprite* sp = GBubbleSprite::create(GBubble::create(robots_data->at(i)));
+                if(sp->bubble->state == GBubble::State::DIE)
+                {
+                    log("die %s",sp->bubble->name.c_str());
+                    continue;
+                }
                 sp->retain();
                 GGameController::getInstance()->robots.push_back(sp);
             }
@@ -168,6 +173,10 @@ void GModeUser::enterRoomResult(const char *data)
             for(int i=0;i<bubbles_data->size();i++)
             {
                 GBubbleSprite* sp = GBubbleSprite::create(GBubble::create(bubbles_data->at(i)));
+                if(sp->bubble->state == GBubble::State::DIE)
+                {
+                    continue;
+                }
                 sp->retain();
                 if(sp->bubble->uid != GCache::getInstance()->getUser()->uid)
                     GGameController::getInstance()->bubbles.push_back(sp);
@@ -279,6 +288,10 @@ void GModeUser::recConnResult(const char *data)
             for(int i=0;i<robots_data->size();i++)
             {
                 GBubbleSprite* sp = GBubbleSprite::create(GBubble::create(robots_data->at(i)));
+                if(sp->bubble->state == GBubble::State::DIE)
+                {
+                    continue;
+                }
                 sp->retain();
                 GGameController::getInstance()->robots.push_back(sp);
             }
@@ -287,6 +300,10 @@ void GModeUser::recConnResult(const char *data)
             for(int i=0;i<bubbles_data->size();i++)
             {
                 GBubbleSprite* sp = GBubbleSprite::create(GBubble::create(bubbles_data->at(i)));
+                if(sp->bubble->state == GBubble::State::DIE)
+                {
+                    continue;
+                }
                 sp->retain();
                 if(sp->bubble->uid != GCache::getInstance()->getUser()->uid)
                     GGameController::getInstance()->bubbles.push_back(sp);

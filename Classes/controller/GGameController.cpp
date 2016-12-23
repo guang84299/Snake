@@ -46,6 +46,7 @@ void GGameController::start(const char* data)
     if(uid == GCache::getInstance()->getUser()->uid)
     {
         bubble->changeState(GBubble::State::IDLE);
+        scene->start();
     }
     else
     {
@@ -55,7 +56,6 @@ void GGameController::start(const char* data)
             bubble->changeState(GBubble::State::IDLE);
         }
     }
-    scene->start();
     log("start game");
 }
 
@@ -558,6 +558,11 @@ void GGameController::addRobot(const char *data)
 //    std::string uid = obj->getString("uid");
     GJsonObject* robot = obj->getObject("robot");
     GBubble *bubble = GBubble::create(robot);
+    GBubbleSprite* b = findRobotByUid(bubble->uid);
+    if(b)
+    {
+        deleteRobot(bubble->uid);
+    }
     GBubbleSprite* bubblesp = GBubbleSprite::create(bubble);
     bubblesp->retain();
     this->robots.push_back(bubblesp);
