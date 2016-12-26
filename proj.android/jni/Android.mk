@@ -32,6 +32,7 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/protocol_model/GModeGame.cpp \
                    ../../Classes/protocol_model/GModeUser.cpp \
                    ../../Classes/scene/GGameScene.cpp \
+                   ../../Classes/scene/GGameScene2.cpp \
                    ../../Classes/scene/GHomeScene.cpp \
                    ../../Classes/scene/GMainScene.cpp \
                    ../../Classes/scene/GScene.cpp \

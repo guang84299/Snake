@@ -14,12 +14,16 @@
 	<string>RANKING</string>
 	<key>rank_name</key>
 	<string>Name</string>
+	<key>rank_len</key>
+	<string>长度</string>
 	<key>rank_kill</key>
 	<string>Kill</string>
 	<key>rank_die</key>
 	<string>Die</string>
 	<key>rank_reward</key>
 	<string>Reward</string>
+	<key>rank_title</key>
+	<string>排行榜</string>
 	<key>recConn</key>
 	<string>Reconnet...</string>
 	<key>visitor</key>
@@ -52,5 +56,23 @@
 	<string>Receive again tomorrow.</string>
 	<key>wall</key>
 	<string>墙壁</string>
+	<key>prompt_0</key>
+	<string>您当前的排名为：</string>
+	<key>prompt_1</key>
+	<string> 撞上了 </string>
+	<key>prompt_2</key>
+	<string>你击杀了 </string>
+	<key>prompt_3</key>
+	<string>复仇成功！</string>
+	<key>prompt_kill_2</key>
+	<string>双杀</string>
+	<key>prompt_kill_3</key>
+	<string>三杀</string>
+	<key>prompt_kill_4</key>
+	<string>四杀</string>
+	<key>prompt_kill_5</key>
+	<string>五杀</string>
+	<key>prompt_kill</key>
+	<string>超神</string>
 </dict>
 </plist>

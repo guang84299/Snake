@@ -1218,7 +1218,7 @@ void GGameScene2::updateRobotAvoid()
                     
                     GBlockSprite* block = nullptr;
                     
-                    for(int i=row-3;i<row+5;i++)
+                    for(int i=row-2;i<row+2;i++)
                     {
                         if(i >= 0 && i < pnum)
                         {
@@ -1228,7 +1228,7 @@ void GGameScene2::updateRobotAvoid()
                                 if(sp->block->state != GBlock::State::DIE && sp->block->type == 1)
                                 {
                                     float dis = bubble->getUpdatePosition().getDistance(sp->getPosition());
-                                    if(dis < 1200)
+                                    if(dis < 800)
                                     {
                                         block = sp;
                                         break;
