@@ -18,6 +18,7 @@
 #include "common/GCommon.h"
 #include "ui/GNumber.h"
 #include "controller/GUserController.h"
+#include "tools/GJNITools.h"
 
 USING_NS_CC;
 
@@ -198,8 +199,8 @@ void GHomeScene::initUI()
 //    clipper->addChild(head);
     
     std::string userName = GCache::getInstance()->getUser()->name;
-    if(GCache::getInstance()->getUser()->visitor)
-        userName = _T("visitor") + userName;
+//    if(GCache::getInstance()->getUser()->visitor)
+//        userName = _T("visitor") + userName;
     
     std::string showName = userName;
     int len = GTools::gbkStrLen(showName);
@@ -223,12 +224,12 @@ void GHomeScene::initUI()
     //右边
     //分享
     Vec2 btnVec(s.width-20,s.height-20);
-    btn = Button::create("jm-souyeanniu1-1.png","jm-souyeanniu1-2.png");
-    btn->setName("share");
-    btn->setAnchorPoint(Vec2(1,1));
-    btn->setPosition(btnVec);
-    btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
-    bg->addChild(btn);
+//    btn = Button::create("jm-souyeanniu1-1.png","jm-souyeanniu1-2.png");
+//    btn->setName("share");
+//    btn->setAnchorPoint(Vec2(1,1));
+//    btn->setPosition(btnVec);
+//    btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
+//    bg->addChild(btn);
     //规则
 //    btn = Button::create("jm-souyeanniu2-1.png","jm-souyeanniu2-2.png");
 //    btn->setName("rule");
@@ -240,7 +241,8 @@ void GHomeScene::initUI()
     btn = Button::create("jm-souyeanniu3-1.png","jm-souyeanniu3-2.png");
     btn->setName("setting");
     btn->setAnchorPoint(Vec2(1,1));
-    btn->setPosition(btnVec + Vec2(0,-170*1));
+//    btn->setPosition(btnVec + Vec2(0,-170*1));
+    btn->setPosition(btnVec);
     btn->addTouchEventListener(CC_CALLBACK_2(GHomeScene::touchEvent, this));
     bg->addChild(btn);
     //皮肤
@@ -257,8 +259,8 @@ void GHomeScene::updateUI()
     char c[7];
     
     std::string userName = GCache::getInstance()->getUser()->name;
-    if(GCache::getInstance()->getUser()->visitor)
-        userName = _T("visitor") + userName;
+//    if(GCache::getInstance()->getUser()->visitor)
+//        userName = _T("visitor") + userName;
     std::string showName = userName;
     int len = GTools::gbkStrLen(showName);
     if(len > 8)
@@ -332,10 +334,12 @@ void GHomeScene::touchEvent(Ref *pSender, Widget::TouchEventType type)
             
             if(name == "start")
             {
+                GJNITools::mode2();
                 GModeUser::enterRoom();
             }
 			else if (name == "startdanji")
 			{//单机开始游戏接口
+                GJNITools::mode();
 				GUserController::getInstance()->enterGameScene2();
 			}
             else if(name == "info")

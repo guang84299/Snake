@@ -75,7 +75,7 @@ bool GMainScene::init()
     bg->addChild(dian3);
     
     label = Text::create("%0", "", 24);
-    label->setColor(Color3B::BLACK);
+//    label->setColor(Color3B::BLACK);
     label->setAnchorPoint(Vec2(1,0));
     label->setPosition(Vec2(barBg->getPositionX() + barBg->getContentSize().width/2,load->getPositionY()));
     bg->addChild(label);

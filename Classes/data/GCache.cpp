@@ -26,6 +26,7 @@ GCache* GCache::getInstance()
 void GCache::init()
 {
     lang = Application::getInstance()->getCurrentLanguageCode();
+    lang = "en";
 }
 
 std::string GCache::getLang()

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1015887716613",
+    "firebase_url": "https://project--3673448691232022987.firebaseio.com",
+    "project_id": "project--3673448691232022987",
+    "storage_bucket": "project--3673448691232022987.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015887716613:android:b42786eb40db6dd4",
+        "android_client_info": {
+          "package_name": "com.qianqi.game.snake.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015887716613-ceovip6r57of41cg9tjij2hvbk8e9rd7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnGF_jT4O4rHmZVkPCvRVP-P3Pt16wLcg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

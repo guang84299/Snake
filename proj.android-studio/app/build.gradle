@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.qianqi.game.sanke"
-        minSdkVersion 10
+        applicationId "com.qianqi.game.snake.io"
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -45,7 +46,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':libcocos2dx')
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.google.firebase:firebase-ads:9.6.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.8.0'
+//    compile project(':libcocos2dx')
 }
 
 task cleanAssets(type: Delete) {

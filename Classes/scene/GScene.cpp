@@ -14,6 +14,7 @@
 #include "GGameScene.h"
 #include "common/GCommon.h"
 #include "data/GCache.h"
+#include "tools/GJNITools.h"
 
 USING_NS_CC;
 
@@ -36,18 +37,48 @@ bool GScene::init()
     uiLayer->addChild(ping,10000001);
     
     this->_exit = false;
+    pingDt = 0;
+    uploadPingDt = 0;
+    isUpdatePing = false;
     this->schedule(SEL_SCHEDULE(&GScene::updateProtocol),1/30.f);
+    if(ping->isVisible())
+        this->schedule(SEL_SCHEDULE(&GScene::updatePing),1/30.f);
     return true;
 }
 
-void GScene::updatePing(int pin)
+void GScene::updatePing(float dt)
+{
+    if(isUpdatePing)
+        this->pingNum += 33;
+    pingDt += dt;
+    if(pingDt > 0.5f)
+    {
+        pingDt = 0;
+        
+        char c[7];
+        sprintf(c, "%d",this->pingNum);
+        std::string str = "Ping: ";
+        str += c;
+        ping->setString(str);
+    }
+    
+    uploadPingDt += dt;
+}
+
+void GScene::setPing(int pin)
 {
     this->pingNum = pin;
-    char c[7];
-    sprintf(c, "%d",pin);
-    std::string str = "Ping: ";
-    str += c;
-    ping->setString(str);
+    if(pin == 0)
+        isUpdatePing = true;
+    else
+    {
+        isUpdatePing = false;
+        if(uploadPingDt > 20)
+        {
+            uploadPingDt = 0;
+            GJNITools::ping(pin);
+        }
+    }
 }
 
 void GScene::startHeartBeat()

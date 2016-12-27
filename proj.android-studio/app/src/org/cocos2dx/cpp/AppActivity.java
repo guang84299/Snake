@@ -23,7 +23,45 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import org.cocos2dx.lib.Cocos2dxActivity;
 
 public class AppActivity extends Cocos2dxActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        JniTools.init(this);
+
+        UMengTool.init(this);
+
+        AdTool.init(this);
+
+        FacebookTool.init(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UMengTool.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UMengTool.onPause();
+    }
+
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(FacebookTool.getInstance().getCallbackManager() != null)
+            FacebookTool.getInstance().getCallbackManager().onActivityResult(requestCode, resultCode, data);
+    }
+
 }

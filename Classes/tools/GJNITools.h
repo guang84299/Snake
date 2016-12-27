@@ -18,6 +18,10 @@ public:
     static std::string getDeviceId();
     static void shareUrl();
     static void sharePic();
+    static void showInterstitialAd();
+    static void mode();
+    static void mode2();
+    static void ping(int ping);
 };
 
 #endif /* GJNITools_h */

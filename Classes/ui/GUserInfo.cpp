@@ -106,8 +106,8 @@ void GUserInfo::initUI()
 //    clipper->setScale(1.2f);
     
     std::string userName = GCache::getInstance()->getUser()->name;
-    if(GCache::getInstance()->getUser()->visitor)
-        userName = _T("visitor") + userName;
+//    if(GCache::getInstance()->getUser()->visitor)
+//        userName = _T("visitor") + userName;
     auto t_name = Text::create(userName,"",36);
     t_name->setColor(Color3B::BLACK);
     t_name->setPosition(Vec2(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.2f));
@@ -223,8 +223,8 @@ void GUserInfo::initLoginUI()
 //    clipper->setScale(1.2f);
     
     std::string userName = GCache::getInstance()->getUser()->name;
-    if(GCache::getInstance()->getUser()->visitor)
-        userName = _T("visitor") + userName;
+//    if(GCache::getInstance()->getUser()->visitor)
+//        userName = _T("visitor") + userName;
 //    auto t_name = Text::create(userName,"",34);
 //    t_name->setColor(Color3B::WHITE);
 //    t_name->setPosition(Vec2(nameBg->getContentSize().width/2, nameBg->getContentSize().height*0.5f));
@@ -576,8 +576,8 @@ void GUserInfoUpdate::initUI()
     nick_bg->addChild(nick_bg_2);
     
     std::string userName = GCache::getInstance()->getUser()->name;
-    if(GCache::getInstance()->getUser()->visitor)
-        userName = _T("visitor") + userName;
+//    if(GCache::getInstance()->getUser()->visitor)
+//        userName = _T("visitor") + userName;
     
     nameField = TextField::create(userName, "", 24);
     nameField->setTextColor(Color4B::WHITE);

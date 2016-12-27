@@ -656,7 +656,7 @@ void GGameScene::updateCountDown(int time)
         
     }
     
-    if(pingNum > 260)
+    if(pingNum > 200)
     {
         wifi->runAction(Sequence::create(FadeIn::create(0.1f),
                                          Blink::create(0.5f, 2),

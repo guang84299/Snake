@@ -445,7 +445,10 @@ void GGameController::bulletCollision(const char *data)
                 }
                 else
                 {
-                    GTools::showTost2(nullptr, killName+_T("prompt_1")+killMeName);
+                    if(GCache::getInstance()->getLang() == "en")
+                        GTools::showTost2(nullptr, killMeName+_T("prompt_1")+killName);
+                    else
+                        GTools::showTost2(nullptr, killName+_T("prompt_1")+killMeName);
                 }
             }
         }

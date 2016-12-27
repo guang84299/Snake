@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qianqi.game.sanke"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.qianqi.game.snake.io"
     android:installLocation="auto">
 
     <uses-feature android:glEsVersion="0x00020000" />
@@ -26,8 +27,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:ignore="ManifestResource"/>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider589179264614475"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
+
+        <meta-data android:value="5860d3aa8f4a9d1981000cff" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="google" android:name="UMENG_CHANNEL"/>
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 </manifest>

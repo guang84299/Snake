@@ -13,6 +13,7 @@
 #include "protocol_model/GModeGame.h"
 #include "ui/GNumber.h"
 #include "scene/GGameScene2.h"
+#include "tools/GJNITools.h"
 USING_NS_CC;
 
 bool GRelived::init()
@@ -151,10 +152,13 @@ void GRelived::initUI(GJsonObject* obj)
         
         btn = Button::create("an-annniu2-1.png","an-annniu2-2.png");
         btn->setName("home");
-        btn->setTitleText("go home");
         btn->setPosition(Vec2(s.width/2+150,s.height*0.38f));
         btn->addTouchEventListener(CC_CALLBACK_2(GRelived::touchEvent, this));
         bg->addChild(btn);
+        
+        title = Sprite::create("an-WZ15.png");
+        title->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
+        btn->addChild(title);
     }
    
 
@@ -168,6 +172,8 @@ void GRelived::initUI(GJsonObject* obj)
     
     
     this->schedule(SEL_SCHEDULE(&GRelived::updateTime),1);
+    
+    GJNITools::showInterstitialAd();
 }
 
 void GRelived::updateTime(float dt)

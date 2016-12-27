@@ -2,24 +2,28 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>login ip1</key>
-	<string>http://104.238.126.116:8080/SnakeServer/user_login</string>
 	<key>login ip</key>
+	<string>http://104.238.126.116:8080/SnakeServer/user_login</string>
+	<key>login ip2</key>
 	<string>http://192.168.0.105:8080/SnakeServer/user_login</string>
 	<key>len</key>
-	<string>我的长度 </string>
+	<string>My Length </string>
 	<key>mi</key>
-	<string> 米</string>
+	<string> Meter</string>
 	<key>ranking</key>
 	<string>RANKING</string>
 	<key>rank_name</key>
 	<string>Name</string>
+	<key>rank_len</key>
+	<string>Length</string>
 	<key>rank_kill</key>
 	<string>Kill</string>
 	<key>rank_die</key>
 	<string>Die</string>
 	<key>rank_reward</key>
 	<string>Reward</string>
+	<key>rank_title</key>
+	<string>Ranking</string>
 	<key>recConn</key>
 	<string>Reconnet...</string>
 	<key>visitor</key>
@@ -51,6 +55,24 @@
 	<key>share repeat</key>
 	<string>Receive again tomorrow.</string>
 	<key>wall</key>
-	<string>墙壁</string>
+	<string>Wall</string>
+	<key>prompt_0</key>
+	<string>Your current length: </string>
+	<key>prompt_1</key>
+	<string> killed </string>
+	<key>prompt_2</key>
+	<string>You killed </string>
+	<key>prompt_3</key>
+	<string>Revenge success!</string>
+	<key>prompt_kill_2</key>
+	<string>Double Kill</string>
+	<key>prompt_kill_3</key>
+	<string>Triple Kill</string>
+	<key>prompt_kill_4</key>
+	<string>Ultra Kill</string>
+	<key>prompt_kill_5</key>
+	<string>Panta Kill</string>
+	<key>prompt_kill</key>
+	<string>Godlike</string>
 </dict>
 </plist>

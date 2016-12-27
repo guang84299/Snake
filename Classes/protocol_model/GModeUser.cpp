@@ -99,6 +99,12 @@ void GModeUser::heartBeat()
     gettimeofday(&tv, NULL);
     long time_sec = ((long long)tv.tv_sec) * 1000+ tv.tv_usec / 1000;
     lt = time_sec;
+    
+    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
+    if(sc)
+    {
+        sc->setPing(0);
+    }
 }
 
 void GModeUser::heartBeatResult(const char* data)
@@ -112,7 +118,7 @@ void GModeUser::heartBeatResult(const char* data)
     GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
     if(sc)
     {
-        sc->updatePing(ping);
+        sc->setPing(ping);
     }
 }
 

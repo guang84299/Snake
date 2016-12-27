@@ -21,6 +21,7 @@ public:
     void stopHeartBeat();
     void updateServerHeartBeat(float dt);
     void updateProtocol(float dt);
+    void updatePing(float dt);
     
     void reConn();
     void reConnCallback();
@@ -31,13 +32,16 @@ public:
     bool isExit();
     CREATE_FUNC(GScene);
     
-    void updatePing(int ping);
+    void setPing(int ping);
 protected:
     cocos2d::Layer * uiLayer;
     cocos2d::Label* ping;
     int pingNum;
 private:
     bool _exit;
+    float pingDt;
+    float uploadPingDt;
+    bool isUpdatePing;
 };
 
 #endif /* GScene_h */

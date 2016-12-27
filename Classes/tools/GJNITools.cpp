@@ -135,6 +135,74 @@ std::string GJNITools::getDeviceId()
 #endif
 }
 
+void GJNITools::showInterstitialAd()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    JniMethodInfo methodInfo;
+    if (! JniHelper::getStaticMethodInfo(methodInfo, "org/cocos2dx/cpp/JniTools", "showInterstitialAd","()V"))
+    {
+        LOGE("%s %d: error to get methodInfo", __FILE__, __LINE__);
+    }
+    else
+    {
+         methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID);
+    }
+#else
+    
+#endif
+}
+
+void GJNITools::mode()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    JniMethodInfo methodInfo;
+    if (! JniHelper::getStaticMethodInfo(methodInfo, "org/cocos2dx/cpp/JniTools", "mode","()V"))
+    {
+        LOGE("%s %d: error to get methodInfo", __FILE__, __LINE__);
+    }
+    else
+    {
+        methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID);
+    }
+#else
+    
+#endif
+}
+
+void GJNITools::mode2()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    JniMethodInfo methodInfo;
+    if (! JniHelper::getStaticMethodInfo(methodInfo, "org/cocos2dx/cpp/JniTools", "mode2","()V"))
+    {
+        LOGE("%s %d: error to get methodInfo", __FILE__, __LINE__);
+    }
+    else
+    {
+        methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID);
+    }
+#else
+    
+#endif
+}
+
+void GJNITools::ping(int ping)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    JniMethodInfo methodInfo;
+    if (! JniHelper::getStaticMethodInfo(methodInfo, "org/cocos2dx/cpp/JniTools", "ping","(I)V"))
+    {
+        LOGE("%s %d: error to get methodInfo", __FILE__, __LINE__);
+    }
+    else
+    {
+        methodInfo.env->CallStaticVoidMethod(methodInfo.classID, methodInfo.methodID,ping);
+    }
+#else
+    
+#endif
+}
+
 void GJNITools::shareUrl()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
