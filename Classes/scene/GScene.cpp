@@ -12,6 +12,7 @@
 #include "ui/GTouchLayer.h"
 #include "GHomeScene.h"
 #include "GGameScene.h"
+#include "GGameScene2.h"
 #include "common/GCommon.h"
 #include "data/GCache.h"
 #include "tools/GJNITools.h"
@@ -141,6 +142,7 @@ void GScene::reConnEnd()
     GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
     GGameScene* game = dynamic_cast<GGameScene*>(sc);
     GHomeScene* home = dynamic_cast<GHomeScene*>(sc);
+    GGameScene2* game2 = dynamic_cast<GGameScene2*>(sc);
     if(game)
     {
         log("game");
@@ -151,6 +153,11 @@ void GScene::reConnEnd()
     {
         log("home");
         GModeUser::recConn("home");
+    }
+    else if(game2)
+    {
+        log("game2");
+        GModeUser::recConn("game2");
     }
     
     uiLayer->removeChildByName("reconn");

@@ -9,7 +9,7 @@ android {
         applicationId "com.qianqi.game.snake.io"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 1
+        versionCode 3
         versionName "1.0"
     }
 

@@ -519,6 +519,7 @@ obj/local/armeabi/objs/MyGame_shared/__/__/__/Classes/scene/GScene.o: \
  jni/../../../Classes/sprite/GBlockSprite.h \
  jni/../../../Classes/model/GBlock.h jni/../../../Classes/ui/GRankView.h \
  jni/../../../Classes/ui/GMiniMap.h jni/../../../Classes/ui/GNumber.h \
+ jni/../../../Classes/scene/GGameScene2.h \
  jni/../../../Classes/data/GCache.h jni/../../../Classes/model/GUser.h \
  jni/../../../Classes/tools/GJNITools.h
 
@@ -1565,6 +1566,8 @@ jni/../../../Classes/ui/GRankView.h:
 jni/../../../Classes/ui/GMiniMap.h:
 
 jni/../../../Classes/ui/GNumber.h:
+
+jni/../../../Classes/scene/GGameScene2.h:
 
 jni/../../../Classes/data/GCache.h:
 

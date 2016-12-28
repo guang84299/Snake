@@ -146,7 +146,7 @@ void GRelived::initUI(GJsonObject* obj)
     title->setPosition(btn->getContentSize().width/2, btn->getContentSize().height*0.6f);
     btn->addChild(title);
     
-    if(game2)
+    if(true)
     {
         btn->setPosition(Vec2(s.width/2-150,s.height*0.38f));
         
@@ -247,6 +247,10 @@ void GRelived::touchEvent(Ref *pSender, Widget::TouchEventType type)
                     {
                         game->leaveRoom();
                     }
+                }
+                else
+                {
+                    GModeGame::questLeaveRoom();
                 }
             }
             break;
