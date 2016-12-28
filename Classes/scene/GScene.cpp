@@ -122,6 +122,13 @@ void GScene::reConn()
     auto lable = Label::createWithSystemFont(_T("recConn"), "", 24);
     lable->setPosition(s.width/2, s.height/2);
     lay->addChild(lable);
+    
+    GScene* sc = (GScene*)Director::getInstance()->getRunningScene();
+    GGameScene2* game2 = dynamic_cast<GGameScene2*>(sc);
+    if(game2)
+    {
+        lay->setVisible(false);
+    }
 }
 
 void GScene::reConnCallback()
