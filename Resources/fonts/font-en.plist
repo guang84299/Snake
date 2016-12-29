@@ -57,7 +57,7 @@
 	<key>wall</key>
 	<string>Wall</string>
 	<key>prompt_0</key>
-	<string>Your current length: </string>
+	<string>Your current rank: </string>
 	<key>prompt_1</key>
 	<string> killed </string>
 	<key>prompt_2</key>
