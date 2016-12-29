@@ -6,7 +6,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.qianqi.game.snake.io"
+        applicationId "com.qianqi.game.snake"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 3

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.qianqi.game.snake.io"
+    package="com.qianqi.game.snake"
     android:installLocation="auto">
 
     <uses-feature android:glEsVersion="0x00020000" />
@@ -42,7 +42,7 @@
 
 
         <meta-data android:value="5860d3aa8f4a9d1981000cff" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="google" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="kuyu" android:name="UMENG_CHANNEL"/>
 
     </application>
 
